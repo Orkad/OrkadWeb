@@ -1,0 +1,3 @@
+﻿kill OrkadWebVue.exe
+cd c:/web
+OrkadWebVue.exe
