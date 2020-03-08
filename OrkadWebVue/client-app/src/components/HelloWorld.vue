@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <Loading v-if="loading" />
+    <Loading v-if="loading" v-bind:spin="true" />
     <ul class="collection" v-else>
       <li
         class="collection-item"
