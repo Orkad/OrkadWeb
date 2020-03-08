@@ -1,24 +1,19 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Site en cours de construction" />
-    <ul>
-      <li><router-link to="/">index</router-link></li>
-      <li><router-link to="/foo">/foo</router-link></li>
-      <li><router-link to="/bar">/bar</router-link></li>
-    </ul>
-
+    <main-menu />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/HelloWorld'
+import MainMenu from './components/MainMenu'
+import Loading from './components/Loading'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld, MainMenu, Loading
   }
 }
 </script>
@@ -30,6 +25,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 10px;
 }
 </style>
