@@ -7,6 +7,9 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>client-app\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    <AssemblyVersion>1.0.*</AssemblyVersion>
+    <NeutralLanguage>fr</NeutralLanguage>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>
