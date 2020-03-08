@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Site en cours de construction"/>
+    <HelloWorld msg="Site en cours de construction" />
+    <ul>
+      <li><router-link to="/">index</router-link></li>
+      <li><router-link to="/foo">/foo</router-link></li>
+      <li><router-link to="/bar">/bar</router-link></li>
+    </ul>
+
+    <router-view></router-view>
   </div>
 </template>
 
