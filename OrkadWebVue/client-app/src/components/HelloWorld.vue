@@ -1,6 +1,10 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <div class="loading" v-if="loading">chargement</div>
+    <ul v-for="item in items" :key="items.date" >
+      <li>{{ item.date }} / {{ item.temperatureC }} </li>
+    </ul>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -31,28 +35,43 @@
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  import WeatherForecastApi from '../services/api/WeatherForecastApi'
+  export default {
+    name: 'HelloWorld',
+    props: {
+      msg: String
+    },
+    data() {
+      return {
+        loading: true,
+        items: [],
+      }
+    },
+    created() {
+      WeatherForecastApi.get()
+        .then(d => { this.items = d })
+        .finally(() => { this.loading = false })
+    }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+  h3 {
+    margin: 40px 0 0;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+  a {
+    color: #42b983;
+  }
 </style>
