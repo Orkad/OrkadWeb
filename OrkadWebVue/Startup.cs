@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OrkadWeb.Services;
 
 namespace OrkadWebVue
 {
@@ -27,6 +28,9 @@ namespace OrkadWebVue
         {
             services.AddControllers();
             services.AddSpaStaticFiles(options => options.RootPath = "client-app/dist");
+
+            var connectionString = Configuration.GetConnectionString("OrkadWeb");
+            services.AddNHibernate(connectionString);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

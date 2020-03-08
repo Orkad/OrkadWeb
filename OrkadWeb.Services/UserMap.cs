@@ -10,34 +10,26 @@ namespace OrkadWeb.Services
     {
         public UserMap()
         {
-            Table("USERS");
+            Table("users");
             Id(x => x.Id, x =>
             {
-                x.Generator(Generators.Guid);
-                x.Type(NHibernateUtil.Guid);
-                x.Column("ID");
-                x.UnsavedValue(Guid.Empty);
+                x.Column("id");
+                x.Generator(Generators.Assigned);
             });
 
             Property(x => x.Username, x =>
             {
-                x.Length(50);
-                x.Type(NHibernateUtil.StringClob);
-                x.NotNullable(true);
+                x.Column("username");
             });
 
             Property(x => x.Password, x =>
             {
-                x.Length(200);
-                x.Type(NHibernateUtil.StringClob);
-                x.NotNullable(true);
+                x.Column("password");
             });
 
             Property(x => x.Email, x =>
             {
-                x.Length(200);
-                x.Type(NHibernateUtil.StringClob);
-                x.NotNullable(true);
+                x.Column("email");
             });
 
             

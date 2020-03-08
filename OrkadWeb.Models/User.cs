@@ -10,7 +10,7 @@ namespace OrkadWeb.Models
         /// <summary>
         /// Identifiant unique de l'utilisateur
         /// </summary>
-        public virtual int Id { get; set; }
+        public virtual uint Id { get; set; }
 
         /// <summary>
         /// Nom d'utilisateur
