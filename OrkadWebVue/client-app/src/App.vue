@@ -1,19 +1,19 @@
 <template>
-  <md-app md-waterfall md-mode="fixed">
+  <md-app md-mode="reveal">
     <md-app-toolbar class="md-primary">
-      <i class="brand-logo"></i>
-      <span class="md-title">Orkad</span>
+      <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
+        <md-icon>menu</md-icon>
+      </md-button>
+      <span class="md-title"></span>
     </md-app-toolbar>
-    <md-app-drawer md-permanent="full">
+    <md-app-drawer :md-active.sync="menuVisible">
       <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
-
       <md-list>
-        <md-list-item to="/" exact>
+        <md-list-item to="/" exact @click="menuVisible = false">
           <md-icon>home</md-icon>
           <span class="md-list-item-text">Accueil</span>
         </md-list-item>
-
-        <md-list-item to="/login" exact>
+        <md-list-item to="/login" exact @click="menuVisible = false">
           <md-icon>send</md-icon>
           <span class="md-list-item-text">Se connecter</span>
         </md-list-item>
@@ -22,8 +22,6 @@
     <md-app-content>
       <router-view></router-view>
     </md-app-content>
-    <!-- <main-menu />
-    -->
   </md-app>
 </template>
 
@@ -34,6 +32,9 @@ import Loading from "./components/Loading";
 
 export default {
   name: "App",
+  data: () => ({
+    menuVisible: false
+  }),
   components: {
     HelloWorld,
     MainMenu,
@@ -42,13 +43,8 @@ export default {
 };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 10px;
+<style scoped>
+md-app {
+  min-height: 100vh;
 }
 </style>

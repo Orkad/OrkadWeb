@@ -1,23 +1,15 @@
 <template>
-  <nav>
-    <div class="nav-wrapper">
-      <ul id="nav-mobile" class="left hide-on-med-and-down">
-        <li><router-link to="/">Accueil</router-link></li>
-        <li><router-link to="/login">Se connecter</router-link></li>
-        <li><router-link to="/about">A Propos</router-link></li>
-      </ul>
-    </div>
-  </nav>
+
 </template>
 
 <script>
-  export default {
-    name: 'MainMenu'
-  }
+export default {
+  name: "MainMenu"
+};
 </script>
 
 <style scoped>
-.brand-logo{
+.brand-logo {
   background-image: url("../assets/logo.png");
   background-size: contain;
   height: 50px;
