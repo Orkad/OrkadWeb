@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OrkadWeb.Models;
+using OrkadWeb.Services;
 
 namespace OrkadWebVue.Controllers
 {
     public class LoginCredentials
     {
-        public string Email { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
     }
 
@@ -24,10 +26,17 @@ namespace OrkadWebVue.Controllers
         public string Role { get; set; }
     }
 
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
+        private readonly IDataService dataService;
+
+        public AccountController(IDataService dataService)
+        {
+            this.dataService = dataService;
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginCredentials loginCredentials)
         {
@@ -68,8 +77,8 @@ namespace OrkadWebVue.Controllers
         //  _signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure: false);
         private bool ValidateLogin(LoginCredentials creds)
         {
-            // For our sample app, all logins are successful!
-            return true;
+            var hash = HashUtils.HashSHA256(creds.Password);
+            return dataService.Query<User>().Any(u => (u.Username == creds.Username || u.Email == creds.Username) && u.Password == hash);
         }
 
         // On a real project, you would use the SignInManager 
@@ -78,12 +87,12 @@ namespace OrkadWebVue.Controllers
         //  var principal = await _signInManager.CreateUserPrincipalAsync(user)
         private ClaimsPrincipal GetPrincipal(LoginCredentials creds, string authScheme)
         {
-            // Here we are just creating a Principal for any user, 
-            // using its email and a hardcoded “User” role
+            var hash = HashUtils.HashSHA256(creds.Password);
+            var user = dataService.Query<User>().SingleOrDefault(u => (u.Username == creds.Username || u.Email == creds.Username) && u.Password == hash);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, creds.Email),
-                new Claim(ClaimTypes.Email, creds.Email),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, "User"),
             };
             return new ClaimsPrincipal(new ClaimsIdentity(claims, authScheme));

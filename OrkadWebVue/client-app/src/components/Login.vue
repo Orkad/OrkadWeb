@@ -50,6 +50,7 @@
 
 <script>
 import { validationMixin } from "vuelidate";
+import AccountApi from "../services/api/AccountApi";
 import {
   required,
   email,
@@ -97,7 +98,7 @@ export default {
     },
     saveUser() {
       this.sending = true;
-
+      AccountApi.login(this.form.username, this.form.password);
       // Instead of this timeout, here you can call your API
       window.setTimeout(() => {
         this.userSaved = true;

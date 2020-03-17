@@ -20,14 +20,10 @@ namespace OrkadWebVue.Controllers
             this.dataService = dataService;
         }
 
-        //[HttpGet]
-        //public async Task<dynamic> Get()
-        //{
-        //    var test = dataService.Query<User>().ToList();
-        //    return new
-        //    {
-        //        Error = "There is no error"
-        //    };
-        //}
+        [HttpGet]
+        public async Task<dynamic> Get()
+        {
+            return dataService.Query<User>().ToList();
+        }
     }
 }

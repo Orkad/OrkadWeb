@@ -27,4 +27,6 @@ namespace OrkadWeb.Models
         /// </summary>
         public virtual string Email { get; set; }
     }
+
+    // CREATE TABLE users(id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(255), password VARCHAR(255), email VARCHAR(255));
 }

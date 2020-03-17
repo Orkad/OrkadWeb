@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWebVue", "OrkadWebVue\OrkadWebVue.csproj", "{8019DCEE-F281-42FE-9E00-79F693EBD0F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrkadWeb.Models", "OrkadWeb.Models\OrkadWeb.Models.csproj", "{9B3A20E8-4A7F-4907-8514-210D0B721861}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Models", "OrkadWeb.Models\OrkadWeb.Models.csproj", "{9B3A20E8-4A7F-4907-8514-210D0B721861}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrkadWeb.Services", "OrkadWeb.Services\OrkadWeb.Services.csproj", "{73D0B2E1-0D8F-4233-83F6-88C53624D9DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Services", "OrkadWeb.Services\OrkadWeb.Services.csproj", "{73D0B2E1-0D8F-4233-83F6-88C53624D9DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

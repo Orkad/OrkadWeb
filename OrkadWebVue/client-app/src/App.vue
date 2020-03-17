@@ -1,5 +1,5 @@
 <template>
-  <md-app md-mode="reveal">
+  <md-app md-mode="reveal" style="min-height: 100vh;">
     <md-app-toolbar class="md-primary">
       <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
         <md-icon>menu</md-icon>
@@ -26,20 +26,12 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
-import MainMenu from "./components/MainMenu";
-import Loading from "./components/Loading";
 
 export default {
   name: "App",
   data: () => ({
     menuVisible: false
-  }),
-  components: {
-    HelloWorld,
-    MainMenu,
-    Loading
-  }
+  })
 };
 </script>
 
