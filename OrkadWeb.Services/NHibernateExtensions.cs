@@ -1,10 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
+using Microsoft.Extensions.DependencyInjection;
+using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Connection;
 using NHibernate.Dialect;
 using NHibernate.Driver;
+using NHibernate.Mapping.Attributes;
 using NHibernate.Mapping.ByCode;
+using OrkadWeb.Models;
 
 namespace OrkadWeb.Services
 {
@@ -12,10 +17,26 @@ namespace OrkadWeb.Services
     {
         public static IServiceCollection AddNHibernate(this IServiceCollection services, string connectionString)
         {
-            var mapper = new ModelMapper();
-            mapper.AddMappings(typeof(NHibernateExtensions).Assembly.ExportedTypes);
-            HbmMapping domainMapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
 
+            var sessionFactory = CreateSessionFactory(connectionString);
+            services.AddSingleton(sessionFactory);
+            services.AddScoped(factory => sessionFactory.OpenSession());
+            services.AddScoped<IDataService, DataService>();
+
+            return services;
+        }
+
+        private static ISessionFactory CreateSessionFactory(string connectionString)
+        {
+            return Fluently
+                .Configure()
+                .Database(MySQLConfiguration.Standard.ConnectionString(connectionString))
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<User>())
+                .BuildSessionFactory();
+        }
+
+        private static ISessionFactory CreateSessionFactoryOld(string connectionString)
+        {
             var configuration = new Configuration();
             configuration.DataBaseIntegration(c =>
             {
@@ -27,15 +48,12 @@ namespace OrkadWeb.Services
                 c.LogFormattedSql = true;
                 c.LogSqlInConsole = true;
             });
+
+            var mapper = new ModelMapper();
+            mapper.AddMappings(typeof(User).Assembly.ExportedTypes);
+            HbmMapping domainMapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
             configuration.AddMapping(domainMapping);
-
-            var sessionFactory = configuration.BuildSessionFactory();
-
-            services.AddSingleton(sessionFactory);
-            services.AddScoped(factory => sessionFactory.OpenSession());
-            services.AddScoped<IDataService, DataService>();
-
-            return services;
+            return configuration.BuildSessionFactory();
         }
     }
 }

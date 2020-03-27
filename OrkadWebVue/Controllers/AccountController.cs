@@ -28,13 +28,24 @@ namespace OrkadWebVue.Controllers
 
     [Route("[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : Controller
     {
         private readonly IDataService dataService;
 
         public AccountController(IDataService dataService)
         {
             this.dataService = dataService;
+        }
+
+        [HttpGet("context")]
+        public IActionResult Context()
+        {
+            return Json(new
+            {
+                name = this.User?.Identity?.Name,
+                email = this.User?.FindFirstValue(ClaimTypes.Email),
+                role = this.User?.FindFirstValue(ClaimTypes.Role),
+            });
         }
 
         [HttpPost("login")]
@@ -47,7 +58,7 @@ namespace OrkadWebVue.Controllers
             {
                 return Ok(new LoginResult
                 {
-                    Error = "Login failed"
+                    Error = "La combinaison renseignée est incorrecte, veuillez réésayer"
                 });
             }
             var principal = GetPrincipal(loginCredentials, Startup.COOKIE_AUTH_SCHEME);

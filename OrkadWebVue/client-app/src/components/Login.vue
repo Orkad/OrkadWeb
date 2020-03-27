@@ -1,7 +1,7 @@
 <template>
   <div>
-    <form novalidate class="md-layout" @submit.prevent="validateUser">
-      <md-card class="md-layout-item md-size-50 md-small-size-100">
+    <form novalidate class="md-layout md-alignment-top-center" @submit.prevent="validateUser">
+      <md-card class="md-layout-item md-size-33 md-small-size-66 md-xsmall-100">
         <md-card-header>
           <div class="md-title">Connexion</div>
         </md-card-header>
@@ -43,8 +43,13 @@
         </md-card-actions>
       </md-card>
 
-      <md-snackbar :md-active.sync="userSaved">Connecté</md-snackbar>
+      <md-snackbar :md-active.sync="connected">Connecté</md-snackbar>
     </form>
+    <md-dialog-alert
+      :md-active.sync="errorDialog"
+      md-title="Erreur"
+      :md-content="errorMessage"
+      md-confirm-text="Ok" />
   </div>
 </template>
 
@@ -66,8 +71,10 @@ export default {
       username: null,
       password: null
     },
-    userSaved: false,
-    sending: false
+    connected: false,
+    sending: false,
+    errorDialog: false,
+    errorMessage: "error"
   }),
   validations: {
     form: {
@@ -93,18 +100,23 @@ export default {
     },
     clearForm() {
       this.$v.$reset();
-      this.form.username = null;
       this.form.password = null;
+    },
+    showError(msg){
+      this.errorMessage = msg;
+      this.errorDialog = true;
     },
     saveUser() {
       this.sending = true;
-      AccountApi.login(this.form.username, this.form.password);
-      // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        this.userSaved = true;
+      AccountApi.login(this.form.username, this.form.password).then((data) => {
+        if(data.error){
+          this.showError(data.error);
+          this.clearForm();
+        }else{
+          this.connected = true;
+        }
         this.sending = false;
-        this.clearForm();
-      }, 1500);
+      });
     },
     validateUser() {
       this.$v.$touch();

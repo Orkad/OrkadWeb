@@ -1,4 +1,9 @@
-﻿using System;
+﻿using FluentNHibernate.Mapping;
+using NHibernate.Mapping.Attributes;
+using NHibernate.Mapping.ByCode;
+using NHibernate.Mapping.ByCode.Conformist;
+using System;
+using System.Collections.Generic;
 
 namespace OrkadWeb.Models
 {
@@ -10,7 +15,7 @@ namespace OrkadWeb.Models
         /// <summary>
         /// Identifiant unique de l'utilisateur
         /// </summary>
-        public virtual uint Id { get; set; }
+        public virtual int Id { get; set; }
 
         /// <summary>
         /// Nom d'utilisateur
@@ -26,7 +31,23 @@ namespace OrkadWeb.Models
         /// Adresse email de contact de l'utilisateur
         /// </summary>
         public virtual string Email { get; set; }
+
+        /// <summary>
+        /// Association des partages utilisateurs
+        /// </summary>
+        public virtual ISet<UserShare> UserShares { get; set; }
     }
 
-    // CREATE TABLE users(id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(255), password VARCHAR(255), email VARCHAR(255));
+    public class UserMap : ClassMap<User>
+    {
+        public UserMap()
+        {
+            Table("user");
+            Id(x => x.Id, "id");
+            Map(x => x.Username).Column("username");
+            Map(x => x.Password).Column("password");
+            Map(x => x.Email).Column("email");
+            HasMany(x => x.UserShares).KeyColumn("user_id");
+        }
+    }
 }

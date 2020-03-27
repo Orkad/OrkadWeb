@@ -1,6 +1,6 @@
 <template>
   <form novalidate class="md-layout" @submit.prevent="validateUser">
-    <md-dialog :md-active.sync="showDialog">
+    <md-dialog>
       <md-dialog-title>Connexion</md-dialog-title>
       <md-field :class="getValidationClass('username')">
         <label for="username">Nom d'utilisateur</label>

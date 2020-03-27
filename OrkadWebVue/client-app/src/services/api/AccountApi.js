@@ -1,6 +1,11 @@
 ﻿import axios from 'axios';
 
 export default {
+  refresh() {
+    return axios.get("/account/context")
+    .then(r => r.data);
+  },
+
   login(username, password) {
     return axios.post("/account/login", {
       username: username,
