@@ -17,7 +17,6 @@ namespace OrkadWebVue
 {
     public class Startup
     {
-        public const string COOKIE_AUTH_SCHEME = "CookieAuthScheme";
         const string COOKIE_NAME = "OrkadWebVue.AuthCookie";
         public Startup(IConfiguration configuration)
         {
@@ -29,28 +28,13 @@ namespace OrkadWebVue
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
             services.AddControllers();
             services.AddSpaStaticFiles(options => options.RootPath = "client-app/dist");
 
             var connectionString = Configuration.GetConnectionString("OrkadWeb");
             services.AddNHibernate(connectionString);
-
-            // cookie authentication
-
-            services.AddAuthentication(COOKIE_AUTH_SCHEME)
-                .AddCookie(COOKIE_AUTH_SCHEME, options =>
-                {
-                    options.Cookie.Name = COOKIE_NAME;
-                    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
-                    options.Events = new CookieAuthenticationEvents
-                    {
-                        OnRedirectToLogin = redirectContext =>
-                        {
-                            redirectContext.HttpContext.Response.StatusCode = 401;
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +49,7 @@ namespace OrkadWebVue
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -82,8 +67,6 @@ namespace OrkadWebVue
                     spa.UseVueDevelopmentServer();
                 }
             });
-
-            app.UseAuthentication();
         }
     }
 }

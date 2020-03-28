@@ -1,7 +1,7 @@
 <template>
   <div>
-    <form novalidate class="md-layout md-alignment-top-center" @submit.prevent="validateUser">
-      <md-card class="md-layout-item md-size-33 md-small-size-66 md-xsmall-100">
+    <form novalidate class="md-layout" @submit.prevent="validateUser">
+      <md-card class="md-layout-item">
         <md-card-header>
           <div class="md-title">Connexion</div>
         </md-card-header>

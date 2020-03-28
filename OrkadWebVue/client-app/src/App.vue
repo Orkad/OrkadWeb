@@ -1,5 +1,5 @@
 <template>
-  <md-app md-mode="reveal" style="min-height: 100vh;">
+  <md-app md-mode="reveal">
     <md-app-toolbar class="md-primary">
       <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
         <md-icon>menu</md-icon>
@@ -7,7 +7,6 @@
       <span class="md-title md-layout-item">
         Orkad Web Vue
       </span>
-      <login></login>
       <md-button to="/login" exact class="md-icon-button">
         <md-icon>account_circle</md-icon>
       </md-button>
@@ -23,10 +22,14 @@
           <md-icon>send</md-icon>
           <span class="md-list-item-text">Se connecter</span>
         </md-list-item>
+        <md-list-item to="/shares" exact @click="menuVisible = false">
+          <md-icon>share</md-icon>
+          <span class="md-list-item-text">Partages</span>
+        </md-list-item>
       </md-list>
     </md-app-drawer>
     <md-app-content>
-      <router-view class="main-container"></router-view>
+      <router-view></router-view>
     </md-app-content>
   </md-app>
 </template>
@@ -42,19 +45,21 @@ export default {
 </script>
 
 <style scoped>
-md-app {
+.md-app {
   min-height: 100vh;
 }
 
-.main-container {
+.md-app-content {
     /* On centre */
     margin: 0 auto;
 
     /* On limite la largeur pour les grands écrans */
-    max-width: 1280px;
+    max-width: 960px;
 
     /* On gère la présence d'une marge */
     width: 90%;
+
+    border: 0px;
 }
 
 /*
@@ -62,7 +67,7 @@ md-app {
 * on l'augmente sur les devices moins larges.
 */
 @media only screen and (min-width: 993px){
-    .main-container {
+    md-app-content {
         width: 85%;
     }
 }

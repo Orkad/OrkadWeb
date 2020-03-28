@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace OrkadWebVue.Controllers
 
     [Route("[controller]")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly IDataService dataService;
 
@@ -38,46 +39,60 @@ namespace OrkadWebVue.Controllers
         }
 
         [HttpGet("context")]
-        public IActionResult Context()
+        public dynamic Context()
         {
-            return Json(new
+            return new
             {
                 name = this.User?.Identity?.Name,
                 email = this.User?.FindFirstValue(ClaimTypes.Email),
                 role = this.User?.FindFirstValue(ClaimTypes.Role),
-            });
+            };
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]LoginCredentials loginCredentials)
+        public async Task<dynamic> Login([FromBody]LoginCredentials loginCredentials)
         {
             // We will typically move the validation of credentials
             // and return of matched principal into its own AuthenticationService
             // Leaving it here for convenience of the sample project/article
             if (!ValidateLogin(loginCredentials))
             {
-                return Ok(new LoginResult
+                return new
                 {
                     Error = "La combinaison renseignée est incorrecte, veuillez réésayer"
-                });
+                };
             }
-            var principal = GetPrincipal(loginCredentials, Startup.COOKIE_AUTH_SCHEME);
-            await HttpContext.SignInAsync(Startup.COOKIE_AUTH_SCHEME, principal);
-
-            return Ok(new LoginResult
+            var hash = HashUtils.HashSHA256(loginCredentials.Password);
+            var user = dataService.Query<User>().SingleOrDefault(u => (u.Username == loginCredentials.Username || u.Email == loginCredentials.Username) && u.Password == hash);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, "User"),
+            };
+            var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+            var authProperties = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                ExpiresUtc = DateTimeOffset.Now.AddDays(1),
+                IsPersistent = true,
+            };
+            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+            return new
             {
                 Name = principal.Identity.Name,
                 Email = principal.FindFirstValue(ClaimTypes.Email),
                 Role = principal.FindFirstValue(ClaimTypes.Role)
-            });
+            };
         }
 
         [HttpPost("logout")]
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public async Task Logout()
         {
             await HttpContext.SignOutAsync();
-            return Ok();
         }
 
         // On a real project, you would use a SignInManager to verify the identity
@@ -90,23 +105,6 @@ namespace OrkadWebVue.Controllers
         {
             var hash = HashUtils.HashSHA256(creds.Password);
             return dataService.Query<User>().Any(u => (u.Username == creds.Username || u.Email == creds.Username) && u.Password == hash);
-        }
-
-        // On a real project, you would use the SignInManager 
-        // to locate the user by its email and build its ClaimsPrincipal:
-        //  var user = await _signInManager.UserManager.FindByEmailAsync(email);
-        //  var principal = await _signInManager.CreateUserPrincipalAsync(user)
-        private ClaimsPrincipal GetPrincipal(LoginCredentials creds, string authScheme)
-        {
-            var hash = HashUtils.HashSHA256(creds.Password);
-            var user = dataService.Query<User>().SingleOrDefault(u => (u.Username == creds.Username || u.Email == creds.Username) && u.Password == hash);
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, "User"),
-            };
-            return new ClaimsPrincipal(new ClaimsIdentity(claims, authScheme));
         }
     }
 }

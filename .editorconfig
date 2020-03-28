@@ -1,0 +1,4 @@
+﻿[*.{cs,vb}]
+
+# IDE0037: Utiliser un nom de membre déduit
+dotnet_style_prefer_inferred_tuple_names = false:none

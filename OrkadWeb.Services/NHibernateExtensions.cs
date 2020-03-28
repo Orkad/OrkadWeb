@@ -22,7 +22,7 @@ namespace OrkadWeb.Services
             services.AddSingleton(sessionFactory);
             services.AddScoped(factory => sessionFactory.OpenSession());
             services.AddScoped<IDataService, DataService>();
-
+            services.AddScoped<ShareService>();
             return services;
         }
 
