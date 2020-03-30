@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 
 // Vue material
 // import { MdButton, MdContent, MdTabs, MdField, MdApp } from 'vue-material/dist/components'
@@ -20,5 +21,6 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')

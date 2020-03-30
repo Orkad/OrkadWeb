@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
 import ShareList from '@/components/ShareList'
+import Share from '@/components/Share'
 
 Vue.use(Router)
 
@@ -10,6 +11,7 @@ export default new Router({
   routes: [
     { path: '/', component: HelloWorld },
     { path: '/login', component: Login },
-    { path: '/shares', component: ShareList}
+    { path: '/shares', component: ShareList},
+    { path: '/shares/:id', component: Share},
   ]
 })

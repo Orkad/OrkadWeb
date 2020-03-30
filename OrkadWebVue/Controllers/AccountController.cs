@@ -52,9 +52,6 @@ namespace OrkadWebVue.Controllers
         [HttpPost("login")]
         public async Task<dynamic> Login([FromBody]LoginCredentials loginCredentials)
         {
-            // We will typically move the validation of credentials
-            // and return of matched principal into its own AuthenticationService
-            // Leaving it here for convenience of the sample project/article
             if (!ValidateLogin(loginCredentials))
             {
                 return new
@@ -78,7 +75,6 @@ namespace OrkadWebVue.Controllers
                 ExpiresUtc = DateTimeOffset.Now.AddDays(1),
                 IsPersistent = true,
             };
-            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
             return new
             {
@@ -95,12 +91,6 @@ namespace OrkadWebVue.Controllers
             await HttpContext.SignOutAsync();
         }
 
-        // On a real project, you would use a SignInManager to verify the identity
-        // using:
-        //  _signInManager.PasswordSignInAsync(user, password, lockoutOnFailure: false);
-        // With JWT you would rather avoid that to prevent cookies being set and use: 
-        //  _signInManager.UserManager.FindByEmailAsync(email);
-        //  _signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure: false);
         private bool ValidateLogin(LoginCredentials creds)
         {
             var hash = HashUtils.HashSHA256(creds.Password);

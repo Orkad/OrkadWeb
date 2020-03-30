@@ -2,7 +2,7 @@
   <div>
     <h2>Partages en cours</h2>
     <md-list>
-      <md-list-item v-for="share in shares" :key="share.id" @click="menuVisible = false">
+      <md-list-item v-for="share in shares" :key="share.id" @click="menuVisible = false" :to="{ path: '/shares/'+share.id}" exact>
         <md-icon>payment</md-icon>
         <span class="md-list-item-text">{{share.name}}</span>
         <md-badge class="md-primary md-square" :md-content="share.attendeeCount + ' participants'" />

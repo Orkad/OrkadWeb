@@ -1,26 +1,32 @@
+import AccountApi from '@/services/api/AccountApi'
+
 export default {
   namespaced: true,
   state: {
     profile: {}
   },
+
   getters: {
-    isAuthenticated: state => state.profile.name && state.profile.email
+    isAuthenticated: state =>  (state.profile.email) && (state.profile.name)
   },
+
   mutations: {
-    setProfile (state, profile) {
+    setProfile(state, profile) {
       state.profile = profile
     },
   },
   actions: {
-    login ({ commit }, credentials) {
-      return axios.post('account/login', credentials).then(res => {
-        commit('setProfile', res.data)
-      })
+    refresh({ commit }) {
+      return AccountApi.refresh()
+        .then(data => { commit('setProfile', data); return data; });
     },
-    logout ({ commit }) {
-      return axios.post('account/logout').then(() => {
-        commit('setProfile', {})
-      })
+    login({ commit }, credentials) {
+      return AccountApi.login(credentials.username, credentials.password)
+        .then(data => { commit('setProfile', data); return data; });
+    },
+    logout({ commit }) {
+      return AccountApi.logout()
+        .then(() => { commit('setProfile', {}) });
     }
   }
 }
