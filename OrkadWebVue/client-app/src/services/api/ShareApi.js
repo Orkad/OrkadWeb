@@ -1,5 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 export default {
-  getShares() { return axios.get("/api/share").then(r => r.data); },
-}
+  getShares() {
+    return axios.get("/api/shares").then(r => r.data);
+  },
+};

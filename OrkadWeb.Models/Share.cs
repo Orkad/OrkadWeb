@@ -1,8 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
-using NHibernate.Mapping.ByCode.Conformist;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OrkadWeb.Models
 {

@@ -15,4 +15,8 @@
   <ItemGroup>
     <ProjectReference Include="..\OrkadWeb.Models\OrkadWeb.Models.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTO\Users\" />
+  </ItemGroup>
 </Project>

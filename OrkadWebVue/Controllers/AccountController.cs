@@ -19,9 +19,8 @@ namespace OrkadWebVue.Controllers
         public string Password { get; set; }
     }
 
-    public class LoginResult
+    public class AuthenticatedUser
     {
-        public string Error { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }

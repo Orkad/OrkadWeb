@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using OrkadWeb.Models;
 
 namespace OrkadWeb.Services.DTO.Shares
 {
@@ -22,5 +21,18 @@ namespace OrkadWeb.Services.DTO.Shares
         /// Nombre de participants
         /// </summary>
         public int AttendeeCount { get; set; }
+
+        public static ShareItem BuildFrom(Share share) => share.ToItem();
+    }
+
+    public static class ShareItemExtensions
+    {
+        public static ShareItem ToItem(this Share share)
+            => new ShareItem
+            {
+                Id = share.Id,
+                Name = share.Name,
+                AttendeeCount = share.UserShares.Count
+            };
     }
 }

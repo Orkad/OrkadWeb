@@ -1,10 +1,8 @@
 ﻿using OrkadWeb.Models;
 using OrkadWeb.Services.DTO.Shares;
-using OrkadWeb.Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OrkadWeb.Services
 {
@@ -24,15 +22,21 @@ namespace OrkadWeb.Services
         public List<ShareItem> GetSharesForUser(int userId)
         {
             var query = dataService.Query<UserShare>()
-                .Where(us => us.User.Id == userId)
-                .Select(us => new ShareItem
-                {
-                    Id = us.Share.Id,
-                    Name = us.Share.Name,
-                    AttendeeCount = us.Share.UserShares.Count()
-                });
-            var result = query.ToList();
+                .Where(us => us.User.Id == userId).Select(us => us.Share);
+            var result = query.Select(ShareItem.BuildFrom).ToList();
             return result;
+        }
+
+        /// <summary>
+        /// Récupère le détail du partage
+        /// </summary>
+        /// <param name="shareId">identifiant unique du partage</param>
+        /// <returns></returns>
+        public ShareDetail GetShareDetail(int shareId)
+        {
+            var share = dataService.Get<Share>(shareId);
+            var detail = share.ToDetail();
+            return detail;
         }
 
         /// <summary>
@@ -61,12 +65,9 @@ namespace OrkadWeb.Services
         /// <param name="shareId">identifiant unique du partage</param>
         public decimal GetShareExpenses(int shareId)
         {
-            var share = dataService.Query<Share>().Where(s => s.Id == shareId);
-            if (share == null)
-            {
-
-            }
-            return 0m;
+            return dataService.Query<UserShare>()
+                .Where(us => us.Share.Id == shareId)
+                .Select(us => us.Expenses.Sum(e => e.Amount)).Sum();
         }
     }
 }
