@@ -2,16 +2,16 @@
   <loading v-if="loading" />
   <div v-else>
     <div>
-      <div class="md-title">Partage : {{ share.name }}</div>
+      <h2>Partage : {{ share.name }}</h2>
       <span>Total des dépenses : {{ getTotalExpenses() }}€</span>
 
       <div class="md-layout">
         <div class="md-layout-item md-size-50">
-          <md-field>
+          <v-field>
             <label>Montant de la dépense</label>
-            <md-input v-model="newExpense.amount"></md-input>
+            <v-input v-model="newExpense.amount"></v-input>
             <md-icon>euro_symbol</md-icon>
-          </md-field>
+          </v-field>
           <md-datepicker v-model="newExpense.date">
             <label>Date de la dépense</label>
           </md-datepicker>

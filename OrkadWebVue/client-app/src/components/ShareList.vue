@@ -1,13 +1,17 @@
 <template>
   <div>
     <h2>Partages en cours</h2>
-    <md-list>
-      <md-list-item v-for="share in shares" :key="share.id" @click="menuVisible = false" :to="{ path: '/shares/'+share.id}" exact>
-        <md-icon>payment</md-icon>
-        <span class="md-list-item-text">{{share.name}}</span>
-        <md-badge class="md-primary md-square" :md-content="share.attendeeCount + ' participants'" />
-      </md-list-item>
-    </md-list>
+    <v-list>
+      <v-list-item v-for="share in shares" :key="share.id" :to="{ path: '/shares/'+share.id}" exact @click="menuVisible = false">
+        <v-list-item-icon>
+          <v-icon color="primary">payment</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>{{share.name}}</v-list-item-title>
+          <v-list-item-subtitle>{{share.attendeeCount}} participants</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
   </div>
 </template>
 

@@ -1,12 +1,12 @@
 ﻿<template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <Loading v-if="loading" v-bind:spin="true" />
-    <ul class="collection" v-else>
+    <Loading v-if="loading" :spin="true" />
+    <ul v-else class="collection">
       <li
-        class="collection-item"
         v-for="item in items"
         :key="item.date"
+        class="collection-item"
       >{{ item.date }} / {{ item.temperatureC }}C° / {{ item.temperatureF}}F° / {{ item.summary }}</li>
     </ul>
   </div>
