@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OrkadWeb.Services.Exceptions
 {
@@ -9,6 +7,9 @@ namespace OrkadWeb.Services.Exceptions
     /// </summary>
     public class BusinessException : Exception
     {
+        public BusinessException(string message) : base(message)
+        {
 
+        }
     }
 }

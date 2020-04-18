@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
+using System;
 
 namespace OrkadWeb.Models
 {
@@ -26,6 +27,11 @@ namespace OrkadWeb.Models
         /// Nom d'affichage de la dépense (identification par l'utilisateur)
         /// </summary>
         public virtual string Name { get; set; }
+
+        /// <summary>
+        /// Date de la dépense
+        /// </summary>
+        public virtual DateTime Date { get; set; }
     }
 
     public class ExpenseMap : ClassMap<Expense>
@@ -36,6 +42,7 @@ namespace OrkadWeb.Models
             Id(x => x.Id, "id");
             Map(x => x.Amount, "amount");
             Map(x => x.Name, "name");
+            Map(x => x.Date, "date");
             References(x => x.UserShare, "user_share_id");
         }
     }

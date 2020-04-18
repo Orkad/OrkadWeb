@@ -5,7 +5,7 @@ namespace OrkadWeb.Services.DTO.Shares
     /// <summary>
     /// Représente un partage dans une collection
     /// </summary>
-    public class ShareItem
+    public class ShareItem : Ownable
     {
         /// <summary>
         /// Identifiant unique du partage
@@ -23,16 +23,5 @@ namespace OrkadWeb.Services.DTO.Shares
         public int AttendeeCount { get; set; }
 
         public static ShareItem BuildFrom(Share share) => share.ToItem();
-    }
-
-    public static class ShareItemExtensions
-    {
-        public static ShareItem ToItem(this Share share)
-            => new ShareItem
-            {
-                Id = share.Id,
-                Name = share.Name,
-                AttendeeCount = share.UserShares.Count
-            };
     }
 }

@@ -42,9 +42,10 @@ namespace OrkadWebVue.Controllers
         {
             return new
             {
-                name = this.User?.Identity?.Name,
-                email = this.User?.FindFirstValue(ClaimTypes.Email),
-                role = this.User?.FindFirstValue(ClaimTypes.Role),
+                Id = this.User?.FindFirstValue(ClaimTypes.PrimarySid),
+                Name = this.User?.Identity?.Name,
+                Email = this.User?.FindFirstValue(ClaimTypes.Email),
+                Role = this.User?.FindFirstValue(ClaimTypes.Role),
             };
         }
 
@@ -77,6 +78,7 @@ namespace OrkadWebVue.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
             return new
             {
+                Id = principal.FindFirstValue(ClaimTypes.PrimarySid),
                 Name = principal.Identity.Name,
                 Email = principal.FindFirstValue(ClaimTypes.Email),
                 Role = principal.FindFirstValue(ClaimTypes.Role)

@@ -25,13 +25,30 @@ namespace OrkadWeb.Services
         public T Get<T>(object id) => session.Get<T>(id) ?? throw new NotFoundException<T>(id);
 
         /// <summary>
+        /// Charge l'entité sans faire d'appel en base de donnée (en assumant que l'entité existe déjà)
+        /// </summary>
+        /// <typeparam name="T">type de l'entité</typeparam>
+        /// <param name="id">identifiant unique de l'entité</param>
+        public T Load<T>(object id) => session.Load<T>(id);
+
+        /// <summary>
         /// Création de requète sur les entités du type fourni
         /// </summary>
         /// <typeparam name="T">type de l'entité</typeparam>
         public IQueryable<T> Query<T>() => session.Query<T>();
 
-        public object Insert<T>(T obj) => session.Save(obj);
+        public void Insert<T>(T obj) => session.Save(obj);
         public void Update<T>(T obj) => session.Update(obj);
-        public void Delete<T>(T obj) => session.Delete(obj);
+
+        /// <summary>
+        /// Supprime une entité existante
+        /// </summary>
+        /// <typeparam name="T">type de l'entité</typeparam>
+        /// <param name="obj">instance de l'entité a supprimer</param>
+        public void Delete<T>(T obj) 
+        {
+            session.Delete(obj);
+            session.Flush();
+        } 
     }
 }

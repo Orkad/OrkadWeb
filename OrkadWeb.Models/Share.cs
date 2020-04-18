@@ -19,6 +19,11 @@ namespace OrkadWeb.Models
         public virtual string Name { get; set; }
 
         /// <summary>
+        /// Propriétaire du partage
+        /// </summary>
+        public virtual User Owner { get; set; }
+
+        /// <summary>
         /// Associations des utilisateurs
         /// </summary>
         public virtual ISet<UserShare> UserShares { get; set; }
@@ -31,7 +36,8 @@ namespace OrkadWeb.Models
             Table("share");
             Id(x => x.Id, "id");
             Map(x => x.Name, "name");
-            HasMany(x => x.UserShares).KeyColumn("share_id");
+            References(x => x.Owner, "owner").Cascade.None();
+            HasMany(x => x.UserShares).KeyColumn("share_id").Inverse().Cascade.AllDeleteOrphan();
         }
     }
 }

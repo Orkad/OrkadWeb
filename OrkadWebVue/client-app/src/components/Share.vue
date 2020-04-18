@@ -1,119 +1,123 @@
 <template>
-  <loading v-if="loading" />
+  <loading v-if="loading" spin />
   <div v-else>
-    <div>
-      <h2>Partage : {{ share.name }}</h2>
-      <span>Total des dépenses : {{ getTotalExpenses() }}€</span>
+    <v-row>
+      <v-col cols="12">
+        <v-card outlined tile>
+          <v-card-title>
+            Partage : {{ share.name }}
+            <v-spacer></v-spacer>
+            <v-btn v-if="mine" icon color="red">
+              <v-icon @click="confirmDeleteDialog = true">mdi-delete</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-card-subtitle
+            >Total des dépenses : {{ getTotalExpenses() }}€</v-card-subtitle
+          >
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="6">
+        <expense-add :share-id="share.id"></expense-add>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col v-for="user in share.users" :key="user.id" cols="6">
+        <v-card outlined tile>
+          <v-card-title
+            >{{ user.name }}
+            <span v-if="owned(user.name)"> (vous)</span>
+          </v-card-title>
 
-      <div class="md-layout">
-        <div class="md-layout-item md-size-50">
-          <v-field>
-            <label>Montant de la dépense</label>
-            <v-input v-model="newExpense.amount"></v-input>
-            <md-icon>euro_symbol</md-icon>
-          </v-field>
-          <md-datepicker v-model="newExpense.date">
-            <label>Date de la dépense</label>
-          </md-datepicker>
-        </div>
-        <div class="md-layout-item md-size-50">
-          <md-card>
-            <md-card-header>
-              <span class="md-title">Ajouter une dépense</span>
-            </md-card-header>
-            <md-card-content>
-              <div class="md-layout">
-                <div class="md-layout-item md-size-75">
-                  <md-field>
-                    <label>Nom de la dépense</label>
-                    <md-input v-model="newExpense.name"></md-input>
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-size-25">
-                  <md-field>
-                    <label>Montant</label>
-                    <span class="md-prefix">€</span>
-                    <md-input v-model="newExpense.amount"></md-input>
-                  </md-field>
-                </div>
-              </div>
-              
-            </md-card-content>
-            <md-card-action>
-              <md-button class="md-primary md-raised">Ajouter</md-button>
-            </md-card-action>
-          </md-card>
-        </div>
-      </div>
-    </div>
-    <div class="md-layout">
-      <md-card
-        v-for="user in share.users"
-        :key="user.id"
-        class="md-layout-item"
-      >
-        <md-card-header>
-          <span class="md-title">{{ user.name }}</span>
-          <span v-if="owned(user.name)"> (vous)</span>
-        </md-card-header>
+          <v-card-text>
+            <v-list>
+              <v-list-item v-for="expense in user.expenses" :key="expense.id">
+                <v-list-item-content>
+                  <v-list-item-title>{{ expense.name }}</v-list-item-title>
+                  <v-list-item-subtitle
+                    >{{ expense.amount }}€ ({{
+                      expense.date | $moment("DD/MM/YYYY")
+                    }})</v-list-item-subtitle
+                  >
+                </v-list-item-content>
+                <v-list-item-icon>
+                  <v-icon>chat_bubble</v-icon>
+                </v-list-item-icon>
+              </v-list-item>
+            </v-list>
+          </v-card-text>
 
-        <md-card-content>
-          <md-list>
-            <md-list-item v-for="expense in user.expenses" :key="expense.id">
-              <md-icon class="md-accent">credit_card</md-icon>
-              <div class="md-list-item-text">
-                <span>{{ expense.name }}</span>
-                <span>01/04/2020</span>
-              </div>
-              <div class="md-list-item-text">{{ expense.amount }}€</div>
-            </md-list-item>
-          </md-list>
-        </md-card-content>
-
-        <md-card-actions> </md-card-actions>
-      </md-card>
-    </div>
+          <v-card-actions> </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-dialog v-model="confirmDeleteDialog" width="500">
+      <v-card>
+        <v-card-title>Suppression</v-card-title>
+        <v-card-text>Souhaitez vous vraiment supprimer le partage ? Il sera impossible de revenir en arrière</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red" @click="deleteShare">Supprimer</v-btn>
+          <v-btn @click="confirmDeleteDialog = false">Annuler</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import Loading from "@/components/Loading.vue";
+import ExpenseAdd from "@/components/ExpenseAdd.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 
 export default {
   name: "Share",
-  components: { Loading },
+  components: { Loading, ExpenseAdd },
   data: () => ({
     loading: true,
+    mine: false,
     share: {},
     newExpense: {
       amount: null,
       name: null,
-      date: null
-    }
+      date: null,
+    },
+    confirmDeleteDialog: false
   }),
   computed: {
-    ...mapState("context", ["profile"])
+    ...mapState("context", ["profile"]),
   },
   created() {
     this.loading = true;
     var id = this.$route.params.id;
-    axios.get("/api/shares/" + id).then(r => {
+    axios.get("/api/shares/" + id).then((r) => {
       this.share = r.data;
+      this.mine = this.profile.id === r.data.ownerId.toString();
       this.loading = false;
     });
+    
   },
   methods: {
+    deleteShare() {
+      this.loading = true;
+      var id = this.$route.params.id;
+      axios.delete("/api/shares/" + id).then(() =>{
+        this.$router.push('/shares');
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
     getTotalExpenses() {
       const sum = (a, b) => a + b;
       return this.share.users
-        .map(u => u.expenses.map(e => e.amount).reduce(sum, 0))
+        .map((u) => u.expenses.map((e) => e.amount).reduce(sum, 0))
         .reduce(sum, 0);
     },
     owned(name) {
       return name === this.profile.name;
-    }
-  }
+    },
+  },
 };
 </script>

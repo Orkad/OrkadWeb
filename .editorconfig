@@ -2,3 +2,6 @@
 
 # IDE0037: Utiliser un nom de membre déduit
 dotnet_style_prefer_inferred_tuple_names = false:none
+
+# IDE0063: Utiliser une instruction 'using' simple
+csharp_prefer_simple_using_statement = true:silent

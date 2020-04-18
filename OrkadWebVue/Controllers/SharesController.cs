@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrkadWeb.Services;
+using OrkadWeb.Services.DTO.Expenses;
+using OrkadWeb.Services.DTO.Shares;
 using System.Security.Claims;
 
 namespace OrkadWebVue.Controllers
@@ -21,15 +23,24 @@ namespace OrkadWebVue.Controllers
             => int.TryParse((User.Identity as ClaimsIdentity)?.FindFirst(ClaimTypes.PrimarySid)?.Value, out int id) ? id : 0;
 
         [HttpGet]
-        public dynamic Get()
-        {
-            return shareService.GetSharesForUser(ConnectedUserId);
-        }
+        public dynamic Get() => shareService.GetSharesForUser(ConnectedUserId);
 
-        [HttpGet("{id}")]
-        public dynamic Get(int id)
-        {
-            return shareService.GetShareDetail(id);
-        }
+        [HttpGet("{shareId}")]
+        public dynamic Get(int shareId) => shareService.GetShareDetail(shareId);
+
+        [HttpPost]
+        public dynamic Create([FromBody] ShareCreation shareCreation) => shareService.CreateShareForUser(ConnectedUserId, shareCreation);
+
+        [HttpPost("{shareId}/expenses")]
+        public dynamic AddExpense(int shareId, [FromBody] ExpenseCreation expense)
+            => shareService.AddExpense(ConnectedUserId, shareId, expense);
+
+        [HttpDelete("{shareId}")]
+        public void Delete(int shareId)
+            => shareService.DeleteShare(ConnectedUserId, shareId);
+
+        [HttpDelete("{shareId}/expenses/{expenseId}")]
+        public void DeleteExpense(int shareId, int expenseId)
+            => shareService.DeleteExpense(ConnectedUserId, shareId, expenseId);
     }
 }

@@ -1,6 +1,5 @@
 ﻿<template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
     <Loading v-if="loading" :spin="true" />
     <ul v-else class="collection">
       <li
@@ -9,24 +8,23 @@
         class="collection-item"
       >{{ item.date }} / {{ item.temperatureC }}C° / {{ item.temperatureF}}F° / {{ item.summary }}</li>
     </ul>
+    <span>Temperature : {{temperature}}C°</span>
   </div>
 </template>
 
 <script>
 import WeatherForecastApi from "@/services/api/WeatherForecastApi";
 import Loading from "./Loading";
+import Axios from 'axios';
+
 export default {
   name: "HelloWorld",
   components: { Loading },
-  props: {
-    msg: String
-  },
-  data() {
-    return {
-      loading: true,
-      items: []
-    };
-  },
+  data: () => ({
+    temperature: null,
+    loading: true,
+    items: []
+  }),
   created() {
     WeatherForecastApi.get()
       .then(d => {
@@ -35,6 +33,8 @@ export default {
       .finally(() => {
         this.loading = false;
       });
+    Axios.get('api/supervision/cpu/temp')
+    .then((res) => this.temperature = res.data);
   }
 };
 </script>

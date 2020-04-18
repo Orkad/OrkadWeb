@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace OrkadWeb.Services.DTO.Expenses
 {
-    public class ExpenseItem : Ownable
+    public class ExpenseCreation
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
