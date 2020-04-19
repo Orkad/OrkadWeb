@@ -23,27 +23,27 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="user in share.users" :key="user.id" cols="6">
+      <v-col v-for="user in share.users" :key="user.id" cols="4">
         <v-card outlined tile>
           <v-card-title
             >{{ user.name }}
-            <span v-if="owned(user.name)"> (vous)</span>
+            <span v-if="owned(user.id)"> (vous)</span>
           </v-card-title>
 
           <v-card-text>
-            <v-list>
+            <v-list dense>
               <v-list-item v-for="expense in user.expenses" :key="expense.id">
                 <v-list-item-content>
                   <v-list-item-title>{{ expense.name }}</v-list-item-title>
-                  <v-list-item-subtitle
-                    >{{ expense.amount }}€ ({{
-                      expense.date | $moment("DD/MM/YYYY")
-                    }})</v-list-item-subtitle
+                  <v-list-item-subtitle>
+                    {{
+                      expense.date | moment("DD/MM/YYYY")
+                    }}</v-list-item-subtitle
                   >
                 </v-list-item-content>
-                <v-list-item-icon>
-                  <v-icon>chat_bubble</v-icon>
-                </v-list-item-icon>
+                <v-list-item-content class="align-end"
+                  ><p class="text-right">{{ expense.amount }}€</p></v-list-item-content
+                >
               </v-list-item>
             </v-list>
           </v-card-text>
@@ -55,7 +55,10 @@
     <v-dialog v-model="confirmDeleteDialog" width="500">
       <v-card>
         <v-card-title>Suppression</v-card-title>
-        <v-card-text>Souhaitez vous vraiment supprimer le partage ? Il sera impossible de revenir en arrière</v-card-text>
+        <v-card-text
+          >Souhaitez vous vraiment supprimer le partage ? Il sera impossible de
+          revenir en arrière</v-card-text
+        >
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" @click="deleteShare">Supprimer</v-btn>
@@ -84,7 +87,7 @@ export default {
       name: null,
       date: null,
     },
-    confirmDeleteDialog: false
+    confirmDeleteDialog: false,
   }),
   computed: {
     ...mapState("context", ["profile"]),
@@ -97,17 +100,19 @@ export default {
       this.mine = this.profile.id === r.data.ownerId.toString();
       this.loading = false;
     });
-    
   },
   methods: {
     deleteShare() {
       this.loading = true;
       var id = this.$route.params.id;
-      axios.delete("/api/shares/" + id).then(() =>{
-        this.$router.push('/shares');
-      }).finally(() => {
-        this.loading = false;
-      });
+      axios
+        .delete("/api/shares/" + id)
+        .then(() => {
+          this.$router.push("/shares");
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     getTotalExpenses() {
       const sum = (a, b) => a + b;
@@ -115,8 +120,8 @@ export default {
         .map((u) => u.expenses.map((e) => e.amount).reduce(sum, 0))
         .reduce(sum, 0);
     },
-    owned(name) {
-      return name === this.profile.name;
+    owned(id) {
+      return id === this.profile.id;
     },
   },
 };

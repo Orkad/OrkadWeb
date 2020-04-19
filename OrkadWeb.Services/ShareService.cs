@@ -110,7 +110,7 @@ namespace OrkadWeb.Services
         public ExpenseItem AddExpense(int userId, int shareId, ExpenseCreation expenseCreation)
         {
             var userShare = GetUserShare(userId, shareId);
-            var expense = expenseCreation.ToEntity(userShare);
+            var expense = expenseCreation.ToEntity(userShare, DateTime.Now);
             dataService.Insert(expense);
             return expense.ToItem();
         }

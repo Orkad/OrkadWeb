@@ -1,4 +1,5 @@
 ﻿using OrkadWeb.Models;
+using System;
 
 namespace OrkadWeb.Services.DTO.Expenses
 {
@@ -13,12 +14,12 @@ namespace OrkadWeb.Services.DTO.Expenses
                 Date = expense.Date,
             };
 
-        public static Expense ToEntity(this ExpenseCreation creation, UserShare userShare)
+        public static Expense ToEntity(this ExpenseCreation creation, UserShare userShare, DateTime creationDate)
             => new Expense
             {
                 Name = creation.Name,
                 Amount = creation.Amount,
-                Date  = creation.Date,
+                Date  = creationDate,
                 UserShare = userShare,
             };
     }
