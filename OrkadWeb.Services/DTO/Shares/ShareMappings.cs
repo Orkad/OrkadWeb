@@ -1,6 +1,7 @@
 ﻿using OrkadWeb.Models;
 using System.Linq;
 using OrkadWeb.Services.DTO.Expenses;
+using OrkadWeb.Services.DTO.Common;
 
 namespace OrkadWeb.Services.DTO.Shares
 {
@@ -13,7 +14,7 @@ namespace OrkadWeb.Services.DTO.Shares
 
         public static UserShareDetail ToDetail(this UserShare userShare) => new UserShareDetail
         {
-            Id = userShare.Id,
+            Id = userShare.User.Id,
             Name = userShare.User.Username,
             Expenses = userShare.Expenses.Select(e => e.ToItem()).ToList()
         };
@@ -31,7 +32,5 @@ namespace OrkadWeb.Services.DTO.Shares
             Name = share.Name,
             AttendeeCount = share.UserShares.Count
         };
-
-        
     }
 }

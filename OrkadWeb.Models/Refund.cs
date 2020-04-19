@@ -34,6 +34,7 @@ namespace OrkadWeb.Models
         {
             Table("refund");
             Id(x => x.Id, "id");
+            Map(x => x.Amount, "amount");
             References(x => x.Emitter, "user_share_emitter_id");
             References(x => x.Receiver, "user_share_receiver_id");
         }

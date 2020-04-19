@@ -37,8 +37,17 @@ namespace OrkadWeb.Services
         /// <typeparam name="T">type de l'entité</typeparam>
         public IQueryable<T> Query<T>() => session.Query<T>();
 
-        public void Insert<T>(T obj) => session.Save(obj);
-        public void Update<T>(T obj) => session.Update(obj);
+        public void Insert<T>(T obj)
+        {
+            session.Save(obj);
+            session.Flush();
+        }
+
+        public void Update<T>(T obj)
+        {
+            session.Update(obj);
+            session.Flush();
+        }
 
         /// <summary>
         /// Supprime une entité existante

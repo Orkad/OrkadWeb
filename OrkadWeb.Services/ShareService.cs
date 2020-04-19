@@ -1,6 +1,9 @@
 ﻿using OrkadWeb.Models;
+using OrkadWeb.Services.DTO.Common;
 using OrkadWeb.Services.DTO.Expenses;
+using OrkadWeb.Services.DTO.Refunds;
 using OrkadWeb.Services.DTO.Shares;
+using OrkadWeb.Services.DTO.Users;
 using OrkadWeb.Services.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -27,6 +30,43 @@ namespace OrkadWeb.Services
                 .Where(us => us.User.Id == userId).Select(us => us.Share);
             var result = query.Select(ShareItem.BuildFrom).ToList();
             return result;
+        }
+
+        /// <summary>
+        /// Récupére les autres utilisateur du partage que celui passé en paramètre
+        /// </summary>
+        /// <param name="userId">identifiant unique de l'utilisateur</param>
+        /// <param name="shareId">identifiant unique du partage</param>
+        public List<TextValue> GetOtherUsers(int userId, int shareId)
+        {
+            var userShare = GetUserShare(userId, shareId);
+            var query = userShare.Share.UserShares
+                .Select(us => us.User)
+                .Where(u => u.Id != userId)
+                .Select(u => u.ToTextValue());
+            var result = query.ToList();
+            return result;
+        }
+
+        /// <summary>
+        /// Ajoute un remboursement pour l'utilisateur sur le partage renseigné
+        /// </summary>
+        /// <param name="userId">identifiant de l'utilisateur effectuant le remboursement</param>
+        /// <param name="shareId">identifiant du partage concerné</param>
+        /// <param name="refundCreation">données liés au remboursement</param>
+        /// <returns></returns>
+        public RefundItem AddRefund(int userId, int shareId, RefundCreation refundCreation)
+        {
+            var emmiterUserShare = GetUserShare(userId, shareId);
+            var receiverUserShare = GetUserShare(refundCreation.Receiver, shareId);
+            var refund = new Refund
+            {
+                Amount = refundCreation.Amount,
+                Emitter = emmiterUserShare,
+                Receiver = receiverUserShare,
+            };
+            dataService.Insert(refund);
+            return refund.ToItem();
         }
 
         /// <summary>
@@ -99,6 +139,8 @@ namespace OrkadWeb.Services
             {
                 throw new BusinessException($"La dépense n°{expenseId} est introuvable sur le partage {userShare.Share.Name}");
             }
+            userShare.Expenses.Remove(expense);
+            dataService.Delete(expense);
         }
 
         /// <summary>

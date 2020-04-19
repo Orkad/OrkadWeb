@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrkadWeb.Services;
+using OrkadWeb.Services.DTO.Common;
 using OrkadWeb.Services.DTO.Expenses;
+using OrkadWeb.Services.DTO.Refunds;
 using OrkadWeb.Services.DTO.Shares;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace OrkadWebVue.Controllers
@@ -28,12 +31,20 @@ namespace OrkadWebVue.Controllers
         [HttpGet("{shareId}")]
         public dynamic Get(int shareId) => shareService.GetShareDetail(shareId);
 
+        [HttpGet("{shareId}/others")]
+        public List<TextValue> GetOtherUsers(int shareId)
+            => shareService.GetOtherUsers(ConnectedUserId, shareId);
+
         [HttpPost]
         public dynamic Create([FromBody] ShareCreation shareCreation) => shareService.CreateShareForUser(ConnectedUserId, shareCreation);
 
         [HttpPost("{shareId}/expenses")]
         public dynamic AddExpense(int shareId, [FromBody] ExpenseCreation expense)
             => shareService.AddExpense(ConnectedUserId, shareId, expense);
+
+        [HttpPost("{shareId}/refunds")]
+        public RefundItem AddRefund(int shareId, [FromBody] RefundCreation refund)
+            => shareService.AddRefund(ConnectedUserId, shareId, refund);
 
         [HttpDelete("{shareId}")]
         public void Delete(int shareId)

@@ -22,12 +22,9 @@
       </v-container>
     </v-content>
 
-    <v-footer app>
-    </v-footer>
+    <v-footer app> </v-footer>
   </v-app>
-  <app-login v-else>
-
-  </app-login>
+  <app-login v-else> </app-login>
 </template>
 
 <script>
@@ -56,7 +53,13 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.container {
   max-width: 960px;
+}
+</style>
+
+<style>
+.right-input input {
+  text-align: right;
 }
 </style>
