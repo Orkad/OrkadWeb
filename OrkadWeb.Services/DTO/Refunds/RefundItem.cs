@@ -28,5 +28,10 @@ namespace OrkadWeb.Services.DTO.Refunds
         /// montant du remboursement
         /// </summary>
         public decimal Amount { get; set; }
+
+        /// <summary>
+        /// Date du remboursement
+        /// </summary>
+        public DateTime Date { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OrkadWeb.Services.DTO.Expenses;
+using OrkadWeb.Services.DTO.Operations;
 using System.Collections.Generic;
 
 namespace OrkadWeb.Services.DTO.Shares
@@ -19,5 +20,10 @@ namespace OrkadWeb.Services.DTO.Shares
         /// Dépense de l'utilisateur sur le partage
         /// </summary>
         public List<ExpenseItem> Expenses { get; set; } = new List<ExpenseItem>();
+
+        /// <summary>
+        /// Liste des opérations (dépenses, remboursements émits et reçus)
+        /// </summary>
+        public List<OperationItem> Operations { get; set; } = new List<OperationItem>();
     }
 }

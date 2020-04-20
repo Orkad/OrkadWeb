@@ -2,6 +2,7 @@
 using System.Linq;
 using OrkadWeb.Services.DTO.Expenses;
 using OrkadWeb.Services.DTO.Common;
+using OrkadWeb.Services.DTO.Operations;
 
 namespace OrkadWeb.Services.DTO.Shares
 {
@@ -16,7 +17,9 @@ namespace OrkadWeb.Services.DTO.Shares
         {
             Id = userShare.User.Id,
             Name = userShare.User.Username,
-            Expenses = userShare.Expenses.Select(e => e.ToItem()).ToList()
+            Expenses = userShare.Expenses.Select(e => e.ToItem()).ToList(),
+            Operations = userShare.EmittedRefunds.Select(e => e.ToOperationItem(true)).AsEnumerable()
+            .Union(userShare.ReceivedRefunds.Select(e => e.ToOperationItem(false)).AsEnumerable()).ToList()
         };
 
         public static ShareDetail ToDetail(this Share share) => new ShareDetail

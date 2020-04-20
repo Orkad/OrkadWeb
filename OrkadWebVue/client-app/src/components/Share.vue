@@ -2,7 +2,7 @@
   <loading v-if="loading" spin />
   <div v-else>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="4">
         <v-card outlined tile>
           <v-card-title>
             Partage : {{ share.name }}
@@ -16,59 +16,41 @@
           >
         </v-card>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="6">
+      <v-col cols="4">
         <expense-add
           :share-id="share.id"
           @expense-created="addExpenseItem"
         ></expense-add>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="4">
         <refund-add
           :share-id="share.id"
           @refund-created="addRefundItem"
         ></refund-add>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row align="top" justify="center">
       <v-col v-for="user in share.users" :key="user.id" cols="4">
         <v-card outlined tile>
           <v-card-title
             >{{ user.name }}
             <span v-if="owned(user.id)"> (vous)</span>
+            <v-spacer></v-spacer>
+            <v-chip class="ma-2" color="red">
+              -20.30€
+            </v-chip>
           </v-card-title>
-
-          <v-card-text>
-            <v-list dense>
-              <v-list-item v-for="expense in user.expenses" :key="expense.id">
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ expense.name }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    {{
-                      expense.date | moment("DD/MM/YYYY")
-                    }}</v-list-item-subtitle
-                  >
-                </v-list-item-content>
-
-                {{ expense.amount }}€
-                <v-list-item-action v-if="owned(user.id)">
-                  <v-btn x-small icon>
-                    <v-icon
-                      color="red"
-                      @click="deleteExpenseConfirm(expense.id, expense.name)"
-                      >mdi-delete</v-icon
-                    >
-                  </v-btn>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
-
-          <v-card-actions> </v-card-actions>
         </v-card>
+        <refund-list
+          :share-id="share.id"
+          :user-id="user.id"
+          :operations="user.operations"
+        ></refund-list>
+        <expense-list 
+        :share-id="share.id" 
+        :user-id="user.id"
+        :expenses="user.expenses"
+         @deleted="removeExpense(user, $event)"> </expense-list>
       </v-col>
     </v-row>
     <confirm-dialog
@@ -95,13 +77,22 @@
 import Loading from "@/components/Loading.vue";
 import ConfirmDialog from "@/components/shared/ConfirmDialog.vue";
 import ExpenseAdd from "@/components/ExpenseAdd.vue";
+import ExpenseList from "@/components/ExpenseList.vue";
 import RefundAdd from "@/components/RefundAdd.vue";
+import RefundList from "@/components/RefundList.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 
 export default {
   name: "Share",
-  components: { Loading, ExpenseAdd, RefundAdd, ConfirmDialog },
+  components: {
+    Loading,
+    ExpenseAdd,
+    ExpenseList,
+    RefundAdd,
+    ConfirmDialog,
+    RefundList,
+  },
   data: () => ({
     loading: true,
     mine: false,
@@ -126,9 +117,6 @@ export default {
       this.loading = false;
     });
   },
-  mounted() {
-    this.$on("expense-deleted", this.deleteExpenseItem);
-  },
   methods: {
     deleteShareConfirm() {
       this.$refs.deleteShareConfirmDialog.show();
@@ -147,37 +135,35 @@ export default {
         user.expenses.unshift(expenseItem);
       }
     },
-    deleteExpenseItem(expenseId) {
-      var user = this.share?.users?.filter(
-        (u) => u.id.toString() == this.profile.id
-      )[0];
-      if (user) {
-        var expenseIndex = user.expenses.findIndex((e) => e.id === expenseId);
-        if (expenseIndex !== -1) {
-          user.expenses.splice(expenseIndex, 1);
-        }
+    // enlève la dépense du tableau
+    removeExpense(user, expenseId) {
+      var expenseIndex = user.expenses.findIndex((e) => e.id === expenseId);
+      if (expenseIndex !== -1) {
+        user.expenses.splice(expenseIndex, 1);
       }
     },
-    deleteExpenseConfirm(id, display) {
-      this.confirm.title = "Suppression de la dépense";
-      this.confirm.message =
-        "Souhaitez vous vraiment supprimer la dépense " + display + " ?";
-      this.confirm.confirmText = "Supprimer";
-      this.confirm.cancelText = "Annuler";
-      this.confirm.action = () => this.deleteExpense(id);
-      this.$refs.confirm.show();
-    },
-    deleteExpense(id) {
-      var shareId = this.$route.params.id;
-      axios.delete("/api/shares/" + shareId + "/expenses/" + id).then(() => {
-        this.$emit("expense-deleted", id);
-      });
+    // enlève le remboursement de plusieurs tableaux
+    removeRefund(user, receiverId, refundId){
+      var emitterIndex = user.refunds.findIndex((r) => r.id === refundId);
+      if (emitterIndex !== -1) {
+        user.refunds.splice(emitterIndex, 1);
+      }
+      var receiver = this.share?.users?.filter(
+        (u) => u.id === receiverId
+      )[0];
+      var receiverIndex = receiver.refunds.findIndex((r) => r.id === refundId);
+      if (receiverIndex !== -1){
+        user.refunds.splice(receiverIndex, 1);
+      }
     },
     getTotalExpenses() {
       const sum = (a, b) => a + b;
       return this.share.users
         .map((u) => u.expenses.map((e) => e.amount).reduce(sum, 0))
         .reduce(sum, 0);
+    },
+    getUserTotal(){
+
     },
     addRefundItem(refundItem) {
       console.log(refundItem);
