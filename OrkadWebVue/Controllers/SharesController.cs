@@ -53,5 +53,9 @@ namespace OrkadWebVue.Controllers
         [HttpDelete("{shareId}/expenses/{expenseId}")]
         public void DeleteExpense(int shareId, int expenseId)
             => shareService.DeleteExpense(ConnectedUserId, shareId, expenseId);
+
+        [HttpDelete("{shareId}/refunds/{refundId}")]
+        public void DeleteRefund(int shareId, int refundId)
+            => shareService.DeleteRefund(ConnectedUserId, shareId, refundId);
     }
 }

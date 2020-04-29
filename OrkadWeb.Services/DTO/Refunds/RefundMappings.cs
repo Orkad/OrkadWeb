@@ -8,8 +8,11 @@ namespace OrkadWeb.Services.DTO.Refunds
         {
             Id = refund.Id,
             Amount = refund.Amount,
-            EmitterId = refund.Emitter.Id,
-            ReceiverId = refund.Receiver.Id
+            EmitterId = refund.Emitter.User.Id,
+            EmitterName = refund.Emitter.User.Username,
+            ReceiverId = refund.Receiver.User.Id,
+            ReceiverName = refund.Receiver.User.Username,
+            Date = refund.Date,
         };
     }
 }

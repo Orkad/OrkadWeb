@@ -20,9 +20,19 @@ namespace OrkadWeb.Services.DTO.Refunds
         public int EmitterId { get; set; }
 
         /// <summary>
+        /// Nom d'affichage de l'emetteur
+        /// </summary>
+        public string EmitterName { get; set; }
+
+        /// <summary>
         /// identifiant du destinataire du remboursement
         /// </summary>
         public int ReceiverId { get; set; }
+
+        /// <summary>
+        /// nom d'affichage du receveur
+        /// </summary>
+        public string ReceiverName { get; set; }
 
         /// <summary>
         /// montant du remboursement

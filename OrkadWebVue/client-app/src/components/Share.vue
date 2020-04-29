@@ -23,10 +23,7 @@
         ></expense-add>
       </v-col>
       <v-col cols="4">
-        <refund-add
-          :share-id="share.id"
-          @refund-created="addRefundItem"
-        ></refund-add>
+        <refund-add :share-id="share.id" @created="addRefund"></refund-add>
       </v-col>
     </v-row>
     <v-row align="top" justify="center">
@@ -36,21 +33,24 @@
             >{{ user.name }}
             <span v-if="owned(user.id)"> (vous)</span>
             <v-spacer></v-spacer>
-            <v-chip class="ma-2" color="red">
-              -20.30€
+            <v-chip class="ma-2" :color="getUserBalanceColor(user.id)">
+              {{ getUserBalance(user.id) }}€
             </v-chip>
           </v-card-title>
         </v-card>
         <refund-list
           :share-id="share.id"
           :user-id="user.id"
-          :operations="user.operations"
+          :refunds="user.refunds"
+          @deleted="removeRefund"
         ></refund-list>
-        <expense-list 
-        :share-id="share.id" 
-        :user-id="user.id"
-        :expenses="user.expenses"
-         @deleted="removeExpense(user, $event)"> </expense-list>
+        <expense-list
+          :share-id="share.id"
+          :user-id="user.id"
+          :expenses="user.expenses"
+          @deleted="removeExpense(user, $event)"
+        >
+        </expense-list>
       </v-col>
     </v-row>
     <confirm-dialog
@@ -107,6 +107,7 @@ export default {
   }),
   computed: {
     ...mapState("context", ["profile"]),
+
   },
   created() {
     this.loading = true;
@@ -128,9 +129,7 @@ export default {
       });
     },
     addExpenseItem(expenseItem) {
-      var user = this.share?.users?.filter(
-        (u) => u.id.toString() == this.profile.id
-      )[0];
+      var user = this.getLoggedUser();
       if (user) {
         user.expenses.unshift(expenseItem);
       }
@@ -143,17 +142,20 @@ export default {
       }
     },
     // enlève le remboursement de plusieurs tableaux
-    removeRefund(user, receiverId, refundId){
-      var emitterIndex = user.refunds.findIndex((r) => r.id === refundId);
-      if (emitterIndex !== -1) {
-        user.refunds.splice(emitterIndex, 1);
+    removeRefund(refund) {
+      var user = this.getLoggedUser();
+      if (user) {
+        let index = user.refunds.findIndex((r) => r.id === refund.id);
+        if (index !== -1) {
+          user.refunds.splice(index, 1);
+        }
       }
-      var receiver = this.share?.users?.filter(
-        (u) => u.id === receiverId
-      )[0];
-      var receiverIndex = receiver.refunds.findIndex((r) => r.id === refundId);
-      if (receiverIndex !== -1){
-        user.refunds.splice(receiverIndex, 1);
+      var otherUser = this.getUser(refund.receiverId);
+      if (otherUser) {
+        let index = otherUser.refunds.findIndex((r) => r.id === refund.id);
+        if (index !== -1) {
+          otherUser.refunds.splice(index, 1);
+        }
       }
     },
     getTotalExpenses() {
@@ -162,11 +164,46 @@ export default {
         .map((u) => u.expenses.map((e) => e.amount).reduce(sum, 0))
         .reduce(sum, 0);
     },
-    getUserTotal(){
-
+    /** Récupère la moyenne des dépenses du partage*/
+    getAverageExpenses() {
+      return this.getTotalExpenses() / this.share.users.length;
     },
-    addRefundItem(refundItem) {
-      console.log(refundItem);
+    /** Récupère le total des opérations d'un utilisateur (dépenses et remboursements) */
+    getUserTotalOperations(userId) {
+      const sum = (a, b) => a + b;
+      var user = this.getUser(userId);
+      var totalExpenses = user.expenses.map((e) => e.amount).reduce(sum, 0);
+      var totalEmittedRefund = user.refunds.filter((r) => r.emitterId === userId).map((e) => e.amount).reduce(sum, 0);
+      var totalReceivedRefund = user.refunds.filter((r) => r.receiverId === userId).map((e) => e.amount).reduce(sum, 0);
+      return totalExpenses + totalEmittedRefund - totalReceivedRefund;
+    },
+    getUserBalance(userId) {
+      return this.getUserTotalOperations(userId) - this.getAverageExpenses();
+    },
+    getUserBalanceColor(userId) {
+      var balance = this.getUserBalance(userId);
+      if (Math.abs(balance) < 10){
+        return "yellow";
+      }
+      if (balance > 0){
+        return "green";
+      }
+      return "red";
+    },
+    getLoggedUser() {
+      var userId = parseInt(this.profile.id);
+      return this.getUser(userId);
+    },
+    // récupère l'utilisateur dans le tableau
+    getUser(userId) {
+      return this.share?.users?.filter((u) => u.id === userId)[0];
+    },
+    // ajoute un remboursement à la liste existante
+    addRefund(refund) {
+      var user = this.getLoggedUser();
+      user.refunds.unshift(refund);
+      var otherUser = this.getUser(refund.receiverId);
+      otherUser.refunds.unshift(refund);
     },
     owned(id) {
       return id.toString() === this.profile.id;

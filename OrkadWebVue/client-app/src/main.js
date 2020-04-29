@@ -11,6 +11,10 @@ import "material-design-icons-iconfont/dist/material-design-icons.css";
 import VueMoment from "vue-moment";
 Vue.use(VueMoment);
 
+// lodash lib
+import _ from 'lodash'
+Vue.prototype._ = _
+
 Vue.config.productionTip = false;
 
 new Vue({

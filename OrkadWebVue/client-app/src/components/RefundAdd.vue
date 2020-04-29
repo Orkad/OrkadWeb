@@ -76,7 +76,7 @@ export default {
       axios
         .post("api/shares/" + this.shareId + "/refunds", this.form)
         .then((r) => {
-          this.$emit("refund-created", r.data);
+          this.$emit("created", r.data);
         })
         .finally(() => {
           this.loading = false;

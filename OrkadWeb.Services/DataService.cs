@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OrkadWeb.Services
 {
-    public class DataService : IDataService
+    public class DataService : IDataService, IDisposable
     {
         private readonly ISession session;
 
@@ -39,14 +39,14 @@ namespace OrkadWeb.Services
 
         public void Insert<T>(T obj)
         {
+            CreateTransactionIfNotExists();
             session.Save(obj);
-            session.Flush();
         }
 
         public void Update<T>(T obj)
         {
+            CreateTransactionIfNotExists();
             session.Update(obj);
-            session.Flush();
         }
 
         /// <summary>
@@ -56,8 +56,27 @@ namespace OrkadWeb.Services
         /// <param name="obj">instance de l'entité a supprimer</param>
         public void Delete<T>(T obj) 
         {
+            CreateTransactionIfNotExists();
             session.Delete(obj);
-            session.Flush();
-        } 
+        }
+
+        /// <summary>
+        /// Créé une transaction si aucun n'est existante
+        /// </summary>
+        private void CreateTransactionIfNotExists()
+        {
+            if (!session.Transaction.IsActive)
+            {
+                session.BeginTransaction();
+            }
+        }
+
+        public void Dispose()
+        {
+            if (session.Transaction.IsActive)
+            {
+                session.Transaction.Commit();
+            }
+        }
     }
 }

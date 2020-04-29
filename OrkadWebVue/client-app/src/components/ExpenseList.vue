@@ -16,8 +16,8 @@
           </v-list-item-content>
           {{ expense.amount }}€
           <v-list-item-action v-if="mine">
-            <v-btn x-small icon>
-              <v-icon color="red" @click="deleteExpenseConfirm(expense)"
+            <v-btn x-small icon @click="deleteExpenseConfirm(expense)">
+              <v-icon color="red"
                 >mdi-delete</v-icon
               >
             </v-btn>

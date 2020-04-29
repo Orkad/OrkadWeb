@@ -1,5 +1,6 @@
 ﻿using OrkadWeb.Services.DTO.Expenses;
 using OrkadWeb.Services.DTO.Operations;
+using OrkadWeb.Services.DTO.Refunds;
 using System.Collections.Generic;
 
 namespace OrkadWeb.Services.DTO.Shares
@@ -24,6 +25,6 @@ namespace OrkadWeb.Services.DTO.Shares
         /// <summary>
         /// Liste des opérations (dépenses, remboursements émits et reçus)
         /// </summary>
-        public List<OperationItem> Operations { get; set; } = new List<OperationItem>();
+        public List<RefundItem> Refunds { get; set; } = new List<RefundItem>();
     }
 }

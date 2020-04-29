@@ -64,9 +64,27 @@ namespace OrkadWeb.Services
                 Amount = refundCreation.Amount,
                 Emitter = emmiterUserShare,
                 Receiver = receiverUserShare,
+                Date = DateTime.Now,
             };
             dataService.Insert(refund);
             return refund.ToItem();
+        }
+
+        /// <summary>
+        /// Supprime un remboursement
+        /// </summary>
+        /// <param name="userId">l'utilisateur emetteur du remboursement</param>
+        /// <param name="shareId">partage associé</param>
+        /// <param name="refundId">remboursement a supprimer</param>
+        public void DeleteRefund(int userId, int shareId, int refundId)
+        {
+            var emmiterUserShare = GetUserShare(userId, shareId);
+            var refundToDelete = emmiterUserShare.EmittedRefunds.SingleOrDefault(er => er.Id == refundId);
+            if (refundToDelete == null)
+            {
+                throw new BusinessException("Le remboursement que vous souhaitez supprimer est introuvable");
+            }
+            dataService.Delete(refundToDelete);
         }
 
         /// <summary>
