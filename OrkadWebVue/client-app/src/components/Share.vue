@@ -81,6 +81,7 @@ import ExpenseList from "@/components/ExpenseList.vue";
 import RefundAdd from "@/components/RefundAdd.vue";
 import RefundList from "@/components/RefundList.vue";
 import axios from "axios";
+import _ from "lodash";
 import { mapState } from "vuex";
 
 export default {
@@ -166,7 +167,7 @@ export default {
     },
     /** Récupère la moyenne des dépenses du partage*/
     getAverageExpenses() {
-      return this.getTotalExpenses() / this.share.users.length;
+      return _.round(this.getTotalExpenses() / this.share.users.length, 2);
     },
     /** Récupère le total des opérations d'un utilisateur (dépenses et remboursements) */
     getUserTotalOperations(userId) {
@@ -175,10 +176,10 @@ export default {
       var totalExpenses = user.expenses.map((e) => e.amount).reduce(sum, 0);
       var totalEmittedRefund = user.refunds.filter((r) => r.emitterId === userId).map((e) => e.amount).reduce(sum, 0);
       var totalReceivedRefund = user.refunds.filter((r) => r.receiverId === userId).map((e) => e.amount).reduce(sum, 0);
-      return totalExpenses + totalEmittedRefund - totalReceivedRefund;
+      return _.round(totalExpenses + totalEmittedRefund - totalReceivedRefund, 2);
     },
     getUserBalance(userId) {
-      return this.getUserTotalOperations(userId) - this.getAverageExpenses();
+      return _.round(this.getUserTotalOperations(userId) - this.getAverageExpenses(), 2);
     },
     getUserBalanceColor(userId) {
       var balance = this.getUserBalance(userId);

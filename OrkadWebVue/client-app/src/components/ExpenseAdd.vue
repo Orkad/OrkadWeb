@@ -15,15 +15,8 @@
             </v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-text-field
-              v-model="form.amount"
-              :rules="form.amountRules"
-              label="Montant"
-              type="text"
-              class="right-input"
-              suffix="€"
-            >
-            </v-text-field>
+            <currency-input v-model="form.amount" :rules="form.amountRules" label="Montant">
+            </currency-input>
           </v-col>
           <v-col cols="1">
             <v-btn
@@ -44,8 +37,11 @@
 
 <script>
 import Axios from "axios";
+import CurrencyInput from "@/components/shared/CurrencyInput.vue";
+
 export default {
   name: "ExpenseAdd",
+  components: {CurrencyInput},
   props: {
     shareId: {
       type: Number,

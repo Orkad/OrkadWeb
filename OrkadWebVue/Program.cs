@@ -16,7 +16,7 @@ namespace OrkadWebVue
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls("http://*:80");
-                    //webBuilder.UseSetting("https_port", "443"); //  Error infinite loading
+                    webBuilder.UseSetting("https_port", "443");
                 });
     }
 }
