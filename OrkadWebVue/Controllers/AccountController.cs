@@ -10,79 +10,50 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrkadWeb.Models;
 using OrkadWeb.Services;
+using OrkadWeb.Services.Authentication;
+using OrkadWebVue.Services;
 
 namespace OrkadWebVue.Controllers
 {
-    public class LoginCredentials
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class AuthenticatedUser
-    {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
-    }
-
     [Route("[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly IDataService dataService;
+        private readonly ILoginService loginService;
 
-        public AccountController(IDataService dataService)
+        public AccountController(IDataService dataService, ILoginService loginService)
         {
             this.dataService = dataService;
+            this.loginService = loginService;
         }
 
         [HttpGet("context")]
-        public dynamic Context()
-        {
-            return new
-            {
-                Id = this.User?.FindFirstValue(ClaimTypes.PrimarySid),
-                Name = this.User?.Identity?.Name,
-                Email = this.User?.FindFirstValue(ClaimTypes.Email),
-                Role = this.User?.FindFirstValue(ClaimTypes.Role),
-            };
-        }
+        public LoginResult Context() => GetAuthenticatedUser();
 
         [HttpPost("login")]
-        public async Task<dynamic> Login([FromBody]LoginCredentials loginCredentials)
+        public async Task<LoginResult> Login([FromBody]LoginCredentials loginCredentials)
         {
-            if (!ValidateLogin(loginCredentials))
+            var result = loginService.Login(loginCredentials);
+            if (result.Success)
             {
-                return new
+                var claims = new List<Claim>
                 {
-                    Error = "La combinaison renseignée est incorrecte, veuillez réésayer"
+                    new Claim(ClaimTypes.PrimarySid, result.Id.ToString()),
+                    new Claim(ClaimTypes.Name, result.Name),
+                    new Claim(ClaimTypes.Email, result.Email),
+                    new Claim(ClaimTypes.Role, result.Role),
                 };
+                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+                var authProperties = new AuthenticationProperties
+                {
+                    AllowRefresh = true,
+                    ExpiresUtc = DateTimeOffset.Now.AddDays(1),
+                    IsPersistent = true,
+                };
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
             }
-            var hash = HashUtils.HashSHA256(loginCredentials.Password);
-            var user = dataService.Query<User>().SingleOrDefault(u => (u.Username == loginCredentials.Username || u.Email == loginCredentials.Username) && u.Password == hash);
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, "User"),
-            };
-            var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
-            var authProperties = new AuthenticationProperties
-            {
-                AllowRefresh = true,
-                ExpiresUtc = DateTimeOffset.Now.AddDays(1),
-                IsPersistent = true,
-            };
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
-            return new
-            {
-                Id = principal.FindFirstValue(ClaimTypes.PrimarySid),
-                Name = principal.Identity.Name,
-                Email = principal.FindFirstValue(ClaimTypes.Email),
-                Role = principal.FindFirstValue(ClaimTypes.Role)
-            };
+            return result;
         }
 
         [HttpPost("logout")]
@@ -90,6 +61,18 @@ namespace OrkadWebVue.Controllers
         public async Task Logout()
         {
             await HttpContext.SignOutAsync();
+        }
+
+        private LoginResult GetAuthenticatedUser()
+        {
+            return new LoginResult
+            {
+                Id = User.FindFirstValue(ClaimTypes.PrimarySid),
+                Name = User.Identity.Name,
+                Email = User.FindFirstValue(ClaimTypes.Email),
+                Role = User.FindFirstValue(ClaimTypes.Role),
+                Error = null,
+            };
         }
 
         private bool ValidateLogin(LoginCredentials creds)

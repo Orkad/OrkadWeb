@@ -10,7 +10,6 @@ namespace OrkadWebVue
 {
     public class Startup
     {
-        const string COOKIE_NAME = "OrkadWebVue.AuthCookie";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
