@@ -44,13 +44,17 @@ export default {
       }
     },
     input() {
-      this.displayValue = this.displayValue.replace(',', '.').replace('€', '');
-      this.computeCurrency();
+      if (this.displayValue) {
+        this.displayValue = this.displayValue
+          .replace(",", ".")
+          .replace("€", "");
+        this.computeCurrency();
+      }
       this.$emit("input", this.currencyValue);
     },
     focusOut() {
       this.computeCurrency();
-      if(this.currencyValue === 0){
+      if (this.currencyValue === 0) {
         this.displayValue = "";
         return;
       }
@@ -60,7 +64,7 @@ export default {
         .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
     },
     focusIn() {
-      if (this.currencyValue === 0){
+      if (this.currencyValue === 0) {
         this.displayValue = "";
         return;
       }

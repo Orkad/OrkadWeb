@@ -1,37 +1,33 @@
 <template>
-  <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="addExpense">
-    <v-card outlined tile>
-      <v-card-title>
-        Ajouter une dépense
-      </v-card-title>
-      <v-card-text>
-        <v-row dense align="center" justify="center">
-          <v-col cols="8">
-            <v-text-field
-              v-model="form.name"
-              :rules="form.nameRules"
-              label="Nom de la dépense"
-            >
-            </v-text-field>
-          </v-col>
-          <v-col cols="3">
-            <currency-input v-model="form.amount" :rules="form.amountRules" label="Montant">
-            </currency-input>
-          </v-col>
-          <v-col cols="1">
-            <v-btn
-              icon
-              color="blue"
-              type="submit"
-              cols="2"
-              :disabled="!valid"
-            >
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
+  <v-form
+    ref="form"
+    v-model="valid"
+    lazy-validation
+    @submit.prevent="addExpense"
+  >
+    <v-row dense align="center" justify="center">
+      <v-col cols="8">
+        <v-text-field
+          v-model="form.name"
+          :rules="form.nameRules"
+          label="Nom de la dépense"
+        >
+        </v-text-field>
+      </v-col>
+      <v-col cols="3">
+        <currency-input
+          v-model="form.amount"
+          :rules="form.amountRules"
+          label="Montant"
+        >
+        </currency-input>
+      </v-col>
+      <v-col cols="1">
+        <v-btn icon color="blue" type="submit" cols="2" :disabled="!valid">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 
@@ -41,7 +37,7 @@ import CurrencyInput from "@/components/shared/CurrencyInput.vue";
 
 export default {
   name: "ExpenseAdd",
-  components: {CurrencyInput},
+  components: { CurrencyInput },
   props: {
     shareId: {
       type: Number,
@@ -54,9 +50,11 @@ export default {
       name: null,
       nameRules: [(v) => !!v || "requis"],
       amount: null,
-      amountRules: [(v) => !!v || "requis", 
-      (v) => /^\d*\.?\d*$/.test(v) || "nombre",
-      (v) => v > 0 || "négatif interdit"],
+      amountRules: [
+        (v) => !!v || "requis",
+        (v) => /^\d*\.?\d*$/.test(v) || "nombre",
+        (v) => v > 0 || "négatif interdit",
+      ],
     },
   }),
   methods: {
@@ -66,8 +64,7 @@ export default {
         name: this.form.name,
         amount: this.form.amount,
       }).then((res) => {
-        this.$emit("expense-created", res.data);
-        this.$refs.form.reset();
+        this.$emit("created", res.data);
       });
     },
   },

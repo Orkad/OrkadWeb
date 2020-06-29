@@ -24,6 +24,7 @@
           </v-list-item-action>
         </v-list-item>
       </v-list>
+      <expense-add v-if="mine" :share-id="shareId" @created="onCreated"></expense-add>
     </v-card-text>
     <!-- Boite de confirmation dynamique -->
     <confirm-dialog 
@@ -40,9 +41,10 @@
 import { mapState } from "vuex";
 import axios from "axios";
 
+import ExpenseAdd from "@/components/ExpenseAdd.vue";
 import ConfirmDialog from "@/components/shared/ConfirmDialog.vue";
 export default {
-  components: { ConfirmDialog },
+  components: { ConfirmDialog, ExpenseAdd },
   props: {
     shareId: {
       type: Number,
@@ -75,6 +77,9 @@ export default {
     this.mine = this.profile.id === this.userId.toString();
   },
   methods: {
+    onCreated(expenseItem){
+      this.expenses.unshift(expenseItem);
+    },
     deleteExpenseConfirm(expense) {
       this.confirm.title = "Suppression de la dépense";
       this.confirm.message = "Souhaitez vous vraiment supprimer la dépense " +

@@ -2,7 +2,7 @@
   <loading v-if="loading" spin />
   <div v-else>
     <v-row>
-      <v-col cols="4">
+      <v-col cols="8">
         <v-card outlined tile>
           <v-card-title>
             Partage : {{ share.name }}
@@ -15,12 +15,6 @@
             >Total des dépenses : {{ getTotalExpenses() }}€</v-card-subtitle
           >
         </v-card>
-      </v-col>
-      <v-col cols="4">
-        <expense-add
-          :share-id="share.id"
-          @expense-created="addExpenseItem"
-        ></expense-add>
       </v-col>
       <v-col cols="4">
         <refund-add :share-id="share.id" @created="addRefund"></refund-add>
@@ -76,7 +70,6 @@
 <script>
 import Loading from "@/components/Loading.vue";
 import ConfirmDialog from "@/components/shared/ConfirmDialog.vue";
-import ExpenseAdd from "@/components/ExpenseAdd.vue";
 import ExpenseList from "@/components/ExpenseList.vue";
 import RefundAdd from "@/components/RefundAdd.vue";
 import RefundList from "@/components/RefundList.vue";
@@ -88,7 +81,6 @@ export default {
   name: "Share",
   components: {
     Loading,
-    ExpenseAdd,
     ExpenseList,
     RefundAdd,
     ConfirmDialog,
@@ -128,12 +120,6 @@ export default {
       axios.delete("/api/shares/" + id).then(() => {
         this.$router.push("/shares");
       });
-    },
-    addExpenseItem(expenseItem) {
-      var user = this.getLoggedUser();
-      if (user) {
-        user.expenses.unshift(expenseItem);
-      }
     },
     // enlève la dépense du tableau
     removeExpense(user, expenseId) {

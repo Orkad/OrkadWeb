@@ -72,6 +72,9 @@ export default {
           this.showError(data.error);
         }
         this.sending = false;
+      }).error(e => {
+        this.showError('impossible de contacter le serveur d\'authentification');
+        console.error(e);
       });
     },
     disconnect() {
