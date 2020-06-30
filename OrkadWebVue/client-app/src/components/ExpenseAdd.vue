@@ -64,6 +64,8 @@ export default {
         name: this.form.name,
         amount: this.form.amount,
       }).then((res) => {
+        this.name = null,
+        this.amount = null,
         this.$emit("created", res.data);
       });
     },

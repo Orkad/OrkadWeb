@@ -2,8 +2,12 @@
   <v-card outlined tile :loading="loading">
     <v-card-title>
       Dépenses
+        <v-btn v-if="mine" icon color="green" cols="2" @click="toogleAdd = !toogleAdd">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
     </v-card-title>
     <v-card-text>
+      <expense-add v-if="mine && toogleAdd" :share-id="shareId" @created="onCreated"></expense-add>
       <v-list dense>
         <v-list-item v-for="expense in expenses" :key="expense.id">
           <v-list-item-content>
@@ -24,7 +28,6 @@
           </v-list-item-action>
         </v-list-item>
       </v-list>
-      <expense-add v-if="mine" :share-id="shareId" @created="onCreated"></expense-add>
     </v-card-text>
     <!-- Boite de confirmation dynamique -->
     <confirm-dialog 
@@ -69,6 +72,7 @@ export default {
       cancelText: "Annuler",
       action: () => {},
     },
+    toogleAdd: false,
   }),
   computed: {
     ...mapState("context", ["profile"]),
@@ -79,6 +83,7 @@ export default {
   methods: {
     onCreated(expenseItem){
       this.expenses.unshift(expenseItem);
+      this.toogleAdd = false;
     },
     deleteExpenseConfirm(expense) {
       this.confirm.title = "Suppression de la dépense";
