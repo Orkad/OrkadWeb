@@ -4,7 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
 
-namespace OrkadWeb.Services
+namespace OrkadWeb.Services.Business
 {
     public class SupervisionService : ISupervisionService
     {

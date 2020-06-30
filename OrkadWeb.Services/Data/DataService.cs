@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OrkadWeb.Services
+namespace OrkadWeb.Services.Data
 {
     public class DataService : IDataService, IDisposable
     {
@@ -54,7 +54,7 @@ namespace OrkadWeb.Services
         /// </summary>
         /// <typeparam name="T">type de l'entité</typeparam>
         /// <param name="obj">instance de l'entité a supprimer</param>
-        public void Delete<T>(T obj) 
+        public void Delete<T>(T obj)
         {
             CreateTransactionIfNotExists();
             session.Delete(obj);

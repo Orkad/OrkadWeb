@@ -10,6 +10,8 @@ using NHibernate.Driver;
 using NHibernate.Mapping.Attributes;
 using NHibernate.Mapping.ByCode;
 using OrkadWeb.Models;
+using OrkadWeb.Services.Business;
+using OrkadWeb.Services.Data;
 
 namespace OrkadWeb.Services
 {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using OrkadWeb.Models;
 using OrkadWeb.Services;
 using OrkadWeb.Services.Authentication;
+using OrkadWeb.Services.Data;
 
 namespace OrkadWebVue.Services
 {

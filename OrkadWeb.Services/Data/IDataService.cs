@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace OrkadWeb.Services
+namespace OrkadWeb.Services.Data
 {
     public interface IDataService
     {

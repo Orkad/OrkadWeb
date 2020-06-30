@@ -1,4 +1,5 @@
 ﻿using OrkadWeb.Models;
+using OrkadWeb.Services.Data;
 using OrkadWeb.Services.DTO.Common;
 using OrkadWeb.Services.DTO.Expenses;
 using OrkadWeb.Services.DTO.Refunds;
@@ -9,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OrkadWeb.Services
+namespace OrkadWeb.Services.Business
 {
     public class ShareService
     {
