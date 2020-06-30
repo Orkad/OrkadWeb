@@ -1,13 +1,11 @@
 ﻿using NHibernate;
 using OrkadWeb.Services.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OrkadWeb.Services.Data
 {
-    public class DataService : IDataService, IDisposable
+    public class DataService : IService, IDisposable
     {
         private readonly ISession session;
 
@@ -77,6 +75,7 @@ namespace OrkadWeb.Services.Data
             {
                 session.Transaction.Commit();
             }
+            session.Dispose();
         }
     }
 }

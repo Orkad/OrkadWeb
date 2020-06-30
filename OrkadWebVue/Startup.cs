@@ -27,6 +27,12 @@ namespace OrkadWebVue
 
             var connectionString = Configuration.GetConnectionString("OrkadWeb");
             services.AddNHibernate(connectionString);
+
+            // Services OrkadWeb
+            foreach (var serviceType in Services.GetServiceTypes())
+            {
+                services.AddScoped(serviceType);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OrkadWeb.Services;
+using OrkadWeb.Services.Business;
 
 namespace OrkadWebVue.Controllers
 {
@@ -8,9 +8,9 @@ namespace OrkadWebVue.Controllers
     [ApiController]
     public class SupervisionController : ControllerBase
     {
-        private readonly ISupervisionService supervisionService;
+        private readonly SupervisionService supervisionService;
 
-        public SupervisionController(ISupervisionService supervisionService)
+        public SupervisionController(SupervisionService supervisionService)
         {
             this.supervisionService = supervisionService;
         }

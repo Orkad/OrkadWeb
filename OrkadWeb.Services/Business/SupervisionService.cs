@@ -6,7 +6,7 @@ using System.IO;
 
 namespace OrkadWeb.Services.Business
 {
-    public class SupervisionService : ISupervisionService
+    public class SupervisionService : IService
     {
         private const string THERMAL_ZONE_PATH = "/sys/class/thermal/thermal_zone0/temp";
         private readonly bool isLinux;

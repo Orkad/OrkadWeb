@@ -12,11 +12,11 @@ using System.Linq;
 
 namespace OrkadWeb.Services.Business
 {
-    public class ShareService
+    public class ShareService : IService
     {
-        private readonly IDataService dataService;
+        private readonly DataService dataService;
 
-        public ShareService(IDataService dataService)
+        public ShareService(DataService dataService)
         {
             this.dataService = dataService;
         }

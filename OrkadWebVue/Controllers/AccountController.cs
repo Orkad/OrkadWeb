@@ -12,7 +12,6 @@ using OrkadWeb.Models;
 using OrkadWeb.Services;
 using OrkadWeb.Services.Authentication;
 using OrkadWeb.Services.Data;
-using OrkadWebVue.Services;
 
 namespace OrkadWebVue.Controllers
 {
@@ -20,12 +19,10 @@ namespace OrkadWebVue.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IDataService dataService;
-        private readonly ILoginService loginService;
+        private readonly LoginService loginService;
 
-        public AccountController(IDataService dataService, ILoginService loginService)
+        public AccountController(LoginService loginService)
         {
-            this.dataService = dataService;
             this.loginService = loginService;
         }
 
@@ -74,12 +71,6 @@ namespace OrkadWebVue.Controllers
                 Role = User.FindFirstValue(ClaimTypes.Role),
                 Error = null,
             };
-        }
-
-        private bool ValidateLogin(LoginCredentials creds)
-        {
-            var hash = HashUtils.HashSHA256(creds.Password);
-            return dataService.Query<User>().Any(u => (u.Username == creds.Username || u.Email == creds.Username) && u.Password == hash);
         }
     }
 }

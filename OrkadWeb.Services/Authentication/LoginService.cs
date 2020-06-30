@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace OrkadWeb.Services.Authentication
 {
-    public class LoginService : ILoginService
+    public class LoginService : IService
     {
-        private readonly IDataService dataService;
+        private readonly DataService dataService;
 
-        public LoginService(IDataService dataService)
+        public LoginService(DataService dataService)
         {
             this.dataService = dataService;
         }

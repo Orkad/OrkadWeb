@@ -1,8 +1,4 @@
 ﻿using FluentNHibernate.Mapping;
-using NHibernate.Mapping.Attributes;
-using NHibernate.Mapping.ByCode;
-using NHibernate.Mapping.ByCode.Conformist;
-using System;
 using System.Collections.Generic;
 
 namespace OrkadWeb.Models
