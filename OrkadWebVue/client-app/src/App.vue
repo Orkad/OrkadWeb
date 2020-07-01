@@ -11,7 +11,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon to="login">
+      <v-btn icon to="/login">
         <v-icon>mdi-account</v-icon>
       </v-btn>
     </v-app-bar>
