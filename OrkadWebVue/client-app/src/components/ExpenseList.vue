@@ -2,7 +2,7 @@
   <v-card outlined tile :loading="loading">
     <v-card-title>
       Dépenses
-        <v-btn v-if="mine" icon color="green" cols="2" @click="toogleAdd = !toogleAdd">
+        <v-btn v-if="mine" icon color="green" cols="2" title="ajouter une nouvelle dépense" @click="toogleAdd = !toogleAdd">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
     </v-card-title>

@@ -16,7 +16,7 @@
               {{ refund.date | moment("DD/MM/YYYY") }}
             </v-list-item-subtitle>
           </v-list-item-content>
-          {{ refund.amount }}€
+          <span :class="getColor()">{{mine ? '-' : '+'}}{{ refund.amount }}€</span>
           <v-list-item-action v-if="mine && owner(refund)">
             <v-btn x-small icon @click="deleteRefundConfirm(refund)">
               <v-icon color="red">mdi-delete </v-icon>
@@ -76,6 +76,12 @@ export default {
     this.mine = this.profile.id === this.userId.toString();
   },
   methods: {
+    getColor(){
+      if(this.mine){
+        return 'red--text';
+      }
+      return 'green--text';
+    },
     deleteRefundConfirm(refund) {
       this.confirm.title = "Suppression du remboursement";
       this.confirm.message =
