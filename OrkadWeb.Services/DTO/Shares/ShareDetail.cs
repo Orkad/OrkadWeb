@@ -1,4 +1,5 @@
-﻿using OrkadWeb.Models;
+﻿using AutoMapper;
+using OrkadWeb.Models;
 using System.Collections.Generic;
 using System.Linq;
 

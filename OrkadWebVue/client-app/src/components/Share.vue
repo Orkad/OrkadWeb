@@ -6,14 +6,39 @@
         <v-card outlined tile>
           <v-card-title>
             Partage : {{ share.name }}
+            <v-btn
+              v-if="mine"
+              icon
+              color="green"
+              title="ajouter un utilisateur"
+              @click="toogleAdd = !toogleAdd"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
             <v-spacer></v-spacer>
             <v-btn v-if="mine" icon color="red">
               <v-icon @click="deleteShareConfirm">mdi-delete</v-icon>
             </v-btn>
           </v-card-title>
-          <v-card-subtitle
-            >Total des dépenses : {{ getTotalExpenses() }}€</v-card-subtitle
-          >
+          <v-card-subtitle>
+            Total des dépenses : {{ getTotalExpenses() }}€
+          </v-card-subtitle>
+          <v-card-text v-if="mine && toogleAdd">
+            <v-row dense align="center" justify="center">
+              <v-col>
+                <v-select
+                  v-model="userToAdd"
+                  :items="availableUsers"
+                  label="Utilisateur"
+                ></v-select>
+              </v-col>
+              <v-col md="auto">
+                <v-btn icon color="blue" type="submit" @click="addUser">
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="4">
@@ -87,6 +112,7 @@ export default {
     RefundList,
   },
   data: () => ({
+    id: 0,
     loading: true,
     mine: false,
     share: {},
@@ -97,21 +123,40 @@ export default {
       cancelText: "Annuler",
       action: () => {},
     },
+    toogleAdd: false,
+    availableUsers: [],
+    userToAdd: null,
   }),
   computed: {
     ...mapState("context", ["profile"]),
-
   },
   created() {
     this.loading = true;
-    var id = this.$route.params.id;
-    axios.get("/api/shares/" + id).then((r) => {
+    this.id = this.$route.params.id;
+    axios.get("/api/shares/" + this.id).then((r) => {
       this.share = r.data;
       this.mine = this.profile.id === r.data.ownerId.toString();
       this.loading = false;
     });
+    this.refreshAvailableUsers();
   },
   methods: {
+    addUser() {
+      if (this.userToAdd){
+        axios.post("api/shares/" + this.share.id +"/users/add/" + this.userToAdd).then(() => {
+          axios.get("/api/shares/" + this.id).then((r) => {
+            this.share = r.data;
+            this.mine = this.profile.id === r.data.ownerId.toString();
+          });
+          this.refreshAvailableUsers();
+        });
+      }
+    },
+    refreshAvailableUsers(){
+      axios.get("/api/shares/" + this.id + '/users/available').then((r) => {
+        this.availableUsers = r.data;
+      });
+    },
     deleteShareConfirm() {
       this.$refs.deleteShareConfirmDialog.show();
     },
@@ -160,19 +205,31 @@ export default {
       const sum = (a, b) => a + b;
       var user = this.getUser(userId);
       var totalExpenses = user.expenses.map((e) => e.amount).reduce(sum, 0);
-      var totalEmittedRefund = user.refunds.filter((r) => r.emitterId === userId).map((e) => e.amount).reduce(sum, 0);
-      var totalReceivedRefund = user.refunds.filter((r) => r.receiverId === userId).map((e) => e.amount).reduce(sum, 0);
-      return _.round(totalExpenses + totalEmittedRefund - totalReceivedRefund, 2);
+      var totalEmittedRefund = user.refunds
+        .filter((r) => r.emitterId === userId)
+        .map((e) => e.amount)
+        .reduce(sum, 0);
+      var totalReceivedRefund = user.refunds
+        .filter((r) => r.receiverId === userId)
+        .map((e) => e.amount)
+        .reduce(sum, 0);
+      return _.round(
+        totalExpenses + totalEmittedRefund - totalReceivedRefund,
+        2
+      );
     },
     getUserBalance(userId) {
-      return _.round(this.getUserTotalOperations(userId) - this.getAverageExpenses(), 2);
+      return _.round(
+        this.getUserTotalOperations(userId) - this.getAverageExpenses(),
+        2
+      );
     },
     getUserBalanceColor(userId) {
       var balance = this.getUserBalance(userId);
-      if (Math.abs(balance) < 10){
+      if (Math.abs(balance) < 10) {
         return "yellow";
       }
-      if (balance > 0){
+      if (balance > 0) {
         return "green";
       }
       return "red";

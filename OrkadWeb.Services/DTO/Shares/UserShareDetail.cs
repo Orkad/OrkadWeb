@@ -1,7 +1,10 @@
-﻿using OrkadWeb.Services.DTO.Expenses;
+﻿using AutoMapper;
+using OrkadWeb.Models;
+using OrkadWeb.Services.DTO.Expenses;
 using OrkadWeb.Services.DTO.Operations;
 using OrkadWeb.Services.DTO.Refunds;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OrkadWeb.Services.DTO.Shares
 {
@@ -26,5 +29,18 @@ namespace OrkadWeb.Services.DTO.Shares
         /// Liste des opérations (dépenses, remboursements émits et reçus)
         /// </summary>
         public List<RefundItem> Refunds { get; set; } = new List<RefundItem>();
+    }
+
+    public class ShareProfile : Profile
+    {
+        public ShareProfile()
+        {
+            CreateMap<UserShare, UserShareDetail>()
+                .ForMember(usd => usd.Id, o => o.MapFrom(us => us.User.Id))
+                .ForMember(usd => usd.Name, o => o.MapFrom(us => us.User.Username))
+                .ForMember(usd => usd.Expenses, o => o.MapFrom(us => us.Expenses))
+                .ForMember(usd => usd.Refunds, o => o.MapFrom(us => us.EmittedRefunds.Union(us.ReceivedRefunds)));
+        }
+
     }
 }

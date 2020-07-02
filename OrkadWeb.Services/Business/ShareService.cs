@@ -1,4 +1,5 @@
-﻿using OrkadWeb.Models;
+﻿using AutoMapper;
+using OrkadWeb.Models;
 using OrkadWeb.Services.Data;
 using OrkadWeb.Services.DTO.Common;
 using OrkadWeb.Services.DTO.Expenses;
@@ -15,10 +16,12 @@ namespace OrkadWeb.Services.Business
     public class ShareService : IService
     {
         private readonly DataService dataService;
+        private readonly IMapper mapper;
 
-        public ShareService(DataService dataService)
+        public ShareService(DataService dataService, IMapper mapper)
         {
             this.dataService = dataService;
+            this.mapper = mapper;
         }
 
         /// <summary>
@@ -30,6 +33,45 @@ namespace OrkadWeb.Services.Business
             var query = dataService.Query<UserShare>()
                 .Where(us => us.User.Id == userId).Select(us => us.Share);
             var result = query.Select(ShareItem.BuildFrom).ToList();
+            return result;
+        }
+
+        /// <summary>
+        /// Récupère les utilisateurs pouvant être ajouté au partage
+        /// </summary>
+        /// <param name="shareId">identifiant unique du partage</param>
+        /// <returns></returns>
+        public List<TextValue> GetAvailableUsers(int shareId)
+        {
+            var userInShare = dataService.Query<UserShare>()
+                .Where(us => us.Share.Id == shareId).Select(us => us.User.Id);
+            var query = dataService.Query<User>()
+                .Where(u => !userInShare.Contains(u.Id));
+            var result = query.Select(u => new TextValue { Value = u.Id.ToString(), Text = u.Username }).ToList();
+            return result;
+        }
+
+        /// <summary>
+        /// Ajoute un utilisateur sur un partage
+        /// </summary>
+        /// <param name="shareId">identifiant du partage</param>
+        /// <param name="userId">identifiant de l'utilisateur</param>
+        /// <returns></returns>
+        public UserShareDetail AddUser(int shareId, int userId)
+        {
+            if (dataService.Query<UserShare>()
+                .Where(us => us.User.Id == userId && us.Share.Id == shareId)
+                .Any())
+            {
+                throw new BusinessException("L'utilisateur existe déjà sur ce partage");
+            }
+            var userShare = new UserShare
+            {
+                User = dataService.Load<User>(userId),
+                Share = dataService.Load<Share>(shareId),
+            };
+            dataService.Insert(userShare);
+            var result = mapper.Map<UserShareDetail>(userShare);
             return result;
         }
 

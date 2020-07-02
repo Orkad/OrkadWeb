@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,10 +30,7 @@ namespace OrkadWebVue
             services.AddNHibernate(connectionString);
 
             // Services OrkadWeb
-            foreach (var serviceType in Services.GetServiceTypes())
-            {
-                services.AddScoped(serviceType);
-            }
+            services.AddServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

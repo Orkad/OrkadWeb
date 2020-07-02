@@ -26,14 +26,21 @@ namespace OrkadWebVue.Controllers
             => int.TryParse((User.Identity as ClaimsIdentity)?.FindFirst(ClaimTypes.PrimarySid)?.Value, out int id) ? id : 0;
 
         [HttpGet]
-        public dynamic Get() => shareService.GetSharesForUser(ConnectedUserId);
+        public List<ShareItem> Get() => shareService.GetSharesForUser(ConnectedUserId);
 
         [HttpGet("{shareId}")]
-        public dynamic Get(int shareId) => shareService.GetShareDetail(shareId);
+        public ShareDetail Get(int shareId) => shareService.GetShareDetail(shareId);
 
         [HttpGet("{shareId}/others")]
         public List<TextValue> GetOtherUsers(int shareId)
             => shareService.GetOtherUsers(ConnectedUserId, shareId);
+
+        [HttpGet("{shareId}/users/available")]
+        public List<TextValue> GetAvailableUsers(int shareId)
+            => shareService.GetAvailableUsers(shareId);
+
+        [HttpPost("{shareId}/users/add/{userId}")]
+        public UserShareDetail AddUser(int shareId, int userId) => shareService.AddUser(shareId, userId);
 
         [HttpPost]
         public dynamic Create([FromBody] ShareCreation shareCreation) => shareService.CreateShareForUser(ConnectedUserId, shareCreation);
