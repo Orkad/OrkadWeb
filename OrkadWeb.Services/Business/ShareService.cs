@@ -32,7 +32,7 @@ namespace OrkadWeb.Services.Business
         {
             var query = dataService.Query<UserShare>()
                 .Where(us => us.User.Id == userId).Select(us => us.Share);
-            var result = query.Select(ShareItem.BuildFrom).ToList();
+            var result = mapper.ProjectTo<ShareItem>(query).ToList();
             return result;
         }
 
@@ -83,11 +83,11 @@ namespace OrkadWeb.Services.Business
         public List<TextValue> GetOtherUsers(int userId, int shareId)
         {
             var userShare = GetUserShare(userId, shareId);
-            var query = userShare.Share.UserShares
+            var users = userShare.Share.UserShares
                 .Select(us => us.User)
-                .Where(u => u.Id != userId)
-                .Select(u => u.ToTextValue());
-            var result = query.ToList();
+                .Where(u => u.Id != userId);
+            var items = users.Select(u => mapper.Map<TextValue>(u));
+            var result = items.ToList();
             return result;
         }
 
@@ -110,7 +110,7 @@ namespace OrkadWeb.Services.Business
                 Date = DateTime.Now,
             };
             dataService.Insert(refund);
-            return refund.ToItem();
+            return mapper.Map<RefundItem>(refund);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace OrkadWeb.Services.Business
         public ShareItem CreateShareForUser(int userId, ShareCreation shareCreation)
         {
             var user = dataService.Load<User>(userId);
-            var share = shareCreation.ToEntity();
+            var share = mapper.Map<Share>(shareCreation);
             share.Owner = user;
             // On ajoute automatiquement l'utilisateur a son partage
             share.UserShares = new HashSet<UserShare>()
@@ -150,7 +150,7 @@ namespace OrkadWeb.Services.Business
                 }
             };
             dataService.Insert(share);
-            return share.ToItem();
+            return mapper.Map<ShareItem>(share);
         }
 
         /// <summary>
@@ -180,8 +180,7 @@ namespace OrkadWeb.Services.Business
         public ShareDetail GetShareDetail(int shareId)
         {
             var share = dataService.Get<Share>(shareId);
-            var detail = share.ToDetail();
-            detail.OwnerId = share.Owner.Id;
+            var detail = mapper.Map<ShareDetail>(share);
             return detail;
         }
 
@@ -213,9 +212,11 @@ namespace OrkadWeb.Services.Business
         public ExpenseItem AddExpense(int userId, int shareId, ExpenseCreation expenseCreation)
         {
             var userShare = GetUserShare(userId, shareId);
-            var expense = expenseCreation.ToEntity(userShare, DateTime.Now);
+            var expense = mapper.Map<Expense>(expenseCreation);
+            expense.UserShare = userShare;
+            expense.Date = DateTime.Now;
             dataService.Insert(expense);
-            return expense.ToItem();
+            return mapper.Map<ExpenseItem>(expense);
         }
 
         /// <summary>

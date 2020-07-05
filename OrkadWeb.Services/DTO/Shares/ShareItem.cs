@@ -21,7 +21,5 @@ namespace OrkadWeb.Services.DTO.Shares
         /// Nombre de participants
         /// </summary>
         public int AttendeeCount { get; set; }
-
-        public static ShareItem BuildFrom(Share share) => share.ToItem();
     }
 }
