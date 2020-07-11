@@ -1,10 +1,10 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
-using OrkadWeb.Models;
-using OrkadWeb.Services.Data;
+using OrkadWeb.Models.Enums.NHibernate;
+using OrkadWeb.Services.NHibernate.Mapping;
 
-namespace OrkadWeb.Services
+namespace OrkadWeb.Services.NHibernate
 {
     public static class NHibernateExtensions
     {
@@ -13,7 +13,7 @@ namespace OrkadWeb.Services
             var sessionFactory = Fluently
                 .Configure()
                 .Database(MySQLConfiguration.Standard.ConnectionString(connectionString))
-                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<User>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>().Conventions.Add<EnumConvention>())
                 .BuildSessionFactory();
             services.AddSingleton(sessionFactory);
             services.AddScoped(factory => sessionFactory.OpenSession());

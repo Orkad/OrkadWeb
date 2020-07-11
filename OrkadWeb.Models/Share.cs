@@ -1,4 +1,4 @@
-﻿using FluentNHibernate.Mapping;
+﻿using OrkadWeb.Models.Enums;
 using System.Collections.Generic;
 
 namespace OrkadWeb.Models
@@ -27,17 +27,10 @@ namespace OrkadWeb.Models
         /// Associations des utilisateurs
         /// </summary>
         public virtual ISet<UserShare> UserShares { get; set; }
-    }
 
-    public class ShareMap : ClassMap<Share>
-    {
-        public ShareMap()
-        {
-            Table("share");
-            Id(x => x.Id, "id");
-            Map(x => x.Name, "name");
-            References(x => x.Owner, "owner").Cascade.None();
-            HasMany(x => x.UserShares).KeyColumn("share_id").Inverse().Cascade.AllDeleteOrphan();
-        }
+        /// <summary>
+        /// Règles concernant la modification du partage par les utilisateurs
+        /// </summary>
+        public virtual ShareRule Rule { get; set; }
     }
 }

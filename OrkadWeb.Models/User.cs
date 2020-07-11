@@ -1,5 +1,4 @@
-﻿using FluentNHibernate.Mapping;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace OrkadWeb.Models
 {
@@ -32,18 +31,5 @@ namespace OrkadWeb.Models
         /// Association des partages utilisateurs
         /// </summary>
         public virtual ISet<UserShare> UserShares { get; set; }
-    }
-
-    public class UserMap : ClassMap<User>
-    {
-        public UserMap()
-        {
-            Table("user");
-            Id(x => x.Id, "id");
-            Map(x => x.Username).Column("username");
-            Map(x => x.Password).Column("password");
-            Map(x => x.Email).Column("email");
-            HasMany(x => x.UserShares).KeyColumn("user_id");
-        }
     }
 }

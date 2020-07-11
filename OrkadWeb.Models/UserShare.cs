@@ -1,6 +1,4 @@
-﻿using FluentNHibernate.Mapping;
-using NHibernate.Mapping.ByCode.Conformist;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace OrkadWeb.Models
 {
@@ -38,19 +36,5 @@ namespace OrkadWeb.Models
         /// Remboursement reçu depuis ce partage utilisateur
         /// </summary>
         public virtual ISet<Refund> ReceivedRefunds { get; set; }
-    }
-
-    public class UserShareMap : ClassMap<UserShare>
-    {
-        public UserShareMap()
-        {
-            Table("user_share");
-            Id(x => x.Id, "id");
-            References(x => x.User, "user_id");
-            References(x => x.Share, "share_id");
-            HasMany(x => x.Expenses).KeyColumn("user_share_id").Inverse().Cascade.AllDeleteOrphan();
-            HasMany(x => x.EmittedRefunds).KeyColumn("user_share_emitter_id");
-            HasMany(x => x.ReceivedRefunds).KeyColumn("user_share_receiver_id");
-        }
     }
 }

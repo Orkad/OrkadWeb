@@ -5,7 +5,7 @@
       <v-col cols="8">
         <v-card outlined tile>
           <v-card-title>
-            Partage : {{ share.name }}
+            Partage : {{ share.name }} mode {{ share.rule }}
             <v-btn
               v-if="mine"
               icon

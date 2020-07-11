@@ -1,5 +1,4 @@
-﻿using FluentNHibernate.Mapping;
-using System;
+﻿using System;
 
 namespace OrkadWeb.Models
 {
@@ -32,18 +31,5 @@ namespace OrkadWeb.Models
         /// Date effective du remboursement
         /// </summary>
         public virtual DateTime Date { get; set; }
-    }
-
-    public class RefundMap : ClassMap<Refund>
-    {
-        public RefundMap()
-        {
-            Table("refund");
-            Id(x => x.Id, "id");
-            Map(x => x.Amount, "amount");
-            Map(x => x.Date, "date");
-            References(x => x.Emitter, "user_share_emitter_id");
-            References(x => x.Receiver, "user_share_receiver_id");
-        }
     }
 }

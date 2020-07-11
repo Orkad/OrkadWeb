@@ -1,5 +1,4 @@
-﻿using FluentNHibernate.Mapping;
-using System;
+﻿using System;
 
 namespace OrkadWeb.Models
 {
@@ -32,18 +31,5 @@ namespace OrkadWeb.Models
         /// Date de la dépense
         /// </summary>
         public virtual DateTime Date { get; set; }
-    }
-
-    public class ExpenseMap : ClassMap<Expense>
-    {
-        public ExpenseMap()
-        {
-            Table("expense");
-            Id(x => x.Id, "id");
-            Map(x => x.Amount, "amount");
-            Map(x => x.Name, "name");
-            Map(x => x.Date, "date");
-            References(x => x.UserShare, "user_share_id");
-        }
     }
 }
