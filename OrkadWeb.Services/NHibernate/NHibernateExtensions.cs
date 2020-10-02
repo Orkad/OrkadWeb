@@ -7,6 +7,7 @@ using OrkadWeb.Services.NHibernate.Mapping;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 
@@ -75,8 +76,7 @@ namespace OrkadWeb.Services.NHibernate
         {
             using (var file = File.Open(_cacheFile, FileMode.Create))
             {
-                var bf = new BinaryFormatter();
-                bf.Serialize(file, configuration);
+                GetFormatter().Serialize(file, configuration);
             }
         }
 
@@ -87,9 +87,14 @@ namespace OrkadWeb.Services.NHibernate
 
             using (var file = File.Open(_cacheFile, FileMode.Open, FileAccess.Read))
             {
-                var bf = new BinaryFormatter();
-                return bf.Deserialize(file) as Configuration;
+                return GetFormatter().Deserialize(file) as Configuration;
             }
         }
+
+        private IFormatter GetFormatter()
+            => new BinaryFormatter
+            {
+                SurrogateSelector = new FluentNHibernate.Infrastructure.NetStandardSerialization.SurrogateSelector()
+            };
     }
 }
