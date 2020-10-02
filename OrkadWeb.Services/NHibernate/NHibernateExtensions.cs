@@ -19,18 +19,18 @@ namespace OrkadWeb.Services.NHibernate
         {
             // check cache
             var nhConfigCache = new NHibernateConfigurationCache(Assembly.GetAssembly(typeof(UserMap)));
-            var config = nhConfigCache.LoadConfigurationFromFile();
+            var config = nhConfigCache.LoadConfigurationFromFile(); // 175ms (si cache présent)
             if (config == null)
             {
                 var fluentConfiguration = Fluently
-                .Configure()
-                .Database(MySQLConfiguration.Standard.ConnectionString(connectionString))
-                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>().Conventions.Add<EnumConvention>()); // 132ms
+                    .Configure()
+                    .Database(MySQLConfiguration.Standard.ConnectionString(connectionString))
+                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>().Conventions.Add<EnumConvention>()); // 132ms
                 config = fluentConfiguration.BuildConfiguration(); // 549ms
-                nhConfigCache.SaveConfigurationToFile(config);
+                nhConfigCache.SaveConfigurationToFile(config); // 60ms
             }
             
-            var sessionFactory = config.BuildSessionFactory(); // 539ms
+            var sessionFactory = config.BuildSessionFactory(); // 539ms 
 
             services.AddSingleton(sessionFactory);
             services.AddScoped(serviceProvider => sessionFactory.OpenSession());
