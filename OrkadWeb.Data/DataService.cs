@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OrkadWeb.Data
 {
@@ -23,6 +24,14 @@ namespace OrkadWeb.Data
         /// <param name="id">identifiant unique de l'entité</param>
         /// <exception cref="DataNotFoundException{T}">Si l'entité n'existe pas</exception>
         public T Get<T>(object id) => session.Get<T>(id) ?? throw new DataNotFoundException<T>(id);
+
+        /// <summary>
+        /// Récupération d'une l'entité (asynchrone)
+        /// </summary>
+        /// <typeparam name="T">type de l'entité</typeparam>
+        /// <param name="id">identifiant unique de l'entité</param>
+        /// <exception cref="DataNotFoundException{T}">Si l'entité n'existe pas</exception>
+        public async Task<T> GetAsync<T>(object id) => await session.GetAsync<T>(id) ?? throw new DataNotFoundException<T>(id);
 
         /// <summary>
         /// Charge l'entité sans faire d'appel en base de donnée (en assumant que l'entité existe déjà)

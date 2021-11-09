@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace OrkadWeb.Data
 {
@@ -14,6 +15,14 @@ namespace OrkadWeb.Data
         /// <param name="id">identifiant unique de l'entité</param>
         /// <exception cref="DataNotFoundException{T}">Si l'entité n'existe pas</exception>
         T Get<T>(object id);
+
+        /// <summary>
+        /// Récupération d'une l'entité.
+        /// </summary>
+        /// <typeparam name="T">type de l'entité</typeparam>
+        /// <param name="id">identifiant unique de l'entité</param>
+        /// <exception cref="DataNotFoundException{T}">Si l'entité n'existe pas</exception>
+        Task<T> GetAsync<T>(object id);
 
         /// <summary>
         /// Charge l'entité sans faire d'appel en base de donnée (en assumant que l'entité existe déjà)
