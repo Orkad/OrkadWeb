@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using OrkadWeb.Data.Models;
-using OrkadWeb.Logic.Shares.ReadModels;
+using OrkadWeb.Logic.Shares.Models;
 using System.Linq;
 
 namespace OrkadWeb.Services.DTO.Shares

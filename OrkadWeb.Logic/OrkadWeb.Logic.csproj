@@ -15,6 +15,8 @@
 
   <ItemGroup>
     <Folder Include="Shares\Commands\" />
+    <Folder Include="Users\ReadModels\" />
+    <Folder Include="Users\Queries\" />
   </ItemGroup>
 
 </Project>

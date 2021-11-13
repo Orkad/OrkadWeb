@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using OrkadWeb.Logic.Shares.ReadModels;
+using OrkadWeb.Logic.Shares.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

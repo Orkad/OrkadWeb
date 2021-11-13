@@ -1,4 +1,4 @@
-﻿namespace OrkadWeb.Logic.Shares.ReadModels
+﻿namespace OrkadWeb.Logic.Shares.Models
 {
     /// <summary>
     /// Représente un partage dans une collection

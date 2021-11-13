@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OrkadWeb.Logic.Shares.Queries.GetPersonalShares;
-using OrkadWeb.Logic.Shares.ReadModels;
+using OrkadWeb.Logic.Shares.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Angular", "OrkadWe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Data", "OrkadWeb.Data\OrkadWeb.Data.csproj", "{74F5D9DD-501D-434C-9994-E32DC8F097E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrkadWeb.Logic", "OrkadWeb.Logic\OrkadWeb.Logic.csproj", "{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Logic", "OrkadWeb.Logic\OrkadWeb.Logic.csproj", "{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrkadWeb.Utility", "OrkadWeb.Utility\OrkadWeb.Utility.csproj", "{2E139D2B-6768-4B96-BD2F-382F72D2EE70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E139D2B-6768-4B96-BD2F-382F72D2EE70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E139D2B-6768-4B96-BD2F-382F72D2EE70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E139D2B-6768-4B96-BD2F-382F72D2EE70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E139D2B-6768-4B96-BD2F-382F72D2EE70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
