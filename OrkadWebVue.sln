@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWebVue", "OrkadWebVue\OrkadWebVue.csproj", "{8019DCEE-F281-42FE-9E00-79F693EBD0F5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Services", "OrkadWeb.Services\OrkadWeb.Services.csproj", "{73D0B2E1-0D8F-4233-83F6-88C53624D9DF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DFD1CC1B-3C65-4804-BC2B-5BDB4E55FA23}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -18,22 +14,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Data", "OrkadWeb.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Logic", "OrkadWeb.Logic\OrkadWeb.Logic.csproj", "{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrkadWeb.Utility", "OrkadWeb.Utility\OrkadWeb.Utility.csproj", "{2E139D2B-6768-4B96-BD2F-382F72D2EE70}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8019DCEE-F281-42FE-9E00-79F693EBD0F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8019DCEE-F281-42FE-9E00-79F693EBD0F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8019DCEE-F281-42FE-9E00-79F693EBD0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8019DCEE-F281-42FE-9E00-79F693EBD0F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73D0B2E1-0D8F-4233-83F6-88C53624D9DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73D0B2E1-0D8F-4233-83F6-88C53624D9DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73D0B2E1-0D8F-4233-83F6-88C53624D9DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73D0B2E1-0D8F-4233-83F6-88C53624D9DF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49C031F1-506D-409C-AE38-DB1431B93ADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{49C031F1-506D-409C-AE38-DB1431B93ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49C031F1-506D-409C-AE38-DB1431B93ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,10 +32,6 @@ Global
 		{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E139D2B-6768-4B96-BD2F-382F72D2EE70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E139D2B-6768-4B96-BD2F-382F72D2EE70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E139D2B-6768-4B96-BD2F-382F72D2EE70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E139D2B-6768-4B96-BD2F-382F72D2EE70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
