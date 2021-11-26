@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
     constructor(private httpClient: HttpClient) { }
 
-    login(username:string, password:string ) {
-        return this.httpClient.post('/authentication/login', {username, password})
-            .subscribe(res => {
-                console.log(res);
-            });
+    login(username:string, password:string) : Observable<any> {
+        return this.httpClient.post('/authentication/login', { username: username, password: password });
     }
 }
 

@@ -1,1 +1,16 @@
-<div>Test</div>
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="loginForm">
+            <mat-form-field>
+                <mat-label>Nom d'utilisateur</mat-label>
+                <input formControlName='username' matInput required>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Mot de passe</mat-label>
+                <input formControlName='password' type="password" matInput required>
+            </mat-form-field>
+            <button mat-flat-button color="primary" (click)="login()" [disabled]="loading || !loginForm.valid">Connexion</button>
+            <mat-error *ngIf="error">{{error}}</mat-error>
+        </form>
+    </mat-card-content>
+</mat-card>

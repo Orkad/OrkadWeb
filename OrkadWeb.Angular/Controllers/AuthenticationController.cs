@@ -7,28 +7,28 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrkadWeb.Logic.Users.Commands;
 
-namespace OrkadWebVue.Controllers
+namespace OrkadWeb.Angular.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : ApiControllerBase
     {
-        private readonly Mediator mediator;
+        private readonly IMediator mediator;
 
-        public AuthenticationController(Mediator mediator)
+        public AuthenticationController(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
-        [HttpGet("context")]
-        public LoginResult Context() => GetAuthenticatedUser();
+        //[HttpGet("context")]
+        //public LoginResult Context() => GetAuthenticatedUser();
 
         [HttpPost("login")]
-        public async Task<LoginResponse> Login([FromBody] LoginCommand command)
+        [AllowAnonymous]
+        public async Task<LoginResponse> Login(LoginCommand command)
         {
             var response = await mediator.Send(command, HttpContext.RequestAborted);
             if (response.Success)
@@ -41,14 +41,14 @@ namespace OrkadWebVue.Controllers
                     new Claim(ClaimTypes.Email, response.Email),
                     new Claim(ClaimTypes.Role, response.Role),
                 };
-                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme));
                 var authProperties = new AuthenticationProperties
                 {
                     AllowRefresh = true,
                     ExpiresUtc = DateTimeOffset.Now.AddDays(1),
                     IsPersistent = true,
                 };
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+                await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme, principal, authProperties);
             }
             return response;
         }
@@ -60,16 +60,16 @@ namespace OrkadWebVue.Controllers
             await HttpContext.SignOutAsync();
         }
 
-        private LoginResult GetAuthenticatedUser()
-        {
-            return new LoginResult
-            {
-                Id = User.FindFirstValue(ClaimTypes.PrimarySid),
-                Name = User.Identity.Name,
-                Email = User.FindFirstValue(ClaimTypes.Email),
-                Role = User.FindFirstValue(ClaimTypes.Role),
-                Error = null,
-            };
-        }
+        //private LoginResult GetAuthenticatedUser()
+        //{
+        //    return new LoginResult
+        //    {
+        //        Id = User.FindFirstValue(ClaimTypes.PrimarySid),
+        //        Name = User.Identity.Name,
+        //        Email = User.FindFirstValue(ClaimTypes.Email),
+        //        Role = User.FindFirstValue(ClaimTypes.Role),
+        //        Error = null,
+        //    };
+        //}
     }
 }
