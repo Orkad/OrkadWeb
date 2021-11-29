@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DFD1CC1B-3C65-4804-BC2B-5BDB4E55FA23}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Angular", "OrkadWeb.Angular\OrkadWeb.Angular.csproj", "{49C031F1-506D-409C-AE38-DB1431B93ADC}"
@@ -14,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Data", "OrkadWeb.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Logic", "OrkadWeb.Logic\OrkadWeb.Logic.csproj", "{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrkadWeb.Tests", "OrkadWeb.Tests\OrkadWeb.Tests.csproj", "{237FA01B-1FDB-4224-B44A-A50F8E391617}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Tests", "OrkadWeb.Tests\OrkadWeb.Tests.csproj", "{237FA01B-1FDB-4224-B44A-A50F8E391617}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

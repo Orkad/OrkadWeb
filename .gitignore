@@ -339,3 +339,8 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 nh.cfg
+
+
+#------- CUSTOM -------
+# exclusion des fichiers auto générés par specflow
+*.feature.cs
