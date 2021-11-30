@@ -19,4 +19,8 @@
     <Folder Include="Hooks\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OrkadWeb.Logic\OrkadWeb.Logic.csproj" />
+  </ItemGroup>
+
 </Project>
