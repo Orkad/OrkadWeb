@@ -15,7 +15,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: green;
 }
 
 .mat-flat-button{

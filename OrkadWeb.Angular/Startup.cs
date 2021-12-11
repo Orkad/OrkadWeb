@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using OrkadWeb.Data.Builder;
+using OrkadWeb.Data.NHibernate;
 using OrkadWeb.Logic.Builder;
 using System.Text;
 
@@ -24,23 +25,10 @@ namespace OrkadWeb.Angular
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // application security part https://code-maze.com/authentication-aspnetcore-jwt-1/
-            services.AddAuthentication(opt =>
-            {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = "https://localhost:44365",
-                ValidAudience = "https://localhost:44365",
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("0rk@d"))
-            });
-
-            services.AddData(Configuration.GetConnectionString("OrkadWeb"));
+            ConfigureAuthentication(services);
+            
+            services.AddSingleton<ISessionFactoryResolver>(new MySQLSessionFactoryResolver(Configuration.GetConnectionString("OrkadWeb")));
+            services.AddData();
             services.AddLogic();
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -48,6 +36,25 @@ namespace OrkadWeb.Angular
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+        }
+
+        public void ConfigureAuthentication(IServiceCollection services)
+        {
+            var issuer = Configuration["Jwt:Issuer"];
+            var audience = Configuration["Jwt:Audience"];
+            var key = Configuration["Jwt:Key"];
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = issuer,
+                        ValidAudience = audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+                    });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

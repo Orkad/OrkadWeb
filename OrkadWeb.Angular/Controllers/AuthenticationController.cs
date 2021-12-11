@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -10,6 +12,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using OrkadWeb.Logic.Users.Commands;
 
 namespace OrkadWeb.Angular.Controllers
@@ -17,14 +22,13 @@ namespace OrkadWeb.Angular.Controllers
     public class AuthenticationController : ApiControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IConfiguration configuration;
 
-        public AuthenticationController(IMediator mediator)
+        public AuthenticationController(IMediator mediator, IConfiguration configuration)
         {
             this.mediator = mediator;
+            this.configuration = configuration;
         }
-
-        //[HttpGet("context")]
-        //public LoginResult Context() => GetAuthenticatedUser();
 
         [HttpPost("login")]
         [AllowAnonymous]
@@ -33,24 +37,24 @@ namespace OrkadWeb.Angular.Controllers
             var response = await mediator.Send(command, HttpContext.RequestAborted);
             if (response.Success)
             {
-                
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.PrimarySid, response.Id.ToString()),
-                    new Claim(ClaimTypes.Name, response.Name),
-                    new Claim(ClaimTypes.Email, response.Email),
-                    new Claim(ClaimTypes.Role, response.Role),
-                };
-                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme));
-                var authProperties = new AuthenticationProperties
-                {
-                    AllowRefresh = true,
-                    ExpiresUtc = DateTimeOffset.Now.AddDays(1),
-                    IsPersistent = true,
-                };
-                await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme, principal, authProperties);
+                response.Token = GenerateJSONWebToken(response);  
             }
             return response;
+        }
+
+        private string GenerateJSONWebToken(LoginResponse loginResponse)
+        {
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, ConvertToUnixTimestamp(DateTime.Now).ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, loginResponse.Name),
+                new Claim(JwtRegisteredClaimNames.Email, loginResponse.Email),
+            };
+            var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], claims, expires: DateTime.Now.AddMinutes(120), signingCredentials: credentials);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         [HttpPost("logout")]
@@ -58,6 +62,13 @@ namespace OrkadWeb.Angular.Controllers
         public async Task Logout()
         {
             await HttpContext.SignOutAsync();
+        }
+
+        public static double ConvertToUnixTimestamp(DateTime date)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan diff = date.ToUniversalTime() - origin;
+            return Math.Floor(diff.TotalSeconds);
         }
 
         //private LoginResult GetAuthenticatedUser()

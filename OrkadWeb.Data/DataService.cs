@@ -52,10 +52,22 @@ namespace OrkadWeb.Data
             session.Save(obj);
         }
 
+        public async Task InsertAsync<T>(T obj)
+        {
+            CreateTransactionIfNotExists();
+            await session.SaveAsync(obj);
+        }
+
         public void Update<T>(T obj)
         {
             CreateTransactionIfNotExists();
             session.Update(obj);
+        }
+
+        public async Task UpdateAsync<T>(T obj)
+        {
+            CreateTransactionIfNotExists();
+            await session.UpdateAsync(obj);
         }
 
         /// <summary>

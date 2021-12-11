@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
+using NHibernate;
 using OrkadWeb.Data.NHibernate;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,15 @@ namespace OrkadWeb.Data.Builder
 {
     public static class DataAppBuilderExtensions
     {
-        public static void AddData(this IServiceCollection services, string connectionString)
+        public static void AddData(this IServiceCollection services)
         {
-            var sessionFactory = SessionFactoryResolver.Resolve(connectionString);
-            // session factory always as singleton
-            services.AddSingleton(sessionFactory);
-            // session always scoped
-            services.AddScoped(serviceProvider => sessionFactory.OpenSession());
+            // Session Factory
+            services.AddSingleton(provider => provider.GetService<ISessionFactoryResolver>().Resolve(Assembly.GetExecutingAssembly()));
 
-            // dataservice always scoped
+            // Session
+            services.AddScoped(provider => provider.GetService<ISessionFactory>().OpenSession());
+
+            // DataService
             services.AddScoped<IDataService, DataService>();
         }
     }

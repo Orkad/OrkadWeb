@@ -45,11 +45,25 @@ namespace OrkadWeb.Data
         void Insert<T>(T data);
 
         /// <summary>
+        /// Ajoute une nouvelle entité
+        /// </summary>
+        /// <typeparam name="T">type de l'entité</typeparam>
+        /// <param name="data">instance de l'entité a ajouter</param>
+        Task InsertAsync<T>(T data);
+
+        /// <summary>
         /// Met à jour une entité existante
         /// </summary>
         /// <typeparam name="T">type de l'entité</typeparam>
         /// <param name="data">instance de l'entité a mettre à jour</param>
         void Update<T>(T data);
+
+        /// <summary>
+        /// Met à jour une entité existante
+        /// </summary>
+        /// <typeparam name="T">type de l'entité</typeparam>
+        /// <param name="data">instance de l'entité a mettre à jour</param>
+        Task UpdateAsync<T>(T data);
 
         /// <summary>
         /// Supprime une entité existante

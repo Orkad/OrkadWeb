@@ -10,19 +10,14 @@ namespace OrkadWeb.Logic.Common
     public class Response
     {
         /// <summary>
-        /// Constructeur d'une réponse d'erreur
+        /// Définie une réponse d'erreur
         /// </summary>
         /// <param name="errorMessage">Message d'erreur correpondant</param>
-        public Response(string errorMessage)
-        {
-            Success = false;
-            Error = errorMessage;
-        }
+        public static Response AsError(string errorMessage) => new Response { Success = false, Error = errorMessage };
 
-        public Response()
-        {
+        public static Response AsSuccess() => new Response { Success = true };
 
-        }
+        private Response() { }
 
         /// <summary>
         /// Détermine que l'opération s'est déroulée avec succès

@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AuthenticationService } from '@services/authentication.service';
+import { Router } from '@angular/router';
 import { NotificationService } from '@services/notification.service';
+import { AuthenticationService } from './authentication.service';
 
 @Component({
   selector: 'app-authentication',
@@ -16,7 +17,8 @@ export class AuthenticationComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService, 
     private fb: FormBuilder,
-    private notificationService: NotificationService) { 
+    private notificationService: NotificationService,
+    private router: Router) { 
     this.loginForm = fb.group({
       username: [''],
       password: [''],
@@ -33,8 +35,10 @@ export class AuthenticationComponent implements OnInit {
       .subscribe(data => {
         if (data.error){
           this.error =  data.error;
+          this.loading = false;
         }
-        this.loading = false;
+        localStorage.setItem("jwt", data.token);
+        this.router.navigate(["/"]);
       });
   }
 }
