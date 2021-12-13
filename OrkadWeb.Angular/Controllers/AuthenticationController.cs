@@ -46,22 +46,19 @@ namespace OrkadWeb.Angular.Controllers
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, ConvertToUnixTimestamp(DateTime.Now).ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, loginResponse.Name),
-                new Claim(JwtRegisteredClaimNames.Email, loginResponse.Email),
-            };
-            var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], claims, expires: DateTime.Now.AddMinutes(120), signingCredentials: credentials);
+            var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], GetClaims(loginResponse), expires: DateTime.Now.AddMinutes(120), signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        [HttpPost("logout")]
-        [Authorize]
-        public async Task Logout()
+        private Claim[] GetClaims(LoginResponse loginResponse)
         {
-            await HttpContext.SignOutAsync();
+            return new[] {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, ConvertToUnixTimestamp(DateTime.Now).ToString()),
+                new Claim("user_id", loginResponse.Id),
+                new Claim("user_name", loginResponse.Name),
+                new Claim("user_email", loginResponse.Email),
+            };
         }
 
         public static double ConvertToUnixTimestamp(DateTime date)
@@ -70,17 +67,5 @@ namespace OrkadWeb.Angular.Controllers
             TimeSpan diff = date.ToUniversalTime() - origin;
             return Math.Floor(diff.TotalSeconds);
         }
-
-        //private LoginResult GetAuthenticatedUser()
-        //{
-        //    return new LoginResult
-        //    {
-        //        Id = User.FindFirstValue(ClaimTypes.PrimarySid),
-        //        Name = User.Identity.Name,
-        //        Email = User.FindFirstValue(ClaimTypes.Email),
-        //        Role = User.FindFirstValue(ClaimTypes.Role),
-        //        Error = null,
-        //    };
-        //}
     }
 }

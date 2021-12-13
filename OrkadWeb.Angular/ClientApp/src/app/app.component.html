@@ -1,6 +1,32 @@
 <body>
-  <app-nav-menu></app-nav-menu>
-  <div class="container">
-    <router-outlet></router-outlet>
+  <div class="fullscreen-container">
+    <mat-toolbar color="primary" class="main-toolbar">
+      <button mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Tuthunes</span>
+      <span class="menu-spacer"></span>
+      <button *ngIf="!connected" mat-button [routerLink]="['/authentication']">
+        <mat-icon>account_circle</mat-icon>
+        <span>Se connecter</span>
+      </button>
+      <button *ngIf="connected" mat-button [routerLink]="['/authentication']">
+        <mat-icon>account_circle</mat-icon>
+        {{ username }}
+      </button>
+    </mat-toolbar>
+    <mat-sidenav-container class="main-sidenav-container">
+      <mat-sidenav mode="side" opened>
+        <mat-nav-list>
+          <mat-list-item [routerLink]="['/counter']" class="sidenav-item">
+            <mat-icon>euro</mat-icon>
+            <span>mes dépenses</span>
+          </mat-list-item>
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   </div>
 </body>

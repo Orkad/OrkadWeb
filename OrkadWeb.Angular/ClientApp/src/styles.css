@@ -1,22 +1,42 @@
-/* You can add global styles to this file, and also import other style files */
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-code {
-  color: #e01a76;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-html, body { 
+html,
+body {
   height: 100%;
+  width: 100%;
 }
 
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.fullscreen-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+.main-toolbar {
+  /* position: fixed; */
+  z-index: 2;
+}
+
+.main-sidenav-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.sidenav-item span {
+  margin-left: 8px;
+  font-size: 1.25em;
+}
