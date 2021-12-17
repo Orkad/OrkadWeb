@@ -3,8 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { map } from "rxjs/operators";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { User } from "../shared/models/User";
-import { LoginResponse } from "../shared/models/LoginResponse";
+import { User } from "../../shared/models/User";
+import { LoginResponse } from "../../shared/models/LoginResponse";
 
 @Injectable({ providedIn: "root" })
 export class AuthenticationService {

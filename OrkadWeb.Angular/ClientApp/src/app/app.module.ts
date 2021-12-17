@@ -7,32 +7,34 @@ import { JwtModule } from "@auth0/angular-jwt";
 
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./home/home.component";
-import { CounterComponent } from "./counter/counter.component";
 import { FetchDataComponent } from "./fetch-data/fetch-data.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AuthenticationComponent } from "./authentication/authentication.component";
 import {
   MatButtonModule,
   MatCardModule,
+  MatDatepickerModule,
   MatDividerModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatNativeDateModule,
   MatProgressSpinnerModule,
   MatSidenavModule,
   MatSnackBarModule,
   MatToolbarModule,
 } from "@angular/material";
 import { AuthenticationGuard } from "./authentication/authentication.guard";
+import { ExpenseComponent } from "./expense/expense.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    CounterComponent,
     FetchDataComponent,
     AuthenticationComponent,
+    ExpenseComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -41,7 +43,11 @@ import { AuthenticationGuard } from "./authentication/authentication.guard";
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: "", component: HomeComponent, pathMatch: "full" },
-      { path: "counter", component: CounterComponent },
+      {
+        path: "expense",
+        component: ExpenseComponent,
+        canActivate: [AuthenticationGuard],
+      },
       {
         path: "fetch-data",
         component: FetchDataComponent,
@@ -67,6 +73,8 @@ import { AuthenticationGuard } from "./authentication/authentication.guard";
     MatIconModule,
     MatSidenavModule,
     MatListModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
   ],
   providers: [AuthenticationGuard],
   bootstrap: [AppComponent],

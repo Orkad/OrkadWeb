@@ -36,6 +36,10 @@ body {
   padding: 8px;
 }
 
+.main-sidenav-content {
+  display: flex;
+}
+
 .sidenav-item span {
   margin-left: 8px;
   font-size: 1.25em;

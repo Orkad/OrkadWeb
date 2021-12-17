@@ -18,13 +18,13 @@
     <mat-sidenav-container class="main-sidenav-container">
       <mat-sidenav mode="side" opened>
         <mat-nav-list>
-          <mat-list-item [routerLink]="['/counter']" class="sidenav-item">
+          <mat-list-item [routerLink]="['/expense']" class="sidenav-item">
             <mat-icon>euro</mat-icon>
-            <span>mes dépenses</span>
+            <span>dépenses</span>
           </mat-list-item>
         </mat-nav-list>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <mat-sidenav-content class="main-sidenav-content">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
