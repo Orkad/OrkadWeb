@@ -27,6 +27,7 @@ import {
 } from "@angular/material";
 import { AuthenticationGuard } from "./authentication/authentication.guard";
 import { ExpenseComponent } from "./expense/expense.component";
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
 
 @NgModule({
   declarations: [
@@ -73,7 +74,7 @@ import { ExpenseComponent } from "./expense/expense.component";
     MatIconModule,
     MatSidenavModule,
     MatListModule,
-    MatNativeDateModule,
+    MatMomentDateModule,
     MatDatepickerModule,
   ],
   providers: [AuthenticationGuard],
