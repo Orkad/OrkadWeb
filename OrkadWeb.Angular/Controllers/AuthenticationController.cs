@@ -19,7 +19,9 @@ using OrkadWeb.Logic.Users.Commands;
 
 namespace OrkadWeb.Angular.Controllers
 {
-    public class AuthenticationController : ApiControllerBase
+    [ApiController]
+    [Authorize]
+    public class AuthenticationController : ControllerBase
     {
         private readonly IMediator mediator;
         private readonly IConfiguration configuration;

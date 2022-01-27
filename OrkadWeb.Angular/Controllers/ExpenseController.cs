@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Angular.Controllers
 {
-
-    [Route("[controller]")]
+    [ApiController]
+    [Authorize]
     public class ExpenseController : ControllerBase
     {
     }

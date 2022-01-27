@@ -5,7 +5,9 @@ using System.Text;
 
 namespace OrkadWeb.Logic.Shares.Commands.AddExpenseOnShare
 {
-
+    /// <summary>
+    /// Permet d'ajouter une dépense
+    /// </summary>
     public class AddExpenseCommand : ICommand
     {
         /// <summary>
