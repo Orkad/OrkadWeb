@@ -1,5 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
+import { date, RxwebValidators } from "@rxweb/reactive-form-validators";
+import { IFormBuilder, IFormGroup } from "@rxweb/types";
+import { ExpenseAddQuery } from "./expense-add-query";
 
 @Component({
   selector: "app-expense",
@@ -7,12 +15,18 @@ import { FormControl, FormGroup } from "@angular/forms";
   styleUrls: ["./expense.component.scss"],
 })
 export class ExpenseComponent implements OnInit {
-  addExpenseFormGroup = new FormGroup({
-    amount: new FormControl(""),
-    date: new FormControl(new Date()),
-  });
+  test: number;
+  formBuilder: IFormBuilder;
+  formGroup: IFormGroup<ExpenseAddQuery>;
 
-  constructor() {}
+  constructor(formBuilder: FormBuilder) {
+    this.formBuilder = formBuilder;
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.formGroup = this.formBuilder.group<ExpenseAddQuery>({
+      date: [new Date()],
+      amount: [null, [Validators.min(0.01), Validators.max(10000)]],
+    });
+  }
 }

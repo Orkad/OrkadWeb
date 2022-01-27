@@ -85,6 +85,7 @@ namespace OrkadWeb.Tests.Steps
 
         }
 
+
         [When(@"(.*) ajoute la dépense de (.*)€ nommée ""([^""]*)"" au partage")]
         public void WhenUserAddExpense(string user, decimal amount, string name)
         {

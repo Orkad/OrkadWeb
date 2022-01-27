@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OrkadWeb.Data.Builder;
 using OrkadWeb.Data.NHibernate;
-using OrkadWeb.Logic.Builder;
+using OrkadWeb.Logic;
+using OrkadWeb.Logic.Abstractions;
+using OrkadWeb.Tests.Contexts;
+using OrkadWeb.Tests.Models;
 using SolidToken.SpecFlow.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,6 +22,7 @@ namespace OrkadWeb.Tests.Support
             services.AddSingleton<ISessionFactoryResolver, InMemorySessionFactoryResolver>();
             services.AddData();
             services.AddLogic();
+            services.AddSingleton<ITimeProvider, TimeContext>();
 
             return services;
         }

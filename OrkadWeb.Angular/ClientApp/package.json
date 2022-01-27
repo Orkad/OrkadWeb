@@ -26,6 +26,8 @@
     "@angular/router": "8.2.12",
     "@auth0/angular-jwt": "^4.2.0",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
+    "@rxweb/reactive-form-validators": "^2.1.6",
+    "@rxweb/types": "^1.0.8",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.6.0",
     "core-js": "^3.8.3",
@@ -33,6 +35,7 @@
     "oidc-client": "^1.11.3",
     "popper.js": "^1.16.0",
     "rxjs": "^6.6.3",
+    "sass": "^1.45.0",
     "zone.js": "0.9.1"
   },
   "devDependencies": {
@@ -54,7 +57,6 @@
     "typescript": "3.5.3"
   },
   "optionalDependencies": {
-    "node-sass": "^5.0.0",
     "protractor": "~5.4.2",
     "ts-node": "~8.4.1",
     "tslint": "~5.20.0"

@@ -37,7 +37,7 @@ body {
 }
 
 .main-sidenav-content {
-  display: flex;
+  padding: 2%;
 }
 
 .sidenav-item span {

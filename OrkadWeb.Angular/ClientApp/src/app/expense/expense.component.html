@@ -1,14 +1,32 @@
-<form [formGroup]="addExpenseFormGroup">
-  <mat-form-field>
-    <mat-label>Montant</mat-label>
-    <input matInput type="text" formControlName="amount" />
-    <span matSuffix>€</span>
-    <!-- <mat-error *ngIf="fontSizeControl.invalid">Min size: 10px</mat-error> -->
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Date</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="date" />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-</form>
+<div>
+  <form>
+    <mat-form-field class="date-form-field">
+      <mat-label>Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControl="formGroup.controls.date"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="amount-form-field">
+      <mat-label>Montant</mat-label>
+      <!-- <input
+        matInput
+        type="text"
+        placeholder="Test Price"
+        [ngModel]="test | currency: 'USD':'symbol':'2.2'"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        (ngModelChange)="testPrice = $event"
+      /> -->
+      <input matInput type="text" formControl="formGroup.controls.amount" />
+      <!-- <mat-error *ngIf="fontSizeControl.invalid">Min size: 10px</mat-error> -->
+    </mat-form-field>
+
+    <button mat-mini-fab color="primary">
+      <mat-icon>add</mat-icon>
+    </button>
+  </form>
+</div>

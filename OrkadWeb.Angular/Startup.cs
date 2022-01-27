@@ -1,15 +1,19 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using OrkadWeb.Angular.Models;
 using OrkadWeb.Data.Builder;
 using OrkadWeb.Data.NHibernate;
-using OrkadWeb.Logic.Builder;
+using OrkadWeb.Logic;
+using OrkadWeb.Logic.Abstractions;
+using System;
 using System.Text;
 
 namespace OrkadWeb.Angular
@@ -56,6 +60,22 @@ namespace OrkadWeb.Angular
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
                     });
             services.AddSession();
+            services.AddScoped<IAuthenticatedUser>(ResolveAuthenticatedUser);
+        }
+
+        private AuthenticatedUser ResolveAuthenticatedUser(IServiceProvider serviceProvider)
+        {
+            var httpContext = serviceProvider.GetService<HttpContext>();
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                return new AuthenticatedUser
+                {
+                    Id = int.Parse(httpContext.User.FindFirst("user_id").Value),
+                    Name = httpContext.User.FindFirst("user_name").Value,
+                    Email = httpContext.User.FindFirst("user_email").Value,
+                };
+            }
+            return null;
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
