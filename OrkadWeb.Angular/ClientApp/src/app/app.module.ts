@@ -20,10 +20,13 @@ import {
   MatInputModule,
   MatListModule,
   MatNativeDateModule,
+  MAT_DATE_LOCALE,
+  MAT_DATE_FORMATS,
   MatProgressSpinnerModule,
   MatSidenavModule,
   MatSnackBarModule,
   MatToolbarModule,
+  MatDateFormats,
 } from "@angular/material";
 import { AuthenticationGuard } from "./authentication/authentication.guard";
 import { ExpenseComponent } from "./expense/expense.component";
@@ -77,7 +80,19 @@ import { MatMomentDateModule } from "@angular/material-moment-adapter";
     MatMomentDateModule,
     MatDatepickerModule,
   ],
-  providers: [AuthenticationGuard],
+  providers: [
+    AuthenticationGuard,
+    { provide: MAT_DATE_LOCALE, useValue: "fr" },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        display: {
+          dateInput: "DD/MM/YYYY",
+          monthYearLabel: "MMMM YYYY",
+        },
+      } as MatDateFormats,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

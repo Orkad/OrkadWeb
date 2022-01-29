@@ -15,6 +15,9 @@ import { ExpenseAddQuery } from "./expense-add-query";
   styleUrls: ["./expense.component.scss"],
 })
 export class ExpenseComponent implements OnInit {
+  readonly minAmount = 0.01;
+  readonly maxAmount = 10000;
+
   test: number;
   formBuilder: IFormBuilder;
   formGroup: IFormGroup<ExpenseAddQuery>;
@@ -25,8 +28,23 @@ export class ExpenseComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group<ExpenseAddQuery>({
-      date: [new Date()],
-      amount: [null, [Validators.min(0.01), Validators.max(10000)]],
+      date: [null, Validators.required],
+      amount: [
+        null,
+        [
+          Validators.required,
+          Validators.min(this.minAmount),
+          Validators.max(this.maxAmount),
+        ],
+      ],
     });
+  }
+
+  get amount() {
+    return this.formGroup.controls.amount;
+  }
+
+  get date() {
+    return this.formGroup.controls.date;
   }
 }
