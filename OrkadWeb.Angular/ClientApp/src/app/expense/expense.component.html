@@ -1,5 +1,5 @@
 <div>
-  <form>
+  <form (submit)="submitNewExpense()">
     <mat-form-field class="date-form-field">
       <mat-label>Date</mat-label>
       <input matInput [matDatepicker]="picker" [formControl]="date" />

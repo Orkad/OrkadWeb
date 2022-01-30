@@ -90,6 +90,9 @@ import { MatMomentDateModule } from "@angular/material-moment-adapter";
           dateInput: "DD/MM/YYYY",
           monthYearLabel: "MMMM YYYY",
         },
+        parse: {
+          dateInput: "DD/MM/YYYY",
+        },
       } as MatDateFormats,
     },
   ],

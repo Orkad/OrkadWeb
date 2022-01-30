@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Logic.Shares.Commands.AddExpenseOnShare
 {
-    public class AddExpenseHandler : IRequestHandler<AddExpenseCommand>
+    public class AddExpenseHandler : IRequestHandler<AddExpenseCommand, AddExpenseResult>
     {
         private readonly IDataService dataService;
         private readonly IAuthenticatedUser authenticatedUser;
@@ -22,21 +22,25 @@ namespace OrkadWeb.Logic.Shares.Commands.AddExpenseOnShare
             this.authenticatedUser = authenticatedUser;
         }
 
-        public async Task<Unit> Handle(AddExpenseCommand command, CancellationToken cancellationToken)
+        public async Task<AddExpenseResult> Handle(AddExpenseCommand command, CancellationToken cancellationToken)
         {
             UserShare userShare = null;
             if (command.ShareId.HasValue)
             {
                 userShare = dataService.Query<UserShare>().Single(us => us.User.Id == authenticatedUser.Id && us.Share.Id == command.ShareId);
             }
-            await dataService.InsertAsync(new Expense
+            var expense = new Expense
             {
                 Amount = command.Amount,
                 Date = DateTime.Now,
                 Name = command.Name,
                 UserShare = userShare,
-            });
-            return Unit.Value;
+            };
+            await dataService.InsertAsync(expense);
+            return new AddExpenseResult
+            {
+                Id = expense.Id,
+            };
         }
     }
 }

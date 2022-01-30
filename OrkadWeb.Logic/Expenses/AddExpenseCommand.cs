@@ -8,7 +8,7 @@ namespace OrkadWeb.Logic.Shares.Commands.AddExpenseOnShare
     /// <summary>
     /// Permet d'ajouter une dépense
     /// </summary>
-    public class AddExpenseCommand : ICommand
+    public class AddExpenseCommand : ICommand<AddExpenseResult>
     {
         /// <summary>
         /// Montant de la dépense

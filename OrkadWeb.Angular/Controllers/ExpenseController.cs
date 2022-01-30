@@ -12,5 +12,6 @@ namespace OrkadWeb.Angular.Controllers
     [Authorize]
     public class ExpenseController : ControllerBase
     {
+
     }
 }
