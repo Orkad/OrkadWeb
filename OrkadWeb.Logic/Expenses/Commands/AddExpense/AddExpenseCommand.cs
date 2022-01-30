@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OrkadWeb.Logic.Shares.Commands.AddExpenseOnShare
+namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
 {
     /// <summary>
     /// Permet d'ajouter une dépense

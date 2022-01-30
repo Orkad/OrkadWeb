@@ -8,10 +8,7 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Angular.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    [Authorize]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : ApiController
     {
         private static readonly string[] Summaries = new[]
         {

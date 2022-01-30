@@ -1,4 +1,4 @@
-﻿namespace OrkadWeb.Logic.Shares.Commands.AddExpenseOnShare
+﻿namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
 {
     /// <summary>
     /// Résultat de l'ajout d'une dépense

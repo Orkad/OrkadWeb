@@ -1,6 +1,6 @@
 ﻿/** Auto generated file (do not modify) */
 module app {
-  export class AddExpenseCommand {
+  export class AddExpenseCommand { 
     /** Montant de la dépense */
     public amount: number;
     /** Nom d'affichage de la dépense */

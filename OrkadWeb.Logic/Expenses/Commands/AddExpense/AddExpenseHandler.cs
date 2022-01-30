@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OrkadWeb.Logic.Shares.Commands.AddExpenseOnShare
+namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
 {
     public class AddExpenseHandler : IRequestHandler<AddExpenseCommand, AddExpenseResult>
     {

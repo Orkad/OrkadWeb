@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Angular.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class ShareController : ControllerBase
+    public class ShareController : ApiController
     {
         private readonly Mediator mediator;
 

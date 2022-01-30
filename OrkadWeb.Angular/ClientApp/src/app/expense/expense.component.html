@@ -5,6 +5,9 @@
       <input matInput [matDatepicker]="picker" [formControl]="date" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="date.hasError('required')"
+        >La dépense doit être datée</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field class="amount-form-field">
@@ -17,7 +20,7 @@
         >Le montant doit être suppérieur à {{ minAmount }}€</mat-error
       >
       <mat-error *ngIf="amount.hasError('max')"
-        >Le montant doit être suppérieur à {{ maxAmount }}€</mat-error
+        >Le montant doit être inférieur à {{ maxAmount }}€</mat-error
       >
     </mat-form-field>
 

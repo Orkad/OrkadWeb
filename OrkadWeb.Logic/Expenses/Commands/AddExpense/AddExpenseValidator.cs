@@ -5,7 +5,7 @@ using OrkadWeb.Logic.Abstractions;
 using System;
 using System.Linq;
 
-namespace OrkadWeb.Logic.Shares.Commands.AddExpenseOnShare
+namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
 {
     public class AddExpenseValidator : AbstractValidator<AddExpenseCommand>
     {
