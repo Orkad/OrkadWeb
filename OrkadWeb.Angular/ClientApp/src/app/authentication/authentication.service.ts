@@ -34,7 +34,7 @@ export class AuthenticationService {
 
   login(username: string, password: string): Observable<boolean> {
     return this.httpClient
-      .post<LoginResponse>("/authentication/login", {
+      .post<LoginResponse>("api/authentication/login", {
         username: username,
         password: password,
       })

@@ -30,7 +30,7 @@ namespace OrkadWeb.Angular.Controllers
             this.configuration = configuration;
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<LoginResponse> Login(LoginCommand command)
         {

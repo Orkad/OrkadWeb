@@ -60,19 +60,20 @@ namespace OrkadWeb.Angular
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
                     });
             services.AddSession();
+            services.AddHttpContextAccessor();
             services.AddScoped<IAuthenticatedUser>(ResolveAuthenticatedUser);
         }
 
         private AuthenticatedUser ResolveAuthenticatedUser(IServiceProvider serviceProvider)
         {
-            var httpContext = serviceProvider.GetService<HttpContext>();
-            if (httpContext.User.Identity.IsAuthenticated)
+            var user = serviceProvider.GetService<IHttpContextAccessor>().HttpContext.User;
+            if (user.Identity.IsAuthenticated)
             {
                 return new AuthenticatedUser
                 {
-                    Id = int.Parse(httpContext.User.FindFirst("user_id").Value),
-                    Name = httpContext.User.FindFirst("user_name").Value,
-                    Email = httpContext.User.FindFirst("user_email").Value,
+                    Id = int.Parse(user.FindFirst("user_id").Value),
+                    Name = user.FindFirst("user_name").Value,
+                    Email = user.FindFirst("user_email").Value,
                 };
             }
             return null;
