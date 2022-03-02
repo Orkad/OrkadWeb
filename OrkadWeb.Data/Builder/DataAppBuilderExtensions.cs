@@ -14,11 +14,9 @@ namespace OrkadWeb.Data.Builder
     {
         public static void AddData(this IServiceCollection services)
         {
-            // Session Factory
-            services.AddSingleton(provider => provider.GetService<ISessionFactoryResolver>().Resolve(Assembly.GetExecutingAssembly()));
-
             // Session
             services.AddScoped(provider => provider.GetService<ISessionFactory>().OpenSession());
+            services.AddScoped(provider => provider.GetService<ISessionFactory>().OpenStatelessSession());
 
             // DataService
             services.AddScoped<IDataService, DataService>();

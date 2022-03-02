@@ -9,11 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using OrkadWeb.Angular.Models;
+using OrkadWeb.Data;
 using OrkadWeb.Data.Builder;
 using OrkadWeb.Data.NHibernate;
 using OrkadWeb.Logic;
 using OrkadWeb.Logic.Abstractions;
 using System;
+using System.Reflection;
 using System.Text;
 
 namespace OrkadWeb.Angular
@@ -30,8 +32,11 @@ namespace OrkadWeb.Angular
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureAuthentication(services);
-            
-            services.AddSingleton<ISessionFactoryResolver>(new MySQLSessionFactoryResolver(Configuration.GetConnectionString("OrkadWeb")));
+
+            var resolver = new MySQLSessionFactoryResolver(Configuration.GetConnectionString("OrkadWeb"));
+            var sessionFactory = resolver.Resolve(Assembly.GetAssembly(typeof(IDataService)));
+            services.AddSingleton<ISessionFactoryResolver>(resolver);
+            services.AddSingleton(sessionFactory);
             services.AddData();
             services.AddLogic();
             services.AddControllersWithViews();

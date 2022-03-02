@@ -42,7 +42,6 @@ export class AuthenticationComponent implements OnInit {
 
   login(): void {
     this.loading = true;
-    console.log(this.loginForm);
     this.authenticationService
       .login(this.loginForm.value["username"], this.loginForm.value["password"])
       .subscribe();

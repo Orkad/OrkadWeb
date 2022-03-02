@@ -35,6 +35,7 @@ namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
                 Date = DateTime.Now,
                 Name = command.Name,
                 UserShare = userShare,
+                Owner = dataService.Load<User>(authenticatedUser.Id),
             };
             await dataService.InsertAsync(expense);
             return new AddExpenseResult

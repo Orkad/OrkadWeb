@@ -8,6 +8,7 @@ using OrkadWeb.Tests.Models;
 using SolidToken.SpecFlow.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace OrkadWeb.Tests.Support
@@ -19,7 +20,10 @@ namespace OrkadWeb.Tests.Support
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<ISessionFactoryResolver, InMemorySessionFactoryResolver>();
+            var resolver = new InMemorySessionFactoryResolver();
+            var sessionFactory = resolver.Resolve(Assembly.LoadFrom("OrkadWeb.Data"));
+            services.AddSingleton<ISessionFactoryResolver>(resolver);
+            services.AddSingleton(sessionFactory);
             services.AddData();
             services.AddLogic();
             services.AddSingleton<ITimeProvider, TimeContext>();
