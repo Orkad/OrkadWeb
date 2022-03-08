@@ -1,0 +1,36 @@
+<div>
+  <form (submit)="submitNewExpense()">
+    <mat-form-field class="date-form-field">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" [formControl]="date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="date.hasError('required')"
+        >La dépense doit être datée</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="amount-form-field">
+      <mat-label>Montant</mat-label>
+      <input id="amount" matInput type="number" [formControl]="amount" />
+      <mat-error *ngIf="amount.hasError('required')"
+        >Le montant est requis</mat-error
+      >
+      <mat-error *ngIf="amount.hasError('min')"
+        >Le montant doit être suppérieur à {{ minAmount }}€</mat-error
+      >
+      <mat-error *ngIf="amount.hasError('max')"
+        >Le montant doit être inférieur à {{ maxAmount }}€</mat-error
+      >
+    </mat-form-field>
+
+    <button
+      type="submit"
+      mat-mini-fab
+      color="primary"
+      [disabled]="formGroup.invalid"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </form>
+</div>

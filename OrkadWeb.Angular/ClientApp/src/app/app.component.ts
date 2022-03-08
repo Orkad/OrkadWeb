@@ -1,10 +1,19 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from './authentication/authentication.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ClientApp';
+  constructor(private authenticationService: AuthenticationService) {}
+  connected = false;
+  username = '';
+
+  ngOnInit(): void {
+    this.authenticationService.user.subscribe((u) => {
+      this.connected = u != null;
+      this.username = u?.name ?? 'anonymous';
+    });
+  }
 }
