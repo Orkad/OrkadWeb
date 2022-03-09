@@ -1,32 +1,23 @@
 <body>
-  <div class="fullscreen-container">
-    <mat-toolbar color="primary" class="main-toolbar">
-      <button mat-icon-button>
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>Tuthunes</span>
-      <span class="menu-spacer"></span>
-      <button *ngIf="!connected" mat-button [routerLink]="['/authentication']">
-        <mat-icon>account_circle</mat-icon>
-        <span>Se connecter</span>
-      </button>
-      <button *ngIf="connected" mat-button [routerLink]="['/authentication']">
-        <mat-icon>account_circle</mat-icon>
-        {{ username }}
-      </button>
-    </mat-toolbar>
-    <mat-sidenav-container class="main-sidenav-container">
-      <mat-sidenav mode="side" opened>
-        <mat-nav-list>
-          <mat-list-item [routerLink]="['/expense']" class="sidenav-item">
-            <mat-icon>euro</mat-icon>
-            <span>dépenses</span>
-          </mat-list-item>
-        </mat-nav-list>
-      </mat-sidenav>
-      <mat-sidenav-content class="main-sidenav-content">
-        <router-outlet></router-outlet>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-  </div>
+  <mat-toolbar color="primary" class="main-toolbar">
+    <span>OWV</span>
+    <span class="menu-spacer"></span>
+    <button mat-button [routerLink]="['/authentication']" class="big">
+      <mat-icon>account_circle</mat-icon>
+      {{ connected ? username : "Se connecter" }}
+    </button>
+  </mat-toolbar>
+  <mat-sidenav-container class="main-sidenav-container">
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <mat-list-item [routerLink]="['/expense']" class="sidenav-item big">
+          <mat-icon>euro</mat-icon>
+          dépenses
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="main-sidenav-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </body>
