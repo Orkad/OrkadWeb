@@ -1,4 +1,5 @@
 <div>
+  <h1>Transactions</h1>
   <form (submit)="submitNewExpense()">
     <mat-form-field class="date-form-field">
       <mat-label>Date</mat-label>
@@ -12,7 +13,7 @@
 
     <mat-form-field class="amount-form-field">
       <mat-label>Montant</mat-label>
-      <input id="amount" matInput type="number" [formControl]="amount" />
+      <input id="amount" matInput [formControl]="amount" />
       <mat-error *ngIf="amount.hasError('required')"
         >Le montant est requis</mat-error
       >
@@ -21,6 +22,14 @@
       >
       <mat-error *ngIf="amount.hasError('max')"
         >Le montant doit être inférieur à {{ maxAmount }}€</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="name-form-field">
+      <mat-label>Libellé</mat-label>
+      <input matInput [formControl]="name" />
+      <mat-error *ngIf="name.hasError('required')"
+        >La dépense doit avoir un libellé</mat-error
       >
     </mat-form-field>
 

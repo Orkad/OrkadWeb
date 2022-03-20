@@ -64,6 +64,7 @@ const materialModules = [
   PortalModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatFormFieldModule,
 ];
 
 @NgModule({

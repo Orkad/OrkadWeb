@@ -40,6 +40,7 @@ export class ExpenseComponent implements OnInit {
           Validators.max(this.maxAmount),
         ],
       ],
+      name: [null, Validators.required],
     });
   }
 
@@ -49,6 +50,10 @@ export class ExpenseComponent implements OnInit {
 
   get date() {
     return this.formGroup.controls.date as FormControl;
+  }
+
+  get name() {
+    return this.formGroup.controls.name as FormControl;
   }
 
   submitNewExpense() {

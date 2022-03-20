@@ -8,6 +8,12 @@ mat-sidenav-container {
   }
 }
 
+mat-sidenav-content {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
 .menu-spacer {
   flex: 1 1 auto;
 }
