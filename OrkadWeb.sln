@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Logic", "OrkadWeb.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Tests", "OrkadWeb.Tests\OrkadWeb.Tests.csproj", "{237FA01B-1FDB-4224-B44A-A50F8E391617}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrkadWeb.Data.Migrator", "OrkadWeb.Data.Migrator\OrkadWeb.Data.Migrator.csproj", "{4BB56998-13C5-4B4D-BDCE-CD17B790AACB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Data.Migrator", "OrkadWeb.Data.Migrator\OrkadWeb.Data.Migrator.csproj", "{4BB56998-13C5-4B4D-BDCE-CD17B790AACB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrkadWeb.Common", "OrkadWeb.Common\OrkadWeb.Common.csproj", "{8ECFD81D-6557-49D7-9CCD-19C8A6E4F151}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{4BB56998-13C5-4B4D-BDCE-CD17B790AACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BB56998-13C5-4B4D-BDCE-CD17B790AACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BB56998-13C5-4B4D-BDCE-CD17B790AACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ECFD81D-6557-49D7-9CCD-19C8A6E4F151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ECFD81D-6557-49D7-9CCD-19C8A6E4F151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ECFD81D-6557-49D7-9CCD-19C8A6E4F151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ECFD81D-6557-49D7-9CCD-19C8A6E4F151}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
