@@ -48,25 +48,21 @@ namespace OrkadWeb.Data
 
         public void Insert<T>(T obj)
         {
-            CreateTransactionIfNotExists();
             session.Save(obj);
         }
 
         public async Task InsertAsync<T>(T obj)
         {
-            CreateTransactionIfNotExists();
             await session.SaveAsync(obj);
         }
 
         public void Update<T>(T obj)
         {
-            CreateTransactionIfNotExists();
             session.Update(obj);
         }
 
         public async Task UpdateAsync<T>(T obj)
         {
-            CreateTransactionIfNotExists();
             await session.UpdateAsync(obj);
         }
 
@@ -77,24 +73,11 @@ namespace OrkadWeb.Data
         /// <param name="obj">instance de l'entité a supprimer</param>
         public void Delete<T>(T obj)
         {
-            CreateTransactionIfNotExists();
             session.Delete(obj);
-        }
-
-        /// <summary>
-        /// Créé une transaction si aucun n'est existante
-        /// </summary>
-        private void CreateTransactionIfNotExists()
-        {
-            if (session.GetCurrentTransaction() == null)
-            {
-                session.BeginTransaction();
-            }
         }
 
         public void Dispose()
         {
-            session.GetCurrentTransaction()?.Commit();
             session.Dispose();
         }
     }

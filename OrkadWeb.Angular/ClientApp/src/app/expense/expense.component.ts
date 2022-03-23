@@ -30,6 +30,10 @@ export class ExpenseComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.resetForm();
+  }
+
+  resetForm() {
     this.formGroup = this.formBuilder.group<AddExpenseCommand>({
       date: [null, Validators.required],
       amount: [
@@ -59,6 +63,6 @@ export class ExpenseComponent implements OnInit {
   submitNewExpense() {
     this.expenseService
       .add(this.formGroup.value)
-      .subscribe((data) => console.log(data));
+      .subscribe((r) => this.resetForm());
   }
 }

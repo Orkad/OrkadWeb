@@ -31,9 +31,6 @@ namespace OrkadWeb.Data.NHibernate
             // set connection string after (we don't want to keep it in cache file)
             config.SetProperty("connection.connection_string", connectionString);
 
-            // Run database creation
-            new SchemaUpdate(config).Execute(false, true);
-
             return config.BuildSessionFactory();
         }
     }

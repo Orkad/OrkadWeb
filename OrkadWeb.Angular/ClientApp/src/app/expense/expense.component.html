@@ -13,7 +13,7 @@
 
     <mat-form-field class="amount-form-field">
       <mat-label>Montant</mat-label>
-      <input id="amount" matInput [formControl]="amount" />
+      <input id="amount" type="number" matInput [formControl]="amount" />
       <mat-error *ngIf="amount.hasError('required')"
         >Le montant est requis</mat-error
       >

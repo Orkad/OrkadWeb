@@ -33,10 +33,6 @@ namespace OrkadWeb.Data.Models
         /// </summary>
         public virtual DateTime Date { get; set; }
 
-        /// <summary>
-        /// Partage utilisateur concerné
-        /// </summary>
-        public virtual UserShare UserShare { get; set; }
     }
 
     public class ExpenseMap : ClassMap<Expense>
@@ -49,7 +45,6 @@ namespace OrkadWeb.Data.Models
             Map(x => x.Amount, "amount");
             Map(x => x.Name, "name");
             Map(x => x.Date, "date");
-            References(x => x.UserShare, "user_share_id");
         }
     }
 }

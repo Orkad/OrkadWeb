@@ -24,10 +24,5 @@ namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
         /// Date de la dépense (optionnel)
         /// </summary>
         public DateTime? Date { get; set; }
-
-        /// <summary>
-        /// Partage sur lequel ajouter la dépense
-        /// </summary>
-        public int? ShareId { get; set; }
     }
 }

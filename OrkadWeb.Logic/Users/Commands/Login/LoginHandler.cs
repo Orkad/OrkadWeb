@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using NHibernate.Linq;
+using OrkadWeb.Common;
 using OrkadWeb.Data;
 using OrkadWeb.Data.Models;
 using System.Linq;
@@ -21,11 +22,10 @@ namespace OrkadWeb.Logic.Users.Commands
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var hash = HashSHA256(request.Password);
             var user = await dataService.Query<User>()
-                .Where(u => (u.Username == request.Username || u.Email == request.Username) && u.Password == hash)
+                .Where(u => u.Username == request.Username || u.Email == request.Username)
                 .SingleOrDefaultAsync(cancellationToken);
-            if (user == null)
+            if (user == null || !Hash.Validate(request.Password, user.Password))
             {
                 return new LoginResponse
                 {
@@ -41,24 +41,6 @@ namespace OrkadWeb.Logic.Users.Commands
                 Email = user.Email,
                 Role = "User",
             };
-        }
-
-        /// <summary>
-        /// Permet de crypter en SHA256
-        /// </summary>
-        /// <param name="value">la valeur a crypter</param>
-        /// <returns>la valeur crypter</returns>
-        private static string HashSHA256(string value)
-        {
-            StringBuilder Sb = new StringBuilder();
-            using (var hash = SHA256.Create())
-            {
-                foreach (var b in hash.ComputeHash(Encoding.UTF8.GetBytes(value)))
-                {
-                    Sb.Append(b.ToString("x2"));
-                }
-            }
-            return Sb.ToString();
         }
     }
 }

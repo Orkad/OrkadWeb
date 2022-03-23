@@ -24,31 +24,22 @@ export class AuthenticationComponent implements OnInit {
       username: [''],
       password: [''],
     });
-    this.refresh();
-    this.authenticationService.user.subscribe((u) => {
-      if (u == null) {
-        this.loggedIn = false;
-        this.loggedUsername = null;
-      } else {
+    this.authenticationService.user.subscribe((user) => {
+      if (user) {
         this.loggedIn = true;
-        this.loggedUsername = u.name;
+        this.loggedUsername = user.name;
       }
     });
-  }
-
-  refresh() {
-    this.loading = false;
   }
 
   login(): void {
     this.loading = true;
     this.authenticationService
       .login(this.loginForm.value['username'], this.loginForm.value['password'])
-      .subscribe();
+      .subscribe(() => (this.loading = false));
   }
 
   logout(): void {
     this.authenticationService.logout();
-    this.refresh();
   }
 }

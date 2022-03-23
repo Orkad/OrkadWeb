@@ -25,16 +25,11 @@ namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
         public async Task<AddExpenseResult> Handle(AddExpenseCommand command, CancellationToken cancellationToken)
         {
             UserShare userShare = null;
-            if (command.ShareId.HasValue)
-            {
-                userShare = dataService.Query<UserShare>().Single(us => us.User.Id == authenticatedUser.Id && us.Share.Id == command.ShareId);
-            }
             var expense = new Expense
             {
                 Amount = command.Amount,
                 Date = DateTime.Now,
                 Name = command.Name,
-                UserShare = userShare,
                 Owner = dataService.Load<User>(authenticatedUser.Id),
             };
             await dataService.InsertAsync(expense);

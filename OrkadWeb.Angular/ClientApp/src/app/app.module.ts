@@ -22,6 +22,7 @@ import { MaterialModule } from './material.module';
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -40,7 +41,6 @@ import { MaterialModule } from './material.module';
         allowedDomains: ['localhost:44365'],
       },
     }),
-    BrowserAnimationsModule,
     MaterialModule,
   ],
   providers: [AuthenticationGuard],
