@@ -30,7 +30,7 @@ namespace OrkadWeb.Logic.Users.Commands
                 return new LoginResponse
                 {
                     Success = false,
-                    Error = "La combinaison 'Nom d'utilisateur' & 'Mot de passe' est incorrecte",
+                    Error = "Nom d'utilisateur ou mot de passe incorrect",
                 };
             }
             return new LoginResponse

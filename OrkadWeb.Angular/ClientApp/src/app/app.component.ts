@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from 'src/shared/models/User';
 import { AuthenticationService } from './authentication/authentication.service';
 
 @Component({
@@ -9,12 +10,15 @@ import { AuthenticationService } from './authentication/authentication.service';
 export class AppComponent {
   constructor(private authenticationService: AuthenticationService) {}
   connected = false;
-  username = '';
+  username: string | undefined;
 
   ngOnInit(): void {
-    this.authenticationService.user.subscribe((u) => {
-      this.connected = u != null;
-      this.username = u?.name ?? 'anonymous';
-    });
+    this.setUser(this.authenticationService.getUser());
+    this.authenticationService.user.subscribe((user) => this.setUser(user));
+  }
+
+  setUser(user: User | null) {
+    this.connected = user != null;
+    this.username = user?.name;
   }
 }

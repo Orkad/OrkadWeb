@@ -24,7 +24,6 @@ namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
 
         public async Task<AddExpenseResult> Handle(AddExpenseCommand command, CancellationToken cancellationToken)
         {
-            UserShare userShare = null;
             var expense = new Expense
             {
                 Amount = command.Amount,

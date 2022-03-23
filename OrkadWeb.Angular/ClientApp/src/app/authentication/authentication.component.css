@@ -5,6 +5,7 @@
 
 .mat-card {
   width: 300px;
+  height: fit-content;
 }
 
 .mat-form-field {
@@ -24,4 +25,9 @@ body {
 
 .mat-flat-button {
   width: 100%;
+}
+
+.server-error {
+  padding-top: 12px;
+  font-size: 0.75em;
 }

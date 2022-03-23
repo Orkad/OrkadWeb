@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from './authentication.service';
+import { User } from 'src/shared/models/User';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-authentication',
@@ -10,7 +12,7 @@ import { AuthenticationService } from './authentication.service';
 export class AuthenticationComponent implements OnInit {
   loading: boolean = false;
   loggedIn: boolean;
-  loggedUsername: string | null;
+  loggedUsername: string | undefined;
   loginForm: FormGroup;
   error: string;
 
@@ -24,19 +26,23 @@ export class AuthenticationComponent implements OnInit {
       username: [''],
       password: [''],
     });
-    this.authenticationService.user.subscribe((user) => {
-      if (user) {
-        this.loggedIn = true;
-        this.loggedUsername = user.name;
-      }
-    });
+    this.setUser(this.authenticationService.getUser());
+    this.authenticationService.user.subscribe((user) => this.setUser(user));
+  }
+
+  setUser(user: User | null): void {
+    this.loggedIn = !!user;
+    this.loggedUsername = user?.name;
   }
 
   login(): void {
     this.loading = true;
     this.authenticationService
       .login(this.loginForm.value['username'], this.loginForm.value['password'])
-      .subscribe(() => (this.loading = false));
+      .subscribe((data) => {
+        this.error = data.error;
+        this.loading = false;
+      });
   }
 
   logout(): void {
