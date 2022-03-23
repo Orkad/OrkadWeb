@@ -15,9 +15,14 @@ export class AuthenticationService {
     private jwtHelper: JwtHelperService
   ) {}
 
+  /** retrieve the unexpired user based on the local token */
   getUser(): User | null {
     const token = localStorage.getItem('jwt');
     if (!token) {
+      return null;
+    }
+    if (this.jwtHelper.isTokenExpired(token)) {
+      localStorage.removeItem('jwt');
       return null;
     }
     const decodedToken = this.jwtHelper.decodeToken(token);
