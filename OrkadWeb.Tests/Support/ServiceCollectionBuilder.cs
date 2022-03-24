@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OrkadWeb.Data;
 using OrkadWeb.Data.Builder;
 using OrkadWeb.Data.NHibernate;
 using OrkadWeb.Logic;
@@ -21,12 +22,14 @@ namespace OrkadWeb.Tests.Support
             var services = new ServiceCollection();
 
             var resolver = new InMemorySessionFactoryResolver();
-            var sessionFactory = resolver.Resolve(Assembly.LoadFrom("OrkadWeb.Data"));
+            var sessionFactory = resolver.Resolve(typeof(IDataService).Assembly);
             services.AddSingleton<ISessionFactoryResolver>(resolver);
             services.AddSingleton(sessionFactory);
             services.AddData();
             services.AddLogic();
-            services.AddSingleton<ITimeProvider, TimeContext>();
+            var timeContext = new TimeContext();
+            services.AddSingleton(timeContext);
+            services.AddSingleton<ITimeProvider>(timeContext);
 
             return services;
         }
