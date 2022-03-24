@@ -18,3 +18,12 @@ body {
 .big {
   font-size: large;
 }
+
+.column-currency {
+  text-align: right !important;
+  justify-content: flex-end !important;
+}
+
+.column-date {
+  width: 92px;
+}

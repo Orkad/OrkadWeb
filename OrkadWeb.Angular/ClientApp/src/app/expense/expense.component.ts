@@ -8,6 +8,7 @@ import {
 import { date, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { IFormBuilder, IFormGroup } from '@rxweb/types';
 import { ExpenseService } from 'src/services/expense.service';
+import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
 import { AddExpenseCommand } from '../../shared/models/expenses/AddExpenseCommand';
 
 @Component({
@@ -22,6 +23,9 @@ export class ExpenseComponent implements OnInit {
   formBuilder: IFormBuilder;
   formGroup: IFormGroup<AddExpenseCommand>;
 
+  displayedColumns = ['date', 'name', 'amount'];
+  expenses: ExpenseRow[] = [];
+
   constructor(
     formBuilder: FormBuilder,
     private expenseService: ExpenseService
@@ -31,6 +35,9 @@ export class ExpenseComponent implements OnInit {
 
   ngOnInit() {
     this.resetForm();
+    this.expenseService.getAll().subscribe((rows) => {
+      this.expenses = rows;
+    });
   }
 
   resetForm() {
@@ -61,8 +68,20 @@ export class ExpenseComponent implements OnInit {
   }
 
   submitNewExpense() {
-    this.expenseService
-      .add(this.formGroup.value)
-      .subscribe((r) => this.resetForm());
+    let command = this.formGroup.value;
+    this.expenseService.add(command).subscribe((r) => {
+      this.resetForm();
+      this.addExpense({
+        id: r.id,
+        amount: command?.amount,
+        date: command?.date,
+        name: command?.name,
+      } as ExpenseRow);
+    });
+  }
+
+  addExpense(expense: ExpenseRow) {
+    this.expenses.unshift(expense);
+    this.expenses = [...this.expenses];
   }
 }

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, Provider } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
@@ -12,6 +12,10 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { AuthenticationGuard } from './authentication/authentication.guard';
 import { ExpenseComponent } from './expense/expense.component';
 import { MaterialModule } from '../shared/modules/material.module';
+import fr from '@angular/common/locales/fr';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(fr);
 
 const routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -22,6 +26,11 @@ const routes = [
   },
   { path: 'authentication', component: AuthenticationComponent },
 ] as Routes;
+
+const localProvider = {
+  provide: LOCALE_ID,
+  useValue: 'fr-FR',
+} as Provider;
 
 @NgModule({
   declarations: [
@@ -45,7 +54,7 @@ const routes = [
     }),
     MaterialModule,
   ],
-  providers: [AuthenticationGuard],
+  providers: [AuthenticationGuard, localProvider],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
