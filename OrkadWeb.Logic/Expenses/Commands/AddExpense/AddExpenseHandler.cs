@@ -27,7 +27,7 @@ namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
             var expense = new Expense
             {
                 Amount = command.Amount,
-                Date = DateTime.Now,
+                Date = command.Date ?? DateTime.Now,
                 Name = command.Name,
                 Owner = dataService.Load<User>(authenticatedUser.Id),
             };
