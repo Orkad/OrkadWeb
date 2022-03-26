@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { date, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { IFormBuilder, IFormGroup } from '@rxweb/types';
 import { ExpenseService } from 'src/services/expense.service';
@@ -16,7 +19,7 @@ import { AddExpenseCommand } from '../../shared/models/expenses/AddExpenseComman
   templateUrl: './expense.component.html',
   styleUrls: ['./expense.component.scss'],
 })
-export class ExpenseComponent implements OnInit {
+export class ExpenseComponent implements OnInit, AfterViewInit {
   readonly minAmount = 0.01;
   readonly maxAmount = 10000;
 
@@ -24,7 +27,9 @@ export class ExpenseComponent implements OnInit {
   formGroup: IFormGroup<AddExpenseCommand>;
 
   displayedColumns = ['date', 'name', 'amount'];
-  expenses: ExpenseRow[] = [];
+  expenses = new MatTableDataSource<ExpenseRow>();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     formBuilder: FormBuilder,
@@ -36,8 +41,13 @@ export class ExpenseComponent implements OnInit {
   ngOnInit() {
     this.resetForm();
     this.expenseService.getAll().subscribe((rows) => {
-      this.expenses = rows;
+      this.expenses.data = rows;
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.expenses.paginator = this.paginator;
+    this.expenses.sort = this.sort;
   }
 
   resetForm() {
@@ -81,7 +91,6 @@ export class ExpenseComponent implements OnInit {
   }
 
   addExpense(expense: ExpenseRow) {
-    this.expenses.unshift(expense);
-    this.expenses = [...this.expenses];
+    this.expenses.data.unshift(expense);
   }
 }
