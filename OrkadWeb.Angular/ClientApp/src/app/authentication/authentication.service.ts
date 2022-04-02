@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../../shared/models/User';
 import { LoginResponse } from '../../shared/models/LoginResponse';
+import { RegisterCommand } from 'src/api/commands/RegisterCommand';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -53,5 +54,9 @@ export class AuthenticationService {
   logout(): void {
     localStorage.removeItem('jwt');
     this.user.next(this.getUser());
+  }
+
+  register(command: RegisterCommand): Observable<void> {
+    return this.httpClient.post<void>('api/authentication/register', command);
   }
 }

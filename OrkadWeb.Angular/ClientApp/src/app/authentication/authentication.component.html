@@ -19,6 +19,9 @@
       </button>
       <mat-error class="server-error" *ngIf="error">{{ error }}</mat-error>
     </form>
+    <button type="button" mat-button routerLink="registration">
+      S'inscrire
+    </button>
   </mat-card-content>
 </mat-card>
 <mat-card *ngIf="loggedIn">

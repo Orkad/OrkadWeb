@@ -14,6 +14,7 @@ import { ExpenseComponent } from './expense/expense.component';
 import { MaterialModule } from '../shared/modules/material.module';
 import fr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
+import { RegistrationComponent } from './authentication/registration/registration.component';
 
 registerLocaleData(fr);
 
@@ -25,6 +26,7 @@ const routes = [
     canActivate: [AuthenticationGuard],
   },
   { path: 'authentication', component: AuthenticationComponent },
+  { path: 'authentication/registration', component: RegistrationComponent },
 ] as Routes;
 
 const localProvider = {
@@ -38,6 +40,7 @@ const localProvider = {
     HomeComponent,
     AuthenticationComponent,
     ExpenseComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

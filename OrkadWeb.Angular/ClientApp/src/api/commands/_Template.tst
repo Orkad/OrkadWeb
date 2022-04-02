@@ -1,7 +1,5 @@
 /** Auto generated file (do not modify) */
-module app {
-  $Classes(*Command)[export class $Name { $Properties[
-    /** $DocComment */
-    public $name: $Type;]
-  }]
-}
+$Classes(*Command)[export interface $Name { $Properties[
+  /** $DocComment */
+  $name: $Type;]
+}]

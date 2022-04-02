@@ -1,0 +1,13 @@
+.mat-form-field {
+  width: 100%;
+  padding-top: 8px;
+}
+.mat-flat-button,
+.mat-button {
+  margin-top: 8px;
+  width: 100%;
+}
+.mat-card {
+  width: 400px;
+  height: fit-content;
+}

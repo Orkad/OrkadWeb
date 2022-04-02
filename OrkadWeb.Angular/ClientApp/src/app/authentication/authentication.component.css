@@ -23,7 +23,9 @@ body {
   justify-content: center;
 }
 
-.mat-flat-button {
+.mat-flat-button,
+.mat-button {
+  margin-top: 8px;
   width: 100%;
 }
 
