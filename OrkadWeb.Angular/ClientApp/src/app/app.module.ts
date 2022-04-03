@@ -15,6 +15,7 @@ import { MaterialModule } from '../shared/modules/material.module';
 import fr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
 import { RegistrationComponent } from './authentication/registration/registration.component';
+import { ConfigurationResolver } from 'src/resolvers/configuration.resolver';
 
 registerLocaleData(fr);
 
@@ -25,7 +26,13 @@ const routes = [
     component: ExpenseComponent,
     canActivate: [AuthenticationGuard],
   },
-  { path: 'authentication', component: AuthenticationComponent },
+  {
+    path: 'authentication',
+    component: AuthenticationComponent,
+    resolve: {
+      config: ConfigurationResolver,
+    },
+  },
   { path: 'authentication/registration', component: RegistrationComponent },
 ] as Routes;
 

@@ -1,7 +1,6 @@
 ﻿/** Auto generated file (do not modify) */
-module app {
-  export class AddExpenseResult { 
-    /** Identifiant unique de la dépense créée */
-    public id: number;
-  }
+/** Résultat de l'ajout d'une dépense */
+export interface AddExpenseResult { 
+  /** Identifiant unique de la dépense créée */
+  id: number;
 }

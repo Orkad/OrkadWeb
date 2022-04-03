@@ -8,7 +8,10 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { IFormBuilder, IFormGroup } from '@rxweb/types';
+import { GlobalConfigurationResult } from 'src/api/results/GlobalConfigurationResult';
+import { ConfigurationService } from 'src/services/configuration.service';
 import { RegistrationForm } from './registration.form';
 
 @Component({
@@ -19,7 +22,11 @@ import { RegistrationForm } from './registration.form';
 export class RegistrationComponent implements OnInit {
   formGroup: IFormGroup<RegistrationForm>;
   formBuilder: IFormBuilder;
-  constructor(formBuilder: FormBuilder) {
+  constructor(
+    formBuilder: FormBuilder,
+    private configurationService: ConfigurationService,
+    private route: ActivatedRoute
+  ) {
     this.formBuilder = formBuilder;
   }
 
@@ -37,26 +44,30 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initForm(
+      this.route.snapshot.data['config'] as GlobalConfigurationResult
+    );
+  }
+
+  initForm(config: GlobalConfigurationResult): void {
     this.formGroup = this.formBuilder.group<RegistrationForm>({
       email: ['', [Validators.required, Validators.email]],
       username: [
         '',
         [
           Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(20),
-          Validators.pattern('^[a-zA-Z0-9]*$'),
+          Validators.minLength(config.usernameMinLength),
+          Validators.maxLength(config.passwordMaxLength),
+          Validators.pattern(config.usernameRegex),
         ],
       ],
       password: [
         '',
         [
           Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(32),
-          Validators.pattern(
-            '(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[\\]:;<>,.?/~_+-=|]).{8,32}$'
-          ),
+          Validators.minLength(config.passwordMinLength),
+          Validators.maxLength(config.passwordMaxLength),
+          Validators.pattern(config.passwordRegex),
         ],
       ],
       passwordConfirm: ['', [Validators.required, this.matchPassword]],
