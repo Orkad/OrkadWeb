@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrkadWeb.Logic.Config.Queries;
@@ -19,6 +20,7 @@ namespace OrkadWeb.Angular.Controllers
         /// Access to the global configuration
         /// </summary>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<GlobalConfigurationResult> Global() => await mediator.Send(new GetGlobalConfigurationQuery());
     }
 }

@@ -29,11 +29,14 @@ const routes = [
   {
     path: 'authentication',
     component: AuthenticationComponent,
+  },
+  {
+    path: 'authentication/registration',
+    component: RegistrationComponent,
     resolve: {
       config: ConfigurationResolver,
     },
   },
-  { path: 'authentication/registration', component: RegistrationComponent },
 ] as Routes;
 
 const localProvider = {

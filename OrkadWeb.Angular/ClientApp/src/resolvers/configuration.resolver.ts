@@ -10,9 +10,7 @@ export class ConfigurationResolver
 {
   constructor(private configurationService: ConfigurationService) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ):
+  resolve():
     | Observable<GlobalConfigurationResult>
     | Promise<GlobalConfigurationResult>
     | GlobalConfigurationResult {
