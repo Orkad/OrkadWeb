@@ -24,6 +24,7 @@ body {
 }
 
 .mat-flat-button,
+.mat-stroked-button,
 .mat-button {
   margin-top: 8px;
   width: 100%;

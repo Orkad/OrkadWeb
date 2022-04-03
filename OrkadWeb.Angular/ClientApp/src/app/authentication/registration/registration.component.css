@@ -3,11 +3,12 @@
   padding-top: 8px;
 }
 .mat-flat-button,
+.mat-stroked-button,
 .mat-button {
   margin-top: 8px;
   width: 100%;
 }
 .mat-card {
-  width: 400px;
+  width: 300px;
   height: fit-content;
 }
