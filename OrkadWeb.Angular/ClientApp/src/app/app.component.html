@@ -8,7 +8,7 @@
     </button>
   </mat-toolbar>
   <mat-sidenav-container class="main-sidenav-container">
-    <mat-sidenav mode="side" opened>
+    <mat-sidenav mode="side" opened *ngIf="connected">
       <mat-nav-list>
         <mat-list-item [routerLink]="['/expense']" class="sidenav-item big">
           <mat-icon>euro</mat-icon>

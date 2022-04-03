@@ -20,7 +20,7 @@ namespace OrkadWeb.Logic.Users.Commands.Register
             await dataService.InsertAsync(new User
             {
                 Email = request.Email,
-                Username = request.Email,
+                Username = request.UserName,
                 Password = Hash.Create(request.Password),
             });
             return Unit.Value;

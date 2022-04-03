@@ -13,6 +13,9 @@ namespace OrkadWeb.Logic.Config
 
         public const int PASSWORD_MIN_LENGHT = 8;
         public const int PASSWORD_MAX_LENGHT = 32;
-        public static readonly Regex PASSWORD_REGEX = new Regex("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[\\]:;<>,.?/~_+-=|])$");
+        public static readonly Regex PASSWORD_REGEX = new Regex(@"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^(A-Za-z0-9)]).{8,32}$");
+
+        public static readonly Regex EMAIL_REGEX = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+
     }
 }

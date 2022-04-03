@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace OrkadWeb.Data
@@ -71,5 +73,23 @@ namespace OrkadWeb.Data
         /// <typeparam name="T">type de l'entité</typeparam>
         /// <param name="data">instance de l'entité a supprimer</param>
         void Delete<T>(T data);
+    }
+
+    /// <summary>
+    /// Défini des méthodes d'extension pour un <see cref="IDataService"/>
+    /// </summary>
+    public static class IDataServiceExtensions
+    {
+        /// <summary>
+        /// Détermine si au moins une entité correspond à la condition passée en paramètre
+        /// </summary>
+        public static bool Exists<T>(this IDataService dataService, Expression<Func<T, bool>> condition)
+            => dataService.Query<T>().Any(condition);
+
+        /// <summary>
+        /// Détermine si aucune entité ne correspond à la condition passée en paramètre
+        /// </summary>
+        public static bool NotExists<T>(this IDataService dataService, Expression<Func<T, bool>> condition)
+            => !dataService.Exists(condition);
     }
 }

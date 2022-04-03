@@ -8,10 +8,11 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IFormBuilder, IFormGroup } from '@rxweb/types';
 import { GlobalConfigurationResult } from 'src/api/results/GlobalConfigurationResult';
-import { ConfigurationService } from 'src/services/configuration.service';
+import { NotificationService } from 'src/services/notification.service';
+import { UserService } from 'src/services/user.service';
 import { RegistrationForm } from './registration.form';
 
 @Component({
@@ -24,8 +25,10 @@ export class RegistrationComponent implements OnInit {
   formBuilder: IFormBuilder;
   constructor(
     formBuilder: FormBuilder,
-    private configurationService: ConfigurationService,
-    private route: ActivatedRoute
+    private userService: UserService,
+    private notificationService: NotificationService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.formBuilder = formBuilder;
   }
@@ -57,7 +60,7 @@ export class RegistrationComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(config.usernameMinLength),
-          Validators.maxLength(config.passwordMaxLength),
+          Validators.maxLength(config.usernameMaxLength),
           Validators.pattern(config.usernameRegex),
         ],
       ],
@@ -95,7 +98,7 @@ export class RegistrationComponent implements OnInit {
         case this.username:
           return 'alphanumérique uniquement';
         case this.password:
-          return 'au moins une majuscule, une minuscule et un caractère spécial';
+          return 'au moins une majuscule, une minuscule, un chiffre et un caractère spécial';
       }
     }
     return '';
@@ -110,5 +113,14 @@ export class RegistrationComponent implements OnInit {
     return { unmatch: true };
   };
 
-  register() {}
+  register() {
+    this.userService
+      .register(this.username.value, this.email.value, this.password.value)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/authentication']);
+          this.notificationService.success('enregistrement effectué');
+        },
+      });
+  }
 }
