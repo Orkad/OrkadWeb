@@ -17,6 +17,8 @@ namespace OrkadWeb.Logic.Config.Queries
                 PasswordMinLength = GlobalConfiguration.PASSWORD_MIN_LENGHT,
                 PasswordMaxLength = GlobalConfiguration.PASSWORD_MAX_LENGHT,
                 PasswordRegex = GlobalConfiguration.PASSWORD_REGEX.ToString(),
+
+                EmailRegex = GlobalConfiguration.EMAIL_REGEX.ToString(),
             };
         }
     }

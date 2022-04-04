@@ -13,4 +13,6 @@ export interface GlobalConfigurationResult {
   passwordMaxLength: number;
   /** Password Regex acceptation for registration */
   passwordRegex: string;
+  /** Regex for emails */
+  emailRegex: string;
 }

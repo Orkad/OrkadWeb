@@ -33,5 +33,10 @@
         /// Password Regex acceptation for registration
         /// </summary>
         public string PasswordRegex { get; set; }
+
+        /// <summary>
+        /// Regex for emails
+        /// </summary>
+        public string EmailRegex { get; set; }
     }
 }

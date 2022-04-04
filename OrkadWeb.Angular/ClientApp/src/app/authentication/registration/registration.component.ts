@@ -54,7 +54,7 @@ export class RegistrationComponent implements OnInit {
 
   initForm(config: GlobalConfigurationResult): void {
     this.formGroup = this.formBuilder.group<RegistrationForm>({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.pattern(config.emailRegex)]],
       username: [
         '',
         [
@@ -95,6 +95,8 @@ export class RegistrationComponent implements OnInit {
     }
     if (control.hasError('pattern')) {
       switch (control) {
+        case this.email:
+          return 'email invalide';
         case this.username:
           return 'alphanumérique uniquement';
         case this.password:
