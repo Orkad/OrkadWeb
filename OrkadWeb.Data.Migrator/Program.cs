@@ -21,7 +21,6 @@ namespace OrkadWeb.Data.Migrator
                 var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
                 runner.MigrateUp();
             }
-
         }
     }
 }

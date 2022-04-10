@@ -8,7 +8,7 @@ namespace OrkadWeb.Logic.Config.Queries
     {
         public async Task<GlobalConfigurationResult> Handle(GetGlobalConfigurationQuery request, CancellationToken cancellationToken)
         {
-            return new GlobalConfigurationResult
+            return await Task.FromResult(new GlobalConfigurationResult
             {
                 UsernameMinLength = GlobalConfiguration.USERNAME_MIN_LENGHT,
                 UsernameMaxLength = GlobalConfiguration.USERNAME_MAX_LENGHT,
@@ -19,7 +19,7 @@ namespace OrkadWeb.Logic.Config.Queries
                 PasswordRegex = GlobalConfiguration.PASSWORD_REGEX.ToString(),
 
                 EmailRegex = GlobalConfiguration.EMAIL_REGEX.ToString(),
-            };
+            });
         }
     }
 }

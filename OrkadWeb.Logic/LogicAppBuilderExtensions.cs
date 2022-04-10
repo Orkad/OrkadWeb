@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using OrkadWeb.Logic.Abstractions;
 using System;
@@ -18,14 +19,9 @@ namespace OrkadWeb.Logic
         {
             var asm = Assembly.GetExecutingAssembly();
             services.AddMediatR(asm);
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddValidatorsFromAssembly(asm);
             services.AddAutoMapper(asm);
-        }
-
-        /// <summary>
-        /// Détermine le contexte de temps en temps que réél
-        /// </summary>
-        public static void AddRealTime(this IServiceCollection services)
-        {
             services.AddSingleton<ITimeProvider, RealTimeProvider>();
         }
     }

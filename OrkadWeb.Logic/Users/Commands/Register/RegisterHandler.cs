@@ -2,6 +2,7 @@
 using OrkadWeb.Common;
 using OrkadWeb.Data;
 using OrkadWeb.Data.Models;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace OrkadWeb.Logic.Users.Commands.Register
                 Email = request.Email,
                 Username = request.UserName,
                 Password = Hash.Create(request.Password),
+                Creation = DateTime.Now,
             });
             return Unit.Value;
         }
