@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OrkadWeb.Logic.Users.Commands.Register
 {
-    public class RegisterCommand : IRequest
+    public class RegisterCommand : ICommand
     {
         /// <summary>
         /// (required) username 5 to 32 characters
@@ -22,9 +22,5 @@ namespace OrkadWeb.Logic.Users.Commands.Register
         /// (required) password with at least 8 characters, one lower, one upper, and one special character
         /// </summary>
         public string Password { get; set; }
-
-        
-
-        
     }
 }

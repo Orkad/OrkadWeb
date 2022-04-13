@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using OrkadWeb.Common;
+using OrkadWeb.Logic.Services;
 
 namespace OrkadWeb.Logic
 {
@@ -18,11 +20,13 @@ namespace OrkadWeb.Logic
         public static void AddLogic(this IServiceCollection services)
         {
             var asm = Assembly.GetExecutingAssembly();
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(NHibernateTransactionalBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddMediatR(asm);
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddValidatorsFromAssembly(asm);
             services.AddAutoMapper(asm);
             services.AddSingleton<ITimeProvider, RealTimeProvider>();
+            services.AddSingleton<IEmailService, FileEmailService>();
         }
     }
 }
