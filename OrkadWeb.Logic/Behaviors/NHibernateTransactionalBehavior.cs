@@ -26,12 +26,12 @@ namespace OrkadWeb.Logic.Abstractions
                     try
                     {
                         var response = await next();
-                        await transaction.CommitAsync();
+                        await transaction.CommitAsync(cancellationToken);
                         return response;
                     }
                     catch
                     {
-                        await transaction.RollbackAsync();
+                        await transaction.RollbackAsync(cancellationToken);
                         throw;
                     }
                 }
