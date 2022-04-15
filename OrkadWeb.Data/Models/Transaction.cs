@@ -39,7 +39,7 @@ namespace OrkadWeb.Data.Models
     {
         public TransactionMap()
         {
-            Table("expense");
+            Table("transaction");
             Id(x => x.Id, "id");
             References(x => x.Owner, "owner").Not.Nullable();
             Map(x => x.Amount, "amount");
