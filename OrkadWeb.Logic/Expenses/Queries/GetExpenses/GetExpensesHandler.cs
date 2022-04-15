@@ -22,14 +22,14 @@ namespace OrkadWeb.Logic.Expenses.Queries.GetExpenses
 
         public async Task<GetExpensesResult> Handle(GetExpensesQuery request, CancellationToken cancellationToken)
         {
-            var query = dataService.Query<Expense>()
-                .Where(e => e.Owner.Id == authenticatedUser.Id)
-                .Select(e => new GetExpensesResult.ExpenseRow
+            var query = dataService.Query<Transaction>()
+                .Where(t => t.Owner.Id == authenticatedUser.Id && t.Amount > 0)
+                .Select(t => new GetExpensesResult.ExpenseRow
                 {
-                    Id = e.Id,
-                    Amount = e.Amount,
-                    Date = e.Date,
-                    Name = e.Name,
+                    Id = t.Id,
+                    Amount = t.Amount,
+                    Date = t.Date,
+                    Name = t.Name,
                 }).OrderByDescending(r => r.Date);
             var results = await query.ToListAsync(cancellationToken);
             return new GetExpensesResult

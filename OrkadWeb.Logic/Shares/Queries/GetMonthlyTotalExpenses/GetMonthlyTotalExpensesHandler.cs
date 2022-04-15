@@ -19,7 +19,7 @@ namespace OrkadWeb.Logic.Shares.Queries.GetMonthlyTotalExpenses
         }
         public async Task<decimal> Handle(GetMonthlyTotalExpensesQuery query, CancellationToken cancellationToken)
         {
-            return await dataService.Query<Expense>().Where(e => e.Date.Year == query.Month.Year && e.Date.Month == query.Month.Month).SumAsync(e => e.Amount);
+            return await dataService.Query<Transaction>().Where(e => e.Date.Year == query.Month.Year && e.Date.Month == query.Month.Month).SumAsync(e => e.Amount);
         }
     }
 }

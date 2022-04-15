@@ -24,17 +24,17 @@ namespace OrkadWeb.Logic.Expenses.Commands.AddExpense
 
         public async Task<AddExpenseResult> Handle(AddExpenseCommand command, CancellationToken cancellationToken)
         {
-            var expense = new Expense
+            var transaction = new Transaction
             {
                 Amount = command.Amount,
                 Date = command.Date ?? DateTime.Now,
                 Name = command.Name,
                 Owner = dataService.Load<User>(authenticatedUser.Id),
             };
-            await dataService.InsertAsync(expense);
+            await dataService.InsertAsync(transaction);
             return new AddExpenseResult
             {
-                Id = expense.Id,
+                Id = transaction.Id,
             };
         }
     }

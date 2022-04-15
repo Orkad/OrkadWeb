@@ -4,40 +4,40 @@ using System;
 namespace OrkadWeb.Data.Models
 {
     /// <summary>
-    /// Représente une dépense
+    /// A money loss of a user. Amount can be negative for incomes.
     /// </summary>
-    public class Expense
+    public class Transaction
     {
         /// <summary>
-        /// Identifiant unique de la dépense
+        /// Id of the transaction
         /// </summary>
         public virtual int Id { get; set; }
 
         /// <summary>
-        /// Propriétaire de la dépense
+        /// Transaction Owner
         /// </summary>
         public virtual User Owner { get; set; }
 
         /// <summary>
-        /// Montant de la dépense
+        /// Transaction Amount (income are negatives)
         /// </summary>
         public virtual decimal Amount { get; set; }
 
         /// <summary>
-        /// Nom d'affichage de la dépense (identification par l'utilisateur)
+        /// Transaction display
         /// </summary>
         public virtual string Name { get; set; }
 
         /// <summary>
-        /// Date de la dépense
+        /// Transaction date
         /// </summary>
         public virtual DateTime Date { get; set; }
 
     }
 
-    public class ExpenseMap : ClassMap<Expense>
+    public class TransactionMap : ClassMap<Transaction>
     {
-        public ExpenseMap()
+        public TransactionMap()
         {
             Table("expense");
             Id(x => x.Id, "id");
