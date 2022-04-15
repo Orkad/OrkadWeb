@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Shares\Commands\AddExpense\" />
     <Folder Include="Users\ReadModels\" />
     <Folder Include="Users\Queries\" />
   </ItemGroup>
