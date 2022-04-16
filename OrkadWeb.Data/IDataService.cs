@@ -6,73 +6,47 @@ using System.Threading.Tasks;
 namespace OrkadWeb.Data
 {
     /// <summary>
-    /// Lis et manipule des données (entités)
+    /// Service for manipulating persistent datanbase
     /// </summary>
     public interface IDataService
     {
         /// <summary>
-        /// Récupération d'une l'entité.
+        /// Get one entity based on id.
         /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="id">identifiant unique de l'entité</param>
-        /// <exception cref="DataNotFoundException{T}">Si l'entité n'existe pas</exception>
         T Get<T>(object id);
-
-        /// <summary>
-        /// Récupération d'une l'entité.
-        /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="id">identifiant unique de l'entité</param>
-        /// <exception cref="DataNotFoundException{T}">Si l'entité n'existe pas</exception>
+        /// <inheritdoc cref="Get{T}(object)"/>
         Task<T> GetAsync<T>(object id);
 
         /// <summary>
-        /// Charge l'entité sans faire d'appel en base de donnée (en assumant que l'entité existe déjà)
+        /// Load entity assuming that is already exists.
         /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="id">identifiant unique de l'entité</param>
         T Load<T>(object id);
 
         /// <summary>
-        /// Création de requète sur les entités du type fourni
+        /// Get a Linq query of the entity to build over.
         /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
         IQueryable<T> Query<T>();
 
         /// <summary>
-        /// Ajoute une nouvelle entité
+        /// Add a new entity.
         /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="data">instance de l'entité a ajouter</param>
         void Insert<T>(T data);
-
-        /// <summary>
-        /// Ajoute une nouvelle entité
-        /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="data">instance de l'entité a ajouter</param>
+        /// <inheritdoc cref="Insert{T}(T)"/>
         Task InsertAsync<T>(T data);
 
         /// <summary>
-        /// Met à jour une entité existante
+        /// Update a existing entity.
         /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="data">instance de l'entité a mettre à jour</param>
         void Update<T>(T data);
-
-        /// <summary>
-        /// Met à jour une entité existante
-        /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="data">instance de l'entité a mettre à jour</param>
+        /// <inheritdoc cref="Insert{T}(T)"/>
         Task UpdateAsync<T>(T data);
 
         /// <summary>
-        /// Supprime une entité existante
+        /// Delete a existing entity.
         /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="data">instance de l'entité a supprimer</param>
         void Delete<T>(T data);
+        /// <inheritdoc cref="Delete{T}(T)"/>
+        Task DeleteAsync<T>(T data);
     }
 
     /// <summary>
@@ -91,5 +65,11 @@ namespace OrkadWeb.Data
         /// </summary>
         public static bool NotExists<T>(this IDataService dataService, Expression<Func<T, bool>> condition)
             => !dataService.Exists(condition);
+
+        /// <summary>
+        /// Delete an entity without retrieving it before
+        /// </summary>
+        public static void DeleteById<T>(this IDataService dataService, object id)
+            => dataService.Delete(dataService.Load<T>(id));
     }
 }

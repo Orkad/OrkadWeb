@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Data
 {
+    /// <inheritdoc cref="IDataService"/>
     internal class DataService : IDisposable, IDataService
     {
         private readonly ISession session;
@@ -17,68 +18,37 @@ namespace OrkadWeb.Data
             this.session = session;
         }
 
-        /// <summary>
-        /// Récupération d'une l'entité.
-        /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="id">identifiant unique de l'entité</param>
-        /// <exception cref="DataNotFoundException{T}">Si l'entité n'existe pas</exception>
+        /// <inheritdoc/>
         public T Get<T>(object id) => session.Get<T>(id) ?? throw new DataNotFoundException<T>(id);
 
-        /// <summary>
-        /// Récupération d'une l'entité (asynchrone)
-        /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="id">identifiant unique de l'entité</param>
-        /// <exception cref="DataNotFoundException{T}">Si l'entité n'existe pas</exception>
+        /// <inheritdoc/>
         public async Task<T> GetAsync<T>(object id) => await session.GetAsync<T>(id) ?? throw new DataNotFoundException<T>(id);
 
-        /// <summary>
-        /// Charge l'entité sans faire d'appel en base de donnée (en assumant que l'entité existe déjà)
-        /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="id">identifiant unique de l'entité</param>
+        /// <inheritdoc/>
         public T Load<T>(object id) => session.Load<T>(id);
 
-        /// <summary>
-        /// Création de requète sur les entités du type fourni
-        /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
+        /// <inheritdoc/>
         public IQueryable<T> Query<T>() => session.Query<T>();
 
-        public void Insert<T>(T obj)
-        {
-            session.Save(obj);
-        }
+        /// <inheritdoc/>
+        public void Insert<T>(T obj) => session.Save(obj);
 
-        public async Task InsertAsync<T>(T obj)
-        {
-            await session.SaveAsync(obj);
-        }
+        /// <inheritdoc/>
+        public async Task InsertAsync<T>(T obj) => await session.SaveAsync(obj);
 
-        public void Update<T>(T obj)
-        {
-            session.Update(obj);
-        }
+        /// <inheritdoc/>
+        public void Update<T>(T obj) => session.Update(obj);
 
-        public async Task UpdateAsync<T>(T obj)
-        {
-            await session.UpdateAsync(obj);
-        }
+        /// <inheritdoc/>
+        public async Task UpdateAsync<T>(T obj) => await session.UpdateAsync(obj);
 
-        /// <summary>
-        /// Supprime une entité existante
-        /// </summary>
-        /// <typeparam name="T">type de l'entité</typeparam>
-        /// <param name="obj">instance de l'entité a supprimer</param>
-        public void Delete<T>(T obj)
-        {
-            session.Delete(obj);
-        }
+        /// <inheritdoc/>
+        public void Delete<T>(T obj) => session.Delete(obj);
 
-        public void Dispose()
-        {
-            session.Dispose();
-        }
+        /// <inheritdoc/>
+        public async Task DeleteAsync<T>(T obj) => await session.DeleteAsync(obj);
+
+        /// <inheritdoc/>
+        public void Dispose() => session.Dispose();
     }
 }
