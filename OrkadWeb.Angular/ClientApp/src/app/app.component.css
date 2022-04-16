@@ -21,3 +21,8 @@ mat-sidenav-content {
 mat-sidenav {
   min-width: 250px;
 }
+
+.menu-text {
+  margin-left: 4px;
+  font-size: 20px;
+}

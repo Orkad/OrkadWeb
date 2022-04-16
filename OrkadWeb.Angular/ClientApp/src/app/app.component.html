@@ -10,9 +10,12 @@
   <mat-sidenav-container class="main-sidenav-container">
     <mat-sidenav mode="side" opened *ngIf="connected">
       <mat-nav-list>
-        <mat-list-item [routerLink]="['/expense']" class="sidenav-item big">
-          <mat-icon>euro</mat-icon>
-          dépenses
+        <mat-list-item
+          [routerLink]="['/transactions']"
+          class="sidenav-item big"
+        >
+          <mat-icon>payment</mat-icon>
+          <span class="menu-text">Transactions</span>
         </mat-list-item>
       </mat-nav-list>
     </mat-sidenav>

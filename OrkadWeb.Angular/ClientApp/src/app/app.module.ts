@@ -16,14 +16,15 @@ import fr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
 import { RegistrationComponent } from './authentication/registration/registration.component';
 import { ConfigurationResolver } from 'src/resolvers/configuration.resolver';
+import { TransactionComponent } from './transaction/transaction.component';
 
 registerLocaleData(fr);
 
 const routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   {
-    path: 'expense',
-    component: ExpenseComponent,
+    path: 'transactions',
+    component: TransactionComponent,
     canActivate: [AuthenticationGuard],
   },
   {
@@ -51,6 +52,7 @@ const localProvider = {
     AuthenticationComponent,
     ExpenseComponent,
     RegistrationComponent,
+    TransactionComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
