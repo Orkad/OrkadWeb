@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace OrkadWeb.Data
 {
     /// <summary>
-    /// Service for manipulating persistent datanbase
+    /// Service for manipulating persistent database data
     /// </summary>
     public interface IDataService
     {
