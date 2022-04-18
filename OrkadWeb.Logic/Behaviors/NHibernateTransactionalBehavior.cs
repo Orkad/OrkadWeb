@@ -19,24 +19,24 @@ namespace OrkadWeb.Logic.Abstractions
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            if (request is ICommand<TResponse>)
+            using (var transaction = session.BeginTransaction())
             {
-                using (var transaction = session.BeginTransaction())
+                try
                 {
-                    try
+                    var response = await next();
+                    // Only Commit transaction if there is no exception
+                    if (request is ICommand<TResponse>)
                     {
-                        var response = await next();
                         await transaction.CommitAsync(cancellationToken);
-                        return response;
                     }
-                    catch
-                    {
-                        await transaction.RollbackAsync(cancellationToken);
-                        throw;
-                    }
+                    return response;
+                }
+                catch
+                {
+                    await transaction.RollbackAsync(cancellationToken);
+                    throw;
                 }
             }
-            return await next();
         }
     }
 }
