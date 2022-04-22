@@ -1,4 +1,5 @@
-﻿Fonctionnalité: Partage
+﻿#language: fr
+Fonctionnalité: Partage
 Expose la fonctionnalité de base de partage de dépenses
 
 Contexte: 
