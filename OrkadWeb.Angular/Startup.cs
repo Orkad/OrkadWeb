@@ -13,7 +13,7 @@ using OrkadWeb.Data;
 using OrkadWeb.Data.Builder;
 using OrkadWeb.Data.NHibernate;
 using OrkadWeb.Logic;
-using OrkadWeb.Logic.Abstractions;
+using OrkadWeb.Logic.Users;
 using System;
 using System.Reflection;
 using System.Text;

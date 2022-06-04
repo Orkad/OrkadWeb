@@ -1,8 +1,4 @@
-﻿using OrkadWeb.Logic.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using OrkadWeb.Logic.Users;
 
 namespace OrkadWeb.Angular.Models
 {

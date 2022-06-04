@@ -19,9 +19,4 @@
     <ProjectReference Include="..\OrkadWeb.Data\OrkadWeb.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Users\ReadModels\" />
-    <Folder Include="Users\Queries\" />
-  </ItemGroup>
-
 </Project>

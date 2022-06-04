@@ -21,6 +21,6 @@ namespace OrkadWeb.Angular.Controllers
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<GlobalConfigurationResult> Global() => await mediator.Send(new GetGlobalConfigurationQuery());
+        public async Task<GetGlobalConfigurationQuery.Result> Global() => await mediator.Send(new GetGlobalConfigurationQuery());
     }
 }

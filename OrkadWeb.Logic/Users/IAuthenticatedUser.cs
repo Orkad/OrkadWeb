@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace OrkadWeb.Logic.Abstractions
+﻿namespace OrkadWeb.Logic.Users
 {
     /// <summary>
     /// Représente un utilisateur connecté sur notre application

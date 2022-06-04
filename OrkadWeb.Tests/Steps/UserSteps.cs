@@ -1,6 +1,6 @@
 ﻿using OrkadWeb.Data;
 using OrkadWeb.Data.Models;
-using OrkadWeb.Logic.Abstractions;
+using OrkadWeb.Logic.Users;
 using OrkadWeb.Tests.Models;
 using System;
 using System.Collections.Generic;

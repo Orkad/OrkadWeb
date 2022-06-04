@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OrkadWeb.Logic.Expenses.Commands.AddExpense;
-using OrkadWeb.Logic.Expenses.Queries.GetExpenses;
+using OrkadWeb.Logic.Expenses.Commands;
+using OrkadWeb.Logic.Expenses.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +21,9 @@ namespace OrkadWeb.Angular.Controllers
         }
 
         [HttpPost]
-        public async Task<AddExpenseResult> Add(AddExpenseCommand command) => await mediator.Send(command);
+        public async Task<AddExpenseCommand.Result> Add(AddExpenseCommand command) => await mediator.Send(command);
 
         [HttpGet]
-        public async Task<List<GetExpensesResult.ExpenseRow>> GetAll() => (await mediator.Send(new GetExpensesQuery())).Rows;
+        public async Task<GetExpensesQuery.Result> GetAll() => await mediator.Send(new GetExpensesQuery());
     }
 }

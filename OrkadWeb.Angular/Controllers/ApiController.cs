@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OrkadWeb.Logic.CQRS;
+using System.Threading.Tasks;
 
 namespace OrkadWeb.Angular.Controllers
 {
@@ -11,6 +13,6 @@ namespace OrkadWeb.Angular.Controllers
     [Route("api/[controller]/[action]")]
     public abstract class ApiController : ControllerBase
     {
-        
+
     }
 }
