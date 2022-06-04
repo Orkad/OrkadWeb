@@ -1,15 +1,15 @@
 ﻿using MediatR;
 
-namespace OrkadWeb.Logic
+namespace OrkadWeb.Logic.CQRS
 {
     /// <summary>
-    /// Représente une requête fournissant une réponse selon une architecture CQRS
+    /// Marker interface to represent a query with a response.
     /// </summary>
     /// <typeparam name="TResponse">Type de réponse de la requête</typeparam>
-    interface IQuery<out TResponse> : IRequest<TResponse> { }
+    public interface IQuery<out TResponse> : IRequest<TResponse> { }
 
     /// <summary>
     /// Représente une requête ne fournissant pas de réponse selon une architecture CQRS
     /// </summary>
-    interface IQuery : IRequest { }
+    public interface IQuery : IQuery<Unit> { }
 }

@@ -2,6 +2,7 @@
 using MimeKit;
 using OrkadWeb.Common;
 using OrkadWeb.Logic.Abstractions;
+using OrkadWeb.Logic.CQRS;
 using System;
 using System.Collections.Generic;
 using System.Text;

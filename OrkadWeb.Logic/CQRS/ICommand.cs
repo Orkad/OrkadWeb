@@ -1,11 +1,11 @@
 ﻿using MediatR;
 
-namespace OrkadWeb.Logic
+namespace OrkadWeb.Logic.CQRS
 {
     /// <summary>
     /// Représente une commande fournissant une réponse selon une architecture CQRS
     /// </summary>
-    /// <typeparam name="TResponse">Type de réponse de la commande</typeparam>
+    /// <typeparam name="TResponse">Command response type.</typeparam>
     public interface ICommand<out TResponse> : IRequest<TResponse> { }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using NHibernate;
+using OrkadWeb.Logic.CQRS;
 using System.Threading;
 using System.Threading.Tasks;
 
