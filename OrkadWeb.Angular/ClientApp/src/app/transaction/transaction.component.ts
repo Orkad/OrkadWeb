@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter,
+} from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 
 export const MONTH_PICKER_FORMAT = {
@@ -18,7 +23,17 @@ export const MONTH_PICKER_FORMAT = {
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
   styleUrls: ['./transaction.component.css'],
-  providers: [{ provide: MAT_DATE_FORMATS, useValue: MONTH_PICKER_FORMAT }],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: NativeDateAdapter,
+      deps: [MAT_DATE_LOCALE],
+    },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: MONTH_PICKER_FORMAT,
+    },
+  ],
 })
 export class TransactionComponent implements OnInit {
   month: Date;
