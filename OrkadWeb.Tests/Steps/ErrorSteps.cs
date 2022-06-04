@@ -33,8 +33,8 @@ namespace OrkadWeb.Tests.Steps
             Check.WithCustomMessage("Aucune erreur n'a été déclenchée alors qu'il devrait y en avoir une")
                 .That(executionDriver.Exception).IsNotNull();
 
-            Check.WithCustomMessage($"Le message d'erreur '{executionDriver.Exception.Message}' ne correspond pas avec le message attendu '{expectedMessage}'")
-                .That(executionDriver.Exception.Message).IsEqualTo(expectedMessage);
+            Check.WithCustomMessage($"Le message d'erreur '{executionDriver.Exception?.Message}' ne correspond pas avec le message attendu '{expectedMessage}'")
+                .That(executionDriver.Exception?.Message).IsEqualTo(expectedMessage);
         }
     }
 }

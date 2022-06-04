@@ -15,7 +15,7 @@ namespace OrkadWeb.Tests.Steps
     {
         private readonly IDataService service;
 
-        public IAuthenticatedUser AuthenticatedUser { get; private set; }
+        public IAuthenticatedUser? AuthenticatedUser { get; private set; }
 
         public UserSteps(IDataService service)
         {
@@ -37,12 +37,7 @@ namespace OrkadWeb.Tests.Steps
         public void GivenJeSuisConnecteEnTantQue(string name)
         {
             var user = service.Query<User>().Where(u => u.Username == name).SingleOrDefault();
-            AuthenticatedUser = new TestUser
-            {
-                Id = user.Id,
-                Name = user.Username,
-                Email = user.Email,
-            };
+            AuthenticatedUser = new TestUser(user.Id, user.Username, user.Email);
         }
     }
 }

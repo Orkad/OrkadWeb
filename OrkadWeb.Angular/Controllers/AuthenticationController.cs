@@ -32,7 +32,7 @@ namespace OrkadWeb.Angular.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<LoginResponse> Login(LoginCommand command)
+        public async Task<LoginCommand.Result> Login(LoginCommand command)
         {
             var response = await mediator.Send(command, HttpContext.RequestAborted);
             if (response.Success)
@@ -42,7 +42,7 @@ namespace OrkadWeb.Angular.Controllers
             return response;
         }
 
-        private string GenerateJSONWebToken(LoginResponse loginResponse)
+        private string GenerateJSONWebToken(LoginCommand.Result loginResponse)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -50,7 +50,7 @@ namespace OrkadWeb.Angular.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private Claim[] GetClaims(LoginResponse loginResponse)
+        private Claim[] GetClaims(LoginCommand.Result loginResponse)
         {
             return new[] {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

@@ -16,32 +16,29 @@ namespace OrkadWeb.Logic.Users.Commands
     /// </summary>
     public class SendEmailConfirmationCommand : ICommand
     {
-
-    }
-
-    
-    public class SendEmailConfirmationCommandHandler : ICommandHandler<SendEmailConfirmationCommand>
-    {
-        private readonly IAuthenticatedUser user;
-        private readonly IEmailService emailService;
-
-        public SendEmailConfirmationCommandHandler(IAuthenticatedUser user, IEmailService emailService)
+        public class Handler : ICommandHandler<SendEmailConfirmationCommand>
         {
-            this.user = user;
-            this.emailService = emailService;
-        }
+            private readonly IAuthenticatedUser user;
+            private readonly IEmailService emailService;
 
-        public async Task<Unit> Handle(SendEmailConfirmationCommand request, CancellationToken cancellationToken)
-        {
-            var hash = 1234;
-            var message = $@"Hello {user.Name},
+            public Handler(IAuthenticatedUser user, IEmailService emailService)
+            {
+                this.user = user;
+                this.emailService = emailService;
+            }
+
+            public async Task<Unit> Handle(SendEmailConfirmationCommand request, CancellationToken cancellationToken)
+            {
+                var hash = 1234;
+                var message = $@"Hello {user.Name},
 
 You just register using this email adress.
 Please follow the link to validate your inscription : {hash}
 ";
-            await emailService.SendAsync(user.Email, "Confirm your email adress", message, cancellationToken);
+                await emailService.SendAsync(user.Email, "Confirm your email adress", message, cancellationToken);
 
-            return Unit.Value;
+                return Unit.Value;
+            }
         }
     }
 }

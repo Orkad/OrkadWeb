@@ -1,5 +1,4 @@
-﻿using OrkadWeb.Logic.Common;
-using OrkadWeb.Logic.CQRS;
+﻿using OrkadWeb.Logic.CQRS;
 using System;
 using System.Collections.Generic;
 using System.Text;

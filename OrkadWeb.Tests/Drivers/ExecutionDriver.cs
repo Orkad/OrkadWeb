@@ -16,7 +16,7 @@ namespace OrkadWeb.Tests.Drivers
             this.mediator = mediator;
         }
 
-        public Exception Exception { get; set; }
+        public Exception? Exception { get; set; }
 
         public void Run(IRequest<Unit> request)
         {

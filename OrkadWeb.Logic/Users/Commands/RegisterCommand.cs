@@ -4,7 +4,6 @@ using MediatR;
 using OrkadWeb.Common;
 using OrkadWeb.Data;
 using OrkadWeb.Data.Models;
-using OrkadWeb.Logic.Common;
 using OrkadWeb.Logic.Config;
 using OrkadWeb.Logic.CQRS;
 using System;
@@ -31,62 +30,62 @@ namespace OrkadWeb.Logic.Users.Commands
         /// (required) password with at least 8 characters, one lower, one upper, and one special character
         /// </summary>
         public string Password { get; set; }
-    }
 
-    public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
-    {
-        private readonly IDataService dataService;
-
-        public RegisterCommandValidator(IDataService dataService)
+        public class Validator : AbstractValidator<RegisterCommand>
         {
-            this.dataService = dataService;
-            CascadeMode = CascadeMode.Stop;
+            private readonly IDataService dataService;
 
-            RuleFor(command => command.UserName)
-                .NotEmpty().WithMessage("obligatoire")
-                .MinimumLength(GlobalConfiguration.USERNAME_MIN_LENGHT).WithMessage("trop court")
-                .MaximumLength(GlobalConfiguration.USERNAME_MAX_LENGHT).WithMessage("trop long")
-                .Matches(GlobalConfiguration.USERNAME_REGEX).WithMessage("alphanumérique uniquement")
-                // BACKEND CHECK ONLY
-                .Must(NotMatchAnotherUsername).WithMessage("déjà utilisé");
-
-            RuleFor(command => command.Email)
-                .NotEmpty().WithMessage("obligatoire")
-                .Matches(GlobalConfiguration.EMAIL_REGEX).WithMessage("email invalide")
-                // BACKEND CHECK ONLY
-                .Must(NotMatchAnotherEmail).WithMessage("déjà utilisé");
-
-            RuleFor(command => command.Password)
-                .NotEmpty().WithMessage("obligatoire")
-                .MinimumLength(GlobalConfiguration.PASSWORD_MIN_LENGHT).WithMessage("trop court")
-                .MaximumLength(GlobalConfiguration.PASSWORD_MAX_LENGHT).WithMessage("trop long")
-                .Matches(GlobalConfiguration.PASSWORD_REGEX).WithMessage("au moins une majuscule, une minuscule et un caractère spécial");
-
-        }
-
-        private bool NotMatchAnotherUsername(string username) => dataService.NotExists<User>(u => u.Username == username);
-
-        private bool NotMatchAnotherEmail(string email) => dataService.NotExists<User>(u => u.Email == email);
-    }
-
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
-    {
-        private readonly IDataService dataService;
-
-        public RegisterCommandHandler(IDataService dataService)
-        {
-            this.dataService = dataService;
-        }
-        public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
-        {
-            await dataService.InsertAsync(new User
+            public Validator(IDataService dataService)
             {
-                Email = request.Email,
-                Username = request.UserName,
-                Password = Hash.Create(request.Password),
-                Creation = DateTime.Now,
-            });
-            return Unit.Value;
+                this.dataService = dataService;
+                CascadeMode = CascadeMode.Stop;
+
+                RuleFor(command => command.UserName)
+                    .NotEmpty().WithMessage("obligatoire")
+                    .MinimumLength(GlobalConfiguration.USERNAME_MIN_LENGHT).WithMessage("trop court")
+                    .MaximumLength(GlobalConfiguration.USERNAME_MAX_LENGHT).WithMessage("trop long")
+                    .Matches(GlobalConfiguration.USERNAME_REGEX).WithMessage("alphanumérique uniquement")
+                    // BACKEND CHECK ONLY
+                    .Must(NotMatchAnotherUsername).WithMessage("déjà utilisé");
+
+                RuleFor(command => command.Email)
+                    .NotEmpty().WithMessage("obligatoire")
+                    .Matches(GlobalConfiguration.EMAIL_REGEX).WithMessage("email invalide")
+                    // BACKEND CHECK ONLY
+                    .Must(NotMatchAnotherEmail).WithMessage("déjà utilisé");
+
+                RuleFor(command => command.Password)
+                    .NotEmpty().WithMessage("obligatoire")
+                    .MinimumLength(GlobalConfiguration.PASSWORD_MIN_LENGHT).WithMessage("trop court")
+                    .MaximumLength(GlobalConfiguration.PASSWORD_MAX_LENGHT).WithMessage("trop long")
+                    .Matches(GlobalConfiguration.PASSWORD_REGEX).WithMessage("au moins une majuscule, une minuscule et un caractère spécial");
+
+            }
+
+            private bool NotMatchAnotherUsername(string username) => dataService.NotExists<User>(u => u.Username == username);
+
+            private bool NotMatchAnotherEmail(string email) => dataService.NotExists<User>(u => u.Email == email);
+        }
+
+        public class Handler : ICommandHandler<RegisterCommand>
+        {
+            private readonly IDataService dataService;
+
+            public Handler(IDataService dataService)
+            {
+                this.dataService = dataService;
+            }
+            public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
+            {
+                await dataService.InsertAsync(new User
+                {
+                    Email = request.Email,
+                    Username = request.UserName,
+                    Password = Hash.Create(request.Password),
+                    Creation = DateTime.Now,
+                });
+                return Unit.Value;
+            }
         }
     }
 }
