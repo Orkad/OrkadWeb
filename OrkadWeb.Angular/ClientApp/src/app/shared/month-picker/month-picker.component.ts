@@ -40,17 +40,29 @@ export const MONTH_FORMATS = {
   ],
 })
 export class MonthPickerComponent {
-  @Input() control: FormControl = new FormControl(moment());
+  @Input() control: FormControl = new FormControl(new Date());
 
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Moment>;
 
   constructor() {}
 
   pickMonth(picked: Moment) {
-    const value = this.control.value;
-    value.year(picked.year());
-    value.month(picked.month());
-    this.control.setValue(value);
+    const m = moment(this.control.value);
+    m.year(picked.year());
+    m.month(picked.month());
+    this.control.setValue(m.toDate());
     this.datepicker.close();
+  }
+
+  public nextMonth() {
+    const m = moment(this.control.value);
+    m.add(1, 'month');
+    this.control.setValue(m.toDate());
+  }
+
+  public previousMonth() {
+    const m = moment(this.control.value);
+    m.subtract(1, 'month');
+    this.control.setValue(m.toDate());
   }
 }

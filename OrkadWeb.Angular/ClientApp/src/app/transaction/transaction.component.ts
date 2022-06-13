@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
@@ -36,18 +37,9 @@ export const MONTH_PICKER_FORMAT = {
   ],
 })
 export class TransactionComponent implements OnInit {
-  month: Date;
+  month: FormControl = new FormControl(new Date());
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.month = new Date();
-  }
-
-  pickMonth(date: Date, datepicker: MatDatepicker<Date>) {
-    let year = date.getFullYear();
-    let month = date.getMonth();
-    this.month = new Date(year, month);
-    datepicker.close();
-  }
+  ngOnInit(): void {}
 }
