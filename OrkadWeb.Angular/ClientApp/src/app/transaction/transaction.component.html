@@ -1,11 +1,1 @@
-<p>transaction works!</p>
-<mat-form-field>
-  <mat-label>Mois</mat-label>
-  <input matInput [matDatepicker]="picker" [(ngModel)]="month" />
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker
-    #picker
-    startView="multi-year"
-    (monthSelected)="pickMonth($event, picker)"
-  ></mat-datepicker>
-</mat-form-field>
+<app-month-picker></app-month-picker>

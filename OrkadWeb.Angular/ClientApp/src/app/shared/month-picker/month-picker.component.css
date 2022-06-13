@@ -1,0 +1,15 @@
+.month-picker-panel .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.month-picker-panel .mat-calendar-arrow {
+  display: none;
+}
+
+::ng-deep .month-picker-panel .mat-calendar-period-button {
+  display: none;
+}
+
+::ng-deep .month-picker-panel mat-month-view {
+  display: none;
+}
