@@ -40,8 +40,8 @@ export class ExpenseComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.resetForm();
-    this.expenseService.getAll().subscribe((rows) => {
-      this.expenses.data = rows;
+    this.expenseService.getAll().subscribe((data) => {
+      this.expenses.data = data.rows;
     });
   }
 

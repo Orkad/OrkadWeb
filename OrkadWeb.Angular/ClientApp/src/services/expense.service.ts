@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AddExpenseCommand } from 'src/shared/models/expenses/AddExpenseCommand';
 import { AddExpenseResult } from 'src/shared/models/expenses/AddExpenseResult';
-import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
+import { ExpenseRow, ExpenseRows } from 'src/shared/models/expenses/ExpenseRow';
 
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
@@ -16,14 +16,14 @@ export class ExpenseService {
     return this.httpClient.post<AddExpenseResult>('api/expense/add', command);
   }
 
-  getAll(): Observable<ExpenseRow[]> {
-    return this.httpClient.get<ExpenseRow[]>('api/expense/getAll');
+  getAll(): Observable<ExpenseRows> {
+    return this.httpClient.get<ExpenseRows>('api/expense/getAll');
   }
 
-  getMonthly(month: Date): Observable<ExpenseRow[]> {
+  getMonthly(month: Date): Observable<ExpenseRows> {
     let params = new HttpParams();
     params = params.set('month', month.toISOString());
-    return this.httpClient.get<ExpenseRow[]>('api/expense/getMonthly', {
+    return this.httpClient.get<ExpenseRows>('api/expense/getMonthly', {
       params: params,
     });
   }
