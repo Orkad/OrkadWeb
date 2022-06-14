@@ -25,5 +25,8 @@ namespace OrkadWeb.Angular.Controllers
 
         [HttpGet]
         public async Task<GetExpensesQuery.Result> GetAll() => await mediator.Send(new GetExpensesQuery());
+
+        [HttpGet]
+        public async Task<GetMonthlyExpensesQuery.Result> GetMonthly([FromQuery] DateTime month) => await mediator.Send(new GetMonthlyExpensesQuery() { Month = month });
     }
 }

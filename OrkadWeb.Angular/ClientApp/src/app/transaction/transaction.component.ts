@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   DateAdapter,
@@ -7,6 +7,12 @@ import {
   NativeDateAdapter,
 } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { map, Observable } from 'rxjs';
+import { ExpenseService } from 'src/services/expense.service';
+import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
 
 export const MONTH_PICKER_FORMAT = {
   parse: {
@@ -39,7 +45,25 @@ export const MONTH_PICKER_FORMAT = {
 export class TransactionComponent implements OnInit {
   month: FormControl = new FormControl(new Date());
 
-  constructor() {}
+  dataSource = new MatTableDataSource<ExpenseRow>([
+    { amount: 1, name: 'test' } as ExpenseRow,
+  ]);
+  displayedColumns = ['date', 'name', 'amount'];
 
-  ngOnInit(): void {}
+  constructor(private expenseService: ExpenseService) {}
+
+  ngOnInit(): void {
+    this.expenseService.getAll().subscribe((rows) => {
+      console.log(rows);
+      this.dataSource.data = rows;
+    });
+    //this.refreshExpenses();
+    //this.month.valueChanges.subscribe(() => this.refreshExpenses());
+  }
+
+  // private refreshExpenses() {
+  //   this.expenseService.getMonthly(this.month.value).subscribe((rows) => {
+  //     this.expenses.data = rows;
+  //   });
+  // }
 }
