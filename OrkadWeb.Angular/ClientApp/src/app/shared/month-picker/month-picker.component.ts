@@ -11,6 +11,7 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
+import { MatButton } from '@angular/material/button';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
@@ -48,6 +49,21 @@ export const MONTH_FORMATS = {
 })
 export class MonthPickerComponent {
   @Input() control: UntypedFormControl = new UntypedFormControl(new Date());
+  @Input() min: Date | null = null;
+  @Input() max: Date | null = null;
+
+  filter = (d: Date | null): boolean => {
+    if (d === null) {
+      return true;
+    }
+    if (!!this.min && d < this.min) {
+      return false;
+    }
+    if (!!this.max && d > this.max) {
+      return false;
+    }
+    return true;
+  };
 
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Moment>;
 
@@ -62,12 +78,18 @@ export class MonthPickerComponent {
   }
 
   public nextMonth() {
+    if (this.control.value === null) {
+      return;
+    }
     const m = moment(this.control.value);
     m.add(1, 'month');
     this.control.setValue(m.toDate());
   }
 
   public previousMonth() {
+    if (this.control.value === null) {
+      return;
+    }
     const m = moment(this.control.value);
     m.subtract(1, 'month');
     this.control.setValue(m.toDate());

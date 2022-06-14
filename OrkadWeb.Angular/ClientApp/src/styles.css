@@ -27,3 +27,8 @@ body {
 .column-date {
   width: 92px;
 }
+
+.center {
+  margin: 0 auto;
+  width: fit-content;
+}

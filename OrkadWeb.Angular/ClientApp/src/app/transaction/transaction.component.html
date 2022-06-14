@@ -1,9 +1,17 @@
-<div>
+<div class="center">
   <button mat-icon-button (click)="monthPicker.previousMonth()">
     <mat-icon>chevron_left</mat-icon>
   </button>
-  <app-month-picker #monthPicker [control]="month"></app-month-picker>
-  <button mat-icon-button (click)="monthPicker.nextMonth()">
+  <app-month-picker
+    #monthPicker
+    [control]="month"
+    [max]="currentMonth"
+  ></app-month-picker>
+  <button
+    mat-icon-button
+    (click)="monthPicker.nextMonth()"
+    [disabled]="!canNextMonth()"
+  >
     <mat-icon>chevron_right</mat-icon>
   </button>
 </div>
