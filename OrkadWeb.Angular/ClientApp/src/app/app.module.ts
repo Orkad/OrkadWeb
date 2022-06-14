@@ -21,7 +21,7 @@ import { MonthPickerComponent } from './shared/month-picker/month-picker.compone
 
 registerLocaleData(fr);
 
-const routes: Route = [
+const routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   {
     path: 'transactions',
