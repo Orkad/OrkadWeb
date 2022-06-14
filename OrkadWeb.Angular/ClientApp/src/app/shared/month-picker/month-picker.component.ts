@@ -6,7 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormControlName } from '@angular/forms';
+import { UntypedFormControl, FormControlName } from '@angular/forms';
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MomentDateAdapter,
@@ -47,7 +47,7 @@ export const MONTH_FORMATS = {
   ],
 })
 export class MonthPickerComponent {
-  @Input() control: FormControl = new FormControl(new Date());
+  @Input() control: UntypedFormControl = new UntypedFormControl(new Date());
 
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Moment>;
 

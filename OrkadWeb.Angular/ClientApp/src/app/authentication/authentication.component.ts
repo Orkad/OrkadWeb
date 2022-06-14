@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { AuthenticationService } from './authentication.service';
 import { User } from 'src/shared/models/User';
 import { Observable } from 'rxjs';
@@ -13,12 +13,12 @@ export class AuthenticationComponent implements OnInit {
   loading: boolean = false;
   loggedIn: boolean;
   loggedUsername: string | undefined;
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   error: string;
 
   constructor(
     private authenticationService: AuthenticationService,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {}
 
   ngOnInit(): void {

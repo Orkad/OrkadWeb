@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { LOCALE_ID, NgModule, Provider } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, Route } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
@@ -21,7 +21,7 @@ import { MonthPickerComponent } from './shared/month-picker/month-picker.compone
 
 registerLocaleData(fr);
 
-const routes = [
+const routes: Route = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   {
     path: 'transactions',

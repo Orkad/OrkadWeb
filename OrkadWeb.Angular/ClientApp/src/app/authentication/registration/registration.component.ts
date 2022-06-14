@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  FormBuilder,
-  FormControl,
+  UntypedFormBuilder,
+  UntypedFormControl,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   formGroup: IFormGroup<RegistrationForm>;
   formBuilder: IFormBuilder;
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private userService: UserService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
@@ -33,17 +33,17 @@ export class RegistrationComponent implements OnInit {
     this.formBuilder = formBuilder;
   }
 
-  get username(): FormControl {
-    return this.formGroup.controls.username as FormControl;
+  get username(): UntypedFormControl {
+    return this.formGroup.controls.username as UntypedFormControl;
   }
-  get email(): FormControl {
-    return this.formGroup.controls.email as FormControl;
+  get email(): UntypedFormControl {
+    return this.formGroup.controls.email as UntypedFormControl;
   }
-  get password(): FormControl {
-    return this.formGroup.controls.password as FormControl;
+  get password(): UntypedFormControl {
+    return this.formGroup.controls.password as UntypedFormControl;
   }
-  get passwordConfirm(): FormControl {
-    return this.formGroup.controls.passwordConfirm as FormControl;
+  get passwordConfirm(): UntypedFormControl {
+    return this.formGroup.controls.passwordConfirm as UntypedFormControl;
   }
 
   ngOnInit(): void {
@@ -77,7 +77,7 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  displayErrorMessage(control: FormControl): string {
+  displayErrorMessage(control: UntypedFormControl): string {
     if (control.hasError('required')) {
       return 'obligatoire';
     }

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
@@ -43,7 +43,7 @@ export const MONTH_PICKER_FORMAT = {
   ],
 })
 export class TransactionComponent implements OnInit {
-  month: FormControl = new FormControl(new Date());
+  month: UntypedFormControl = new UntypedFormControl(new Date());
 
   dataSource = new MatTableDataSource<ExpenseRow>([
     { amount: 1, name: 'test' } as ExpenseRow,

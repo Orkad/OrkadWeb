@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
+  UntypedFormBuilder,
+  UntypedFormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -32,7 +32,7 @@ export class ExpenseComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private expenseService: ExpenseService
   ) {
     this.formBuilder = formBuilder;
@@ -66,15 +66,15 @@ export class ExpenseComponent implements OnInit, AfterViewInit {
   }
 
   get amount() {
-    return this.formGroup.controls.amount as FormControl;
+    return this.formGroup.controls.amount as UntypedFormControl;
   }
 
   get date() {
-    return this.formGroup.controls.date as FormControl;
+    return this.formGroup.controls.date as UntypedFormControl;
   }
 
   get name() {
-    return this.formGroup.controls.name as FormControl;
+    return this.formGroup.controls.name as UntypedFormControl;
   }
 
   submitNewExpense() {
