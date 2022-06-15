@@ -20,13 +20,16 @@ namespace OrkadWeb.Angular.Controllers
             this.mediator = mediator;
         }
 
-        [HttpPost]
-        public async Task<AddExpenseCommand.Result> Add(AddExpenseCommand command) => await mediator.Send(command);
-
         [HttpGet]
         public async Task<GetExpensesQuery.Result> GetAll() => await mediator.Send(new GetExpensesQuery());
 
         [HttpGet]
         public async Task<GetMonthlyExpensesQuery.Result> GetMonthly([FromQuery] DateTime month) => await mediator.Send(new GetMonthlyExpensesQuery() { Month = month });
+
+        [HttpPost]
+        public async Task<AddExpenseCommand.Result> Add(AddExpenseCommand command) => await mediator.Send(command);
+
+        [HttpPost]
+        public async Task Delete(int id) => await mediator.Send(new DeleteExpenseCommand { Id = id });
     }
 }
