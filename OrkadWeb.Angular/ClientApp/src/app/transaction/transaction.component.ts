@@ -8,6 +8,7 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
 import { AddExpenseCommand } from 'src/api/commands/AddExpenseCommand';
+import { UpdateExpenseCommand } from 'src/api/commands/UpdateExpenseCommand';
 import { ExpenseService } from 'src/services/expense.service';
 import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
 import { ConfirmDialogData } from '../shared/dialog/confirm-dialog/confirm-dialog.data';
@@ -98,13 +99,18 @@ export class TransactionComponent implements OnInit {
   }
 
   saveExpense() {
+    this.addExpenseFormVisible = false;
     if (!this.editedRow) {
-      this.addExpenseFormVisible = false;
       let command = this.addExpenseFormGroup.value as AddExpenseCommand;
       this.expenseService.add(command).subscribe(() => {
         this.refreshExpenses();
       });
     } else {
+      let command = this.addExpenseFormGroup.value as UpdateExpenseCommand;
+      command.id = this.editedRow.id;
+      this.expenseService.update(command).subscribe(() => {
+        this.refreshExpenses();
+      });
     }
   }
 
