@@ -8,7 +8,7 @@ import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
-  styleUrls: ['./transaction.component.css'],
+  styleUrls: ['./transaction.component.scss'],
 })
 export class TransactionComponent implements OnInit {
   currentMonth = new Date();
@@ -17,7 +17,7 @@ export class TransactionComponent implements OnInit {
   dataSource = new MatTableDataSource<ExpenseRow>([
     { amount: 1, name: 'test', date: new Date() } as ExpenseRow,
   ]);
-  displayedColumns = ['date', 'name', 'amount'];
+  displayedColumns = ['date', 'name', 'amount', 'actions'];
 
   constructor(private expenseService: ExpenseService) {}
 

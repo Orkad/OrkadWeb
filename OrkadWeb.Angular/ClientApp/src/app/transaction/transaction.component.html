@@ -16,7 +16,7 @@
   </button>
 </div>
 
-<table mat-table [dataSource]="dataSource">
+<table id="expense-table" mat-table [dataSource]="dataSource">
   <!-- Date Column -->
   <ng-container matColumnDef="date">
     <th mat-header-cell *matHeaderCellDef ngClass="column-date">Date</th>
@@ -44,6 +44,15 @@
     <td mat-cell *matCellDef="let expense" ngClass="column-currency">
       {{ expense.amount | currency: "EUR" }}
     </td>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let expense">
+        <button mat-icon-button>
+          <mat-icon color="accent">edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
