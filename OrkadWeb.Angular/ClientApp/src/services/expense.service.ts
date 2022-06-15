@@ -27,4 +27,8 @@ export class ExpenseService {
       params: params,
     });
   }
+
+  delete(id: number): Observable<void> {
+    return this.httpClient.post<void>(`api/expense/delete`, id);
+  }
 }

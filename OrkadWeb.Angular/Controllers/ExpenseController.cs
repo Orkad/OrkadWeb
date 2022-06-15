@@ -30,6 +30,6 @@ namespace OrkadWeb.Angular.Controllers
         public async Task<AddExpenseCommand.Result> Add(AddExpenseCommand command) => await mediator.Send(command);
 
         [HttpPost]
-        public async Task Delete(int id) => await mediator.Send(new DeleteExpenseCommand { Id = id });
+        public async Task Delete([FromBody] int id) => await mediator.Send(new DeleteExpenseCommand { Id = id });
     }
 }

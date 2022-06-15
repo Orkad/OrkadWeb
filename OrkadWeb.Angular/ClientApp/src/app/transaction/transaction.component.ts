@@ -94,12 +94,13 @@ export class TransactionComponent implements OnInit {
       } as ConfirmDialogData)
       .subscribe((ok) => {
         if (ok) {
-          console.log(row);
-          const index = this.dataSource.data.indexOf(row, 0);
-          if (index > -1) {
-            this.dataSource.data.splice(index, 1);
-            this.dataSource._updateChangeSubscription();
-          }
+          this.expenseService.delete(row.id).subscribe(() => {
+            const index = this.dataSource.data.indexOf(row, 0);
+            if (index > -1) {
+              this.dataSource.data.splice(index, 1);
+              this.dataSource._updateChangeSubscription();
+            }
+          });
         }
       });
   }
