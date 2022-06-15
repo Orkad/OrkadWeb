@@ -1,9 +1,40 @@
 #expense-table {
+  .mat-column-date {
+    width: 120px;
+  }
   .mat-column-name {
     width: 250px;
   }
+  .mat-column-amount {
+    width: 120px;
+  }
 
   .mat-column-actions {
-    width: 48px;
+    width: 56px;
   }
+}
+
+#add-expense-form {
+  padding-top: 24px;
+  padding-left: 24px;
+
+  .date-form-field {
+    width: 120px;
+  }
+
+  .name-form-field {
+    width: 250px;
+  }
+
+  .amount-form-field {
+    width: 120px;
+    text-align: right;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 24px;
+  padding-left: 24px;
 }

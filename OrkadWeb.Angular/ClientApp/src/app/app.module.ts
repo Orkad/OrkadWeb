@@ -29,6 +29,11 @@ const routes = [
     canActivate: [AuthenticationGuard],
   },
   {
+    path: 'expenses',
+    component: ExpenseComponent,
+    canActivate: [AuthenticationGuard],
+  },
+  {
     path: 'authentication',
     component: AuthenticationComponent,
   },
