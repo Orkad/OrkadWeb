@@ -18,6 +18,7 @@ import { RegistrationComponent } from './authentication/registration/registratio
 import { ConfigurationResolver } from 'src/resolvers/configuration.resolver';
 import { TransactionComponent } from './transaction/transaction.component';
 import { MonthPickerComponent } from './shared/month-picker/month-picker.component';
+import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 
 registerLocaleData(fr);
 
@@ -60,6 +61,7 @@ const localProvider = {
     RegistrationComponent,
     TransactionComponent,
     MonthPickerComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -1,0 +1,15 @@
+<h2 mat-dialog-title *ngIf="data.title"></h2>
+<mat-dialog-content class="mat-typography">
+  {{ data.text }}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-stroked-button
+    color="primary"
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+  >
+    Oui
+  </button>
+  <button mat-stroked-button [mat-dialog-close]="false">Non</button>
+</mat-dialog-actions>

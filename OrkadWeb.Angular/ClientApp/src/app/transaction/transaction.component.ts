@@ -10,6 +10,8 @@ import * as moment from 'moment';
 import { AddExpenseCommand } from 'src/api/commands/AddExpenseCommand';
 import { ExpenseService } from 'src/services/expense.service';
 import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
+import { ConfirmDialogData } from '../shared/dialog/confirm-dialog/confirm-dialog.data';
+import { DialogService } from '../shared/dialog/dialog.service';
 
 @Component({
   selector: 'app-transaction',
@@ -51,7 +53,10 @@ export class TransactionComponent implements OnInit {
     return this.addExpenseFormGroup.controls;
   }
 
-  constructor(private expenseService: ExpenseService) {}
+  constructor(
+    private expenseService: ExpenseService,
+    private dialogService: DialogService
+  ) {}
 
   ngOnInit(): void {
     this.refreshExpenses();
@@ -59,7 +64,6 @@ export class TransactionComponent implements OnInit {
   }
 
   private refreshExpenses() {
-    this.dataSource.data = [];
     if (this.month.value == null) {
       return;
     }
@@ -79,7 +83,25 @@ export class TransactionComponent implements OnInit {
     let command = this.addExpenseFormGroup.value as AddExpenseCommand;
     this.expenseService.add(command).subscribe(() => {
       this.refreshExpenses();
+      this.addExpenseFormGroup.reset();
     });
+  }
+
+  deleteExpense(row: ExpenseRow) {
+    this.dialogService
+      .confirm({
+        text: 'Supprimer la dépense ' + row.name + ' de ' + row.amount + '€ ?',
+      } as ConfirmDialogData)
+      .subscribe((ok) => {
+        if (ok) {
+          console.log(row);
+          const index = this.dataSource.data.indexOf(row, 0);
+          if (index > -1) {
+            this.dataSource.data.splice(index, 1);
+            this.dataSource._updateChangeSubscription();
+          }
+        }
+      });
   }
 }
 
