@@ -29,6 +29,7 @@ export class TransactionComponent implements OnInit {
     { amount: 1, name: 'test', date: new Date() } as ExpenseRow,
   ]);
   displayedColumns = ['date', 'name', 'amount', 'actions'];
+  editedRow: ExpenseRow | null;
   addExpenseFormVisible = false;
   addExpenseFormGroup = new FormGroup<AddExpenseFormGroup>({
     amount: new FormControl<number>(0, {
@@ -78,13 +79,33 @@ export class TransactionComponent implements OnInit {
     );
   }
 
-  addExpense() {
+  beginAddExpense() {
+    this.addExpenseFormGroup.reset();
+    this.addExpenseFormVisible = true;
+  }
+
+  beginEditExpense(row: ExpenseRow) {
+    this.addExpenseFormGroup.controls.amount.setValue(row.amount);
+    this.addExpenseFormGroup.controls.date.setValue(row.date);
+    this.addExpenseFormGroup.controls.name.setValue(row.name);
+    this.editedRow = row;
+    this.addExpenseFormVisible = true;
+  }
+
+  endAddOrEditExpense() {
+    this.editedRow = null;
     this.addExpenseFormVisible = false;
-    let command = this.addExpenseFormGroup.value as AddExpenseCommand;
-    this.expenseService.add(command).subscribe(() => {
-      this.refreshExpenses();
-      this.addExpenseFormGroup.reset();
-    });
+  }
+
+  saveExpense() {
+    if (!this.editedRow) {
+      this.addExpenseFormVisible = false;
+      let command = this.addExpenseFormGroup.value as AddExpenseCommand;
+      this.expenseService.add(command).subscribe(() => {
+        this.refreshExpenses();
+      });
+    } else {
+    }
   }
 
   deleteExpense(row: ExpenseRow) {
