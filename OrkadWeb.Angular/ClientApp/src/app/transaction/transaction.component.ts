@@ -99,7 +99,6 @@ export class TransactionComponent implements OnInit {
   }
 
   saveExpense() {
-    this.addExpenseFormVisible = false;
     if (!this.editedRow) {
       let command = this.addExpenseFormGroup.value as AddExpenseCommand;
       this.expenseService.add(command).subscribe(() => {
@@ -112,6 +111,7 @@ export class TransactionComponent implements OnInit {
         this.refreshExpenses();
       });
     }
+    this.endAddOrEditExpense();
   }
 
   deleteExpense(row: ExpenseRow) {
