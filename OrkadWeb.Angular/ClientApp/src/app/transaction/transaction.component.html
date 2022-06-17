@@ -67,7 +67,7 @@
   <tr
     mat-row
     *matRowDef="let row; columns: displayedColumns"
-    [class.mat-elevation-z2]="editedRow === row"
+    [class.edited]="editedRow === row"
   ></tr>
 </table>
 <div *ngIf="!addExpenseFormVisible" class="buttons">
