@@ -1,10 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  UntypedFormControl,
-  Validators,
-} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
 import { AddExpenseCommand } from 'src/api/commands/AddExpenseCommand';
@@ -33,7 +28,7 @@ export class TransactionComponent implements OnInit {
   editedRow: ExpenseRow | null;
   addExpenseFormVisible = false;
   addExpenseFormGroup = new FormGroup<AddExpenseFormGroup>({
-    amount: new FormControl<number>(0, {
+    amount: new FormControl<number | null>(null, {
       nonNullable: true,
       validators: [
         Validators.required,
@@ -41,7 +36,7 @@ export class TransactionComponent implements OnInit {
         Validators.max(this.maxAmount),
       ],
     }),
-    date: new FormControl<Date>(new Date(), {
+    date: new FormControl<Date | null>(null, {
       nonNullable: true,
       validators: [Validators.required],
     }),
@@ -134,7 +129,7 @@ export class TransactionComponent implements OnInit {
 }
 
 export interface AddExpenseFormGroup {
-  date: FormControl<Date>;
-  amount: FormControl<number>;
+  date: FormControl<Date | null>;
+  amount: FormControl<number | null>;
   name: FormControl<string>;
 }

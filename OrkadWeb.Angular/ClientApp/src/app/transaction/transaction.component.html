@@ -56,7 +56,12 @@
         >
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="deleteExpense(expense)" color="warn">
+        <button
+          mat-icon-button
+          (click)="deleteExpense(expense)"
+          color="primary"
+          [disabled]="editedRow"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -70,9 +75,9 @@
     [class.edited]="editedRow === row"
   ></tr>
 </table>
-<div *ngIf="!addExpenseFormVisible" class="buttons">
-  <button mat-stroked-button (click)="beginAddExpense()">
-    Ajouter une dépense
+<div *ngIf="!addExpenseFormVisible" class="bottom-table-button">
+  <button mat-mini-fab (click)="beginAddExpense()" color="primary">
+    <mat-icon>add</mat-icon>
   </button>
 </div>
 

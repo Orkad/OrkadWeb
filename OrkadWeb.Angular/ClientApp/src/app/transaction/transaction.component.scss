@@ -17,12 +17,12 @@
   }
 
   .edited {
-    background-color: mat.get-color-from-palette($accent, 100);
+    background-color: mat.get-color-from-palette($primary, A100);
   }
 }
 
 #add-expense-form {
-  padding-top: 24px;
+  padding-top: 8px;
   padding-left: 24px;
 
   .date-form-field {
@@ -39,9 +39,10 @@
   }
 }
 
-.buttons {
+.bottom-table-button {
   display: flex;
   justify-content: flex-end;
-  padding-top: 24px;
-  padding-left: 24px;
+  button {
+    margin: -24px;
+  }
 }
