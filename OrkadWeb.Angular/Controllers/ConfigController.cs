@@ -9,18 +9,13 @@ namespace OrkadWeb.Angular.Controllers
 {
     public class ConfigController : ApiController
     {
-        private readonly IMediator mediator;
-
-        public ConfigController(IMediator mediator)
-        {
-            this.mediator = mediator;
-        }
+        public ConfigController(IMediator mediator) : base(mediator) { }
 
         /// <summary>
         /// Access to the global configuration
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<GetGlobalConfigurationQuery.Result> Global() => await mediator.Send(new GetGlobalConfigurationQuery());
+        public async Task<GetGlobalConfigurationQuery.Result> Global() => await Query(new GetGlobalConfigurationQuery());
     }
 }

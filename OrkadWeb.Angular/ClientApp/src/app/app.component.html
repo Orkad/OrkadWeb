@@ -1,30 +1,16 @@
 <body>
   <mat-toolbar color="primary" class="main-toolbar">
-    <span>OWV</span>
+    <button mat-button [routerLink]="['']" class="big">
+      <mat-icon>payment</mat-icon>
+      Budget mensuel
+    </button>
     <span class="menu-spacer"></span>
     <button mat-button [routerLink]="['/authentication']" class="big">
       <mat-icon>account_circle</mat-icon>
       {{ connected ? username : "Se connecter" }}
     </button>
   </mat-toolbar>
-  <mat-sidenav-container class="main-sidenav-container">
-    <mat-sidenav mode="side" opened *ngIf="connected">
-      <mat-nav-list>
-        <mat-list-item
-          [routerLink]="['/transactions']"
-          class="sidenav-item big"
-        >
-          <mat-icon>payment</mat-icon>
-          <span class="menu-text">Transactions</span>
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/expenses']" class="sidenav-item big">
-          <mat-icon>payment</mat-icon>
-          <span class="menu-text">Dépenses</span>
-        </mat-list-item>
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content class="main-sidenav-content">
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
 </body>

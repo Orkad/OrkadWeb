@@ -22,10 +22,4 @@ namespace OrkadWeb.Logic.CQRS
         /// <returns>Response from the query.</returns>
         protected abstract Task<TResponse> HandleQuery(TQuery query, CancellationToken cancellationToken);
     }
-
-    /// <inheritdoc/>
-    public abstract class QueryHandler<TQuery> : QueryHandler<TQuery, Unit> where TQuery : IQuery
-    {
-
-    }
 }

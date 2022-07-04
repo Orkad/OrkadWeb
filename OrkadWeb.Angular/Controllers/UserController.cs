@@ -9,15 +9,10 @@ namespace OrkadWeb.Angular.Controllers
 {
     public class UserController : ApiController
     {
-        private readonly IMediator mediator;
-
-        public UserController(IMediator mediator)
-        {
-            this.mediator = mediator;
-        }
+        public UserController(IMediator mediator) : base(mediator) { }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task Register(RegisterCommand command) => await mediator.Send(command);
+        public async Task Register(RegisterCommand command) => await Command(command);
     }
 }

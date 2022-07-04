@@ -6,7 +6,6 @@ import { RouterModule, Routes, Route } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { AuthenticationGuard } from './authentication/authentication.guard';
@@ -23,9 +22,8 @@ import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-d
 registerLocaleData(fr);
 
 const routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
   {
-    path: 'transactions',
+    path: '',
     component: TransactionComponent,
     canActivate: [AuthenticationGuard],
   },
@@ -55,7 +53,6 @@ const localProvider = {
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     AuthenticationComponent,
     ExpenseComponent,
     RegistrationComponent,

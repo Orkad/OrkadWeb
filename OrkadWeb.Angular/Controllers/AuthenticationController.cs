@@ -21,12 +21,11 @@ namespace OrkadWeb.Angular.Controllers
 {
     public class AuthenticationController : ApiController
     {
-        private readonly IMediator mediator;
         private readonly IConfiguration configuration;
 
         public AuthenticationController(IMediator mediator, IConfiguration configuration)
+            : base(mediator)
         {
-            this.mediator = mediator;
             this.configuration = configuration;
         }
 
@@ -34,10 +33,10 @@ namespace OrkadWeb.Angular.Controllers
         [AllowAnonymous]
         public async Task<LoginCommand.Result> Login(LoginCommand command)
         {
-            var response = await mediator.Send(command, HttpContext.RequestAborted);
+            var response = await Command(command);
             if (response.Success)
             {
-                response.Token = GenerateJSONWebToken(response);  
+                response.Token = GenerateJSONWebToken(response);
             }
             return response;
         }
