@@ -26,10 +26,7 @@ namespace OrkadWeb.Logic.Expenses.Commands
             public async Task<Unit> Handle(DeleteExpenseCommand request, CancellationToken cancellationToken)
             {
                 var transaction = await dataService.GetAsync<Transaction>(request.Id);
-                if (transaction.Owner.Id != authenticatedUser.Id)
-                {
-                    return Unit.Value;
-                }
+                authenticatedUser.MustOwns(transaction);
                 await dataService.DeleteAsync(transaction);
                 return Unit.Value;
             }

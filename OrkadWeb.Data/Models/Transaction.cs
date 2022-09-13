@@ -6,7 +6,7 @@ namespace OrkadWeb.Data.Models
     /// <summary>
     /// A money loss of a user. Amount can be negative for incomes.
     /// </summary>
-    public class Transaction
+    public class Transaction : IOwnable
     {
         /// <summary>
         /// Id of the transaction

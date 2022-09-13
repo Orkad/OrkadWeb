@@ -22,4 +22,5 @@ mat-sidenav-container {
   margin: 0 auto;
   display: flex;
   justify-content: center;
+  padding-top: 8px;
 }

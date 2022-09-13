@@ -1,4 +1,7 @@
-﻿namespace OrkadWeb.Logic.Users
+﻿using OrkadWeb.Data.Models;
+using OrkadWeb.Logic.Users.Exceptions;
+
+namespace OrkadWeb.Logic.Users
 {
     /// <summary>
     /// Représente un utilisateur connecté sur notre application
@@ -19,5 +22,29 @@
         /// Adresse email de contact associé à l'utilisateur
         /// </summary>
         string Email { get; }
+    }
+
+    /// <summary>
+    /// Defines extension method for <see cref="IAuthenticatedUser"/>
+    /// </summary>
+    public static class IAuthenticatedUserExtensions
+    {
+        /// <summary>
+        /// Check if the authenticated user owns the given entity.
+        /// </summary>
+        public static bool Owns(this IAuthenticatedUser user, IOwnable ownable) => ownable.IsOwnedBy(user.Id);
+
+        /// <summary>
+        /// Check if the authenticated user owns this given entity.
+        /// Otherwise, throws <see cref="NotOwnedException"/>.
+        /// </summary>
+        /// <exception cref="NotOwnedException"></exception>
+        public static void MustOwns(this IAuthenticatedUser user, IOwnable ownable)
+        {
+            if (!user.Owns(ownable))
+            {
+                throw new NotOwnedException();
+            }
+        }
     }
 }

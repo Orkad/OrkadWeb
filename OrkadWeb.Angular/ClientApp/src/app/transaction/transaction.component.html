@@ -1,141 +1,147 @@
-<h1>Dépenses mensuelles</h1>
-<div class="center">
-  <button mat-icon-button (click)="monthPicker.previousMonth()">
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-  <app-month-picker
-    #monthPicker
-    [control]="month"
-    [max]="currentMonth"
-  ></app-month-picker>
-  <button
-    mat-icon-button
-    (click)="monthPicker.nextMonth()"
-    [disabled]="!canNextMonth()"
-  >
-    <mat-icon>chevron_right</mat-icon>
-  </button>
-</div>
-
-<table id="expense-table" mat-table [dataSource]="dataSource">
-  <!-- Date Column -->
-  <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef ngClass="column-date">Date</th>
-    <td mat-cell *matCellDef="let expense">
-      {{ expense.date | date: "shortDate" }}
-    </td>
-  </ng-container>
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef style="width: 250px">Libellé</th>
-    <td mat-cell *matCellDef="let expense">{{ expense.name }}</td>
-  </ng-container>
-
-  <!-- Amount Column -->
-  <ng-container matColumnDef="amount">
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      ngClass="column-currency"
-      style="width: 100px"
-    >
-      Montant
-    </th>
-    <td mat-cell *matCellDef="let expense" ngClass="column-currency">
-      {{ expense.amount | currency: "EUR" }}
-    </td>
-
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let expense">
-        <button
-          mat-icon-button
-          (click)="beginEditExpense(expense)"
-          color="primary"
-          [disabled]="editedRow"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          (click)="deleteExpense(expense)"
-          color="primary"
-          [disabled]="editedRow"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr
-    mat-row
-    *matRowDef="let row; columns: displayedColumns"
-    [class.edited]="editedRow === row"
-  ></tr>
-</table>
-<div *ngIf="!addExpenseFormVisible" class="bottom-table-button">
-  <button mat-mini-fab (click)="beginAddExpense()" color="primary">
-    <mat-icon>add</mat-icon>
-  </button>
-</div>
-
-<div id="add-expense-form" *ngIf="addExpenseFormVisible">
-  <form (submit)="saveExpense()">
-    <div>
-      <mat-form-field class="date-form-field">
-        <mat-label>Date</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          [formControl]="addExpenseControls.date"
-        />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="addExpenseControls.date.hasError('required')"
-          >Requis</mat-error
-        >
-      </mat-form-field>
-
-      <mat-form-field class="name-form-field">
-        <mat-label>Libellé</mat-label>
-        <input matInput [formControl]="addExpenseControls.name" />
-        <mat-error *ngIf="addExpenseControls.name.hasError('required')"
-          >Requis</mat-error
-        >
-      </mat-form-field>
-
-      <mat-form-field class="amount-form-field">
-        <mat-label>Montant</mat-label>
-        <input
-          id="amount"
-          type="number"
-          matInput
-          [formControl]="addExpenseControls.amount"
-        />
-        <mat-error *ngIf="addExpenseControls.amount.hasError('required')"
-          >Requis</mat-error
-        >
-        <mat-error *ngIf="addExpenseControls.amount.hasError('min')"
-          >Le montant doit être suppérieur à 0€</mat-error
-        >
-        <mat-error *ngIf="addExpenseControls.amount.hasError('max')"
-          >Le montant doit être inférieur à {{ maxAmount }}€</mat-error
-        >
-      </mat-form-field>
-      <button
-        type="submit"
-        mat-mini-fab
-        color="primary"
-        [disabled]="!addExpenseFormGroup.valid"
-      >
-        <mat-icon>save</mat-icon>
+<div class="flex-container">
+  <div>
+    <div class="center">
+      <button mat-icon-button (click)="monthPicker.previousMonth()">
+        <mat-icon>chevron_left</mat-icon>
       </button>
-      <button mat-icon-button (click)="endAddOrEditExpense()">
-        <mat-icon>undo</mat-icon>
+      <app-month-picker
+        #monthPicker
+        [control]="month"
+        [max]="currentMonth"
+      ></app-month-picker>
+      <button
+        mat-icon-button
+        (click)="monthPicker.nextMonth()"
+        [disabled]="!canNextMonth()"
+      >
+        <mat-icon>chevron_right</mat-icon>
       </button>
     </div>
-  </form>
+
+    <table id="expense-table" mat-table [dataSource]="dataSource">
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef ngClass="column-date">Date</th>
+        <td mat-cell *matCellDef="let expense">
+          {{ expense.date | date: "shortDate" }}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef style="width: 250px">Libellé</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.name }}</td>
+      </ng-container>
+
+      <!-- Amount Column -->
+      <ng-container matColumnDef="amount">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          ngClass="column-currency"
+          style="width: 100px"
+        >
+          Montant
+        </th>
+        <td mat-cell *matCellDef="let expense" ngClass="column-currency">
+          {{ expense.amount | currency: "EUR" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let expense">
+          <button
+            mat-icon-button
+            (click)="beginEditExpense(expense)"
+            color="primary"
+            [disabled]="editedRow"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="deleteExpense(expense)"
+            color="primary"
+            [disabled]="editedRow"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [class.edited]="editedRow === row"
+      ></tr>
+    </table>
+    <div *ngIf="!addExpenseFormVisible" class="bottom-table-button">
+      <button mat-mini-fab (click)="beginAddExpense()" color="primary">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <div id="add-expense-form" *ngIf="addExpenseFormVisible">
+      <form (submit)="saveExpense()">
+        <div>
+          <mat-form-field class="date-form-field">
+            <mat-label>Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [formControl]="addExpenseControls.date"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="addExpenseControls.date.hasError('required')"
+              >Requis</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field class="name-form-field">
+            <mat-label>Libellé</mat-label>
+            <input matInput [formControl]="addExpenseControls.name" />
+            <mat-error *ngIf="addExpenseControls.name.hasError('required')"
+              >Requis</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field class="amount-form-field">
+            <mat-label>Montant</mat-label>
+            <input
+              id="amount"
+              type="number"
+              matInput
+              [formControl]="addExpenseControls.amount"
+            />
+            <mat-error *ngIf="addExpenseControls.amount.hasError('required')"
+              >Requis</mat-error
+            >
+            <mat-error *ngIf="addExpenseControls.amount.hasError('min')"
+              >Le montant doit être suppérieur à 0€</mat-error
+            >
+            <mat-error *ngIf="addExpenseControls.amount.hasError('max')"
+              >Le montant doit être inférieur à {{ maxAmount }}€</mat-error
+            >
+          </mat-form-field>
+          <button
+            type="submit"
+            mat-mini-fab
+            color="primary"
+            [disabled]="!addExpenseFormGroup.valid"
+          >
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button (click)="endAddOrEditExpense()">
+            <mat-icon>undo</mat-icon>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

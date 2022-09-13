@@ -18,6 +18,8 @@ import { ConfigurationResolver } from 'src/resolvers/configuration.resolver';
 import { TransactionComponent } from './transaction/transaction.component';
 import { MonthPickerComponent } from './shared/month-picker/month-picker.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
+import { NgChartsModule } from 'ng2-charts';
+import { MonthlyBudgetComponent } from './monthly-budget/monthly-budget.component';
 
 registerLocaleData(fr);
 
@@ -25,6 +27,11 @@ const routes = [
   {
     path: '',
     component: TransactionComponent,
+    canActivate: [AuthenticationGuard],
+  },
+  {
+    path: 'budget',
+    component: MonthlyBudgetComponent,
     canActivate: [AuthenticationGuard],
   },
   {
@@ -59,6 +66,7 @@ const localProvider = {
     TransactionComponent,
     MonthPickerComponent,
     ConfirmDialogComponent,
+    MonthlyBudgetComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -74,6 +82,7 @@ const localProvider = {
       },
     }),
     MaterialModule,
+    NgChartsModule,
   ],
   providers: [AuthenticationGuard, localProvider],
   bootstrap: [AppComponent],

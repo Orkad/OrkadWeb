@@ -8,7 +8,7 @@ namespace OrkadWeb.Data.Models
     /// <summary>
     /// Monthly charge or income
     /// </summary>
-    public class MonthlyTransaction
+    public class MonthlyTransaction : IOwnable
     {
         /// <summary>
         /// Unique identifier of the monthly charge
