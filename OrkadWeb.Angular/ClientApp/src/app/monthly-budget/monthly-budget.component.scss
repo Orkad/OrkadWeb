@@ -7,3 +7,11 @@
     text-align: center;
   }
 }
+
+.bottom-table-button {
+  display: flex;
+  justify-content: center;
+  button {
+    margin: -24px;
+  }
+}

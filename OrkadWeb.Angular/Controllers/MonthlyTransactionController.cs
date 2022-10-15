@@ -11,6 +11,15 @@ namespace OrkadWeb.Angular.Controllers
         public MonthlyTransactionController(IMediator mediator) : base(mediator) { }
 
         [HttpGet]
-        public async Task<GetMonthlyTransactionsQuery.Result> GetAll() => await Query(new GetMonthlyTransactionsQuery());
+        [ActionName("charges")]
+        public async Task<GetChargesQuery.Result> GetCharges() => await Query(new GetChargesQuery());
+
+        [HttpDelete("{id}")]
+        [ActionName("charges")]
+        public async Task DeleteCharge(int id) => await Command(new DeleteChargeCommand { ChargeId = id });
+
+        [HttpGet]
+        [ActionName("incomes")]
+        public async Task<GetIncomesQuery.Result> Incomes() => await Query(new GetIncomesQuery());
     }
 }

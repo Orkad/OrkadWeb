@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MonthlyTransaction } from 'src/shared/models/MonthlyTransaction';
+import { MonthlyIncome } from 'src/shared/models/MonthlyIncome';
+import { MonthlyCharge } from 'src/shared/models/MonthlyCharge';
 import { ConfirmDialogData } from '../shared/dialog/confirm-dialog/confirm-dialog.data';
 import { DialogService } from '../shared/dialog/dialog.service';
+import { MonthlyTransactionService } from 'src/services/monthly-transaction.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-monthly-budget',
@@ -10,45 +13,66 @@ import { DialogService } from '../shared/dialog/dialog.service';
   styleUrls: ['./monthly-budget.component.scss'],
 })
 export class MonthlyBudgetComponent implements OnInit {
-  constructor(private dialogService: DialogService) {}
+  constructor(
+    private dialogService: DialogService,
+    private monthlyTransactionService: MonthlyTransactionService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.monthlyTransactionService
+      .incomes()
+      .subscribe((data) => (this.incomes.data = data.rows));
+    this.monthlyTransactionService
+      .charges()
+      .subscribe((data) => (this.charges.data = data.rows));
+  }
 
-  monthlyExpenses = new MatTableDataSource<MonthlyTransaction>([
-    { id: 1, amount: 1085, name: 'loyer' } as MonthlyTransaction,
-  ]);
-
-  monthlyRevenus = new MatTableDataSource<MonthlyTransaction>([
-    { id: 2, amount: 2802, name: 'salaire' } as MonthlyTransaction,
-  ]);
+  charges = new MatTableDataSource<MonthlyCharge>();
+  incomes = new MatTableDataSource<MonthlyIncome>();
   displayedColumns = ['name', 'amount', 'actions'];
 
-  delete(transaction: MonthlyTransaction) {
+  chargeFg = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    amount: new FormControl('', [Validators.required, Validators.min(0.01)]),
+  });
+
+  editedIncome: MonthlyIncome;
+  addChargeVisible: boolean;
+
+  deleteCharge(charge: MonthlyCharge) {
     this.dialogService
       .confirm({
         text:
           'Confirmer la suppression de ' +
-          transaction.name +
+          charge.name +
           " d'un montant de " +
-          transaction.amount +
+          charge.amount +
           '€ ?',
       } as ConfirmDialogData)
       .subscribe((ok) => {
         if (ok) {
-          // TODO backend
-          const index = this.monthlyExpenses.data.indexOf(transaction, 0);
-          if (index > -1) {
-            this.monthlyExpenses.data.splice(index, 1);
-            this.monthlyExpenses._updateChangeSubscription();
-            return;
-          }
-          this.monthlyRevenus.data.indexOf(transaction, 0);
-          if (index > -1) {
-            this.monthlyRevenus.data.splice(index, 1);
-            this.monthlyRevenus._updateChangeSubscription();
-            return;
-          }
+          this.charges.data = this.charges.data.filter((mc) => mc !== charge);
+          this.charges._updateChangeSubscription();
+          this.monthlyTransactionService.deleteCharge(charge.id).subscribe({
+            error: () => this.charges.data.push(charge),
+          });
         }
       });
   }
+
+  deleteIncome(income: MonthlyIncome) {}
+
+  beginAddCharge() {
+    this.addChargeVisible = true;
+  }
+
+  saveCharge() {
+    if (this.addChargeVisible) {
+    } else {
+    }
+  }
+
+  beginEditCharge(charge: MonthlyCharge) {}
+
+  beginEditIncome(income: MonthlyIncome) {}
 }

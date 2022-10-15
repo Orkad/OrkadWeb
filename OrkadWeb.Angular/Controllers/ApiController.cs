@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace OrkadWeb.Angular.Controllers
 {
     /// <summary>
-    /// Classe de base dont tous les controlleurs de l'api doivent hériter
+    /// Classe de base dont tous les controlleurs de l'api doivent hériter : api/[controller]/[action]
     /// </summary>
     [ApiController]
     [Authorize]

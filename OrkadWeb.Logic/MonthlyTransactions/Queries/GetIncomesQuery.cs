@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 namespace OrkadWeb.Logic.MonthlyTransactions.Queries
 {
     /// <summary>
-    /// Get all monthly transactions defined by the authenticated user
+    /// Get all monthly charges defined by the authenticated user
     /// </summary>
-    public class GetMonthlyTransactionsQuery : IQuery<GetMonthlyTransactionsQuery.Result>
+    public class GetIncomesQuery : IQuery<GetIncomesQuery.Result>
     {
         public class Result
         {
@@ -28,7 +28,7 @@ namespace OrkadWeb.Logic.MonthlyTransactions.Queries
             public List<Item> Items { get; set; }
         }
 
-        public class Handler : IQueryHandler<GetMonthlyTransactionsQuery, Result>
+        public class Handler : IQueryHandler<GetIncomesQuery, Result>
         {
             private readonly IDataService dataService;
             private readonly IAuthenticatedUser authenticatedUser;
@@ -39,16 +39,17 @@ namespace OrkadWeb.Logic.MonthlyTransactions.Queries
                 this.authenticatedUser = authenticatedUser;
             }
 
-            public async Task<Result> Handle(GetMonthlyTransactionsQuery request, CancellationToken cancellationToken)
+            public async Task<Result> Handle(GetIncomesQuery request, CancellationToken cancellationToken)
             {
-                var query = dataService.Query<MonthlyTransaction>().Where(mt => mt.Owner.Id == authenticatedUser.Id);
-                var project = from mt in query
-                              select new Result.Item
-                              {
-                                  Id = mt.Id,
-                                  Amount = mt.Amount,
-                                  Name = mt.Name,
-                              };
+                var query = dataService.Query<MonthlyTransaction>()
+                    .Where(mt => mt.Amount > 0) // Incomes
+                    .Where(mt => mt.Owner.Id == authenticatedUser.Id);
+                var project = query.Select(mt => new Result.Item
+                {
+                    Id = mt.Id,
+                    Amount = mt.Amount,
+                    Name = mt.Name,
+                });
                 return new Result
                 {
                     Items = await project.ToListAsync(cancellationToken),
