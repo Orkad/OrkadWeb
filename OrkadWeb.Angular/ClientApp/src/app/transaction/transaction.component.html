@@ -1,7 +1,11 @@
 <div class="flex-container">
-  <div>
+  <form (submit)="saveExpense()">
     <div class="center">
-      <button mat-icon-button (click)="monthPicker.previousMonth()">
+      <button
+        type="button"
+        mat-icon-button
+        (click)="monthPicker.previousMonth()"
+      >
         <mat-icon>chevron_left</mat-icon>
       </button>
       <app-month-picker
@@ -10,6 +14,7 @@
         [max]="currentMonth"
       ></app-month-picker>
       <button
+        type="button"
         mat-icon-button
         (click)="monthPicker.nextMonth()"
         [disabled]="!canNextMonth()"
@@ -23,71 +28,11 @@
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef ngClass="column-date">Date</th>
         <td mat-cell *matCellDef="let expense">
-          {{ expense.date | date: "shortDate" }}
-        </td>
-      </ng-container>
+          <span *ngIf="editedRow !== expense">{{
+            expense.date | date: "shortDate"
+          }}</span>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef style="width: 250px">Libellé</th>
-        <td mat-cell *matCellDef="let expense">{{ expense.name }}</td>
-      </ng-container>
-
-      <!-- Amount Column -->
-      <ng-container matColumnDef="amount">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          ngClass="column-currency"
-          style="width: 100px"
-        >
-          Montant
-        </th>
-        <td mat-cell *matCellDef="let expense" ngClass="column-currency">
-          {{ expense.amount | currency: "EUR" }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let expense">
-          <button
-            mat-icon-button
-            (click)="beginEditExpense(expense)"
-            color="primary"
-            [disabled]="editedRow"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            (click)="deleteExpense(expense)"
-            color="primary"
-            [disabled]="editedRow"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: displayedColumns"
-        [class.edited]="editedRow === row"
-      ></tr>
-    </table>
-    <div *ngIf="!addExpenseFormVisible" class="bottom-table-button">
-      <button mat-mini-fab (click)="beginAddExpense()" color="primary">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-
-    <div id="add-expense-form" *ngIf="addExpenseFormVisible">
-      <form (submit)="saveExpense()">
-        <div>
-          <mat-form-field class="date-form-field">
-            <mat-label>Date</mat-label>
+          <mat-form-field class="date-form-field" *ngIf="editedRow === expense">
             <input
               matInput
               [matDatepicker]="picker"
@@ -102,17 +47,42 @@
               >Requis</mat-error
             >
           </mat-form-field>
+        </td>
+      </ng-container>
 
-          <mat-form-field class="name-form-field">
-            <mat-label>Libellé</mat-label>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef style="width: 250px">Libellé</th>
+        <td mat-cell *matCellDef="let expense">
+          <span *ngIf="editedRow !== expense">{{ expense.name }}</span>
+          <mat-form-field *ngIf="editedRow === expense" class="full-width">
             <input matInput [formControl]="addExpenseControls.name" />
             <mat-error *ngIf="addExpenseControls.name.hasError('required')"
               >Requis</mat-error
             >
           </mat-form-field>
+        </td>
+      </ng-container>
 
-          <mat-form-field class="amount-form-field">
-            <mat-label>Montant</mat-label>
+      <!-- Amount Column -->
+      <ng-container matColumnDef="amount">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          ngClass="column-currency"
+          style="width: 100px"
+        >
+          Montant
+        </th>
+        <td mat-cell *matCellDef="let expense" ngClass="column-currency">
+          <span *ngIf="editedRow !== expense">{{
+            expense.amount | currency: "EUR"
+          }}</span>
+
+          <mat-form-field
+            *ngIf="editedRow === expense"
+            class="amount-form-field"
+          >
             <input
               id="amount"
               type="number"
@@ -129,19 +99,64 @@
               >Le montant doit être inférieur à {{ maxAmount }}€</mat-error
             >
           </mat-form-field>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let expense">
           <button
+            *ngIf="editedRow !== expense"
+            type="button"
+            mat-icon-button
+            (click)="beginEditExpense(expense)"
+            color="primary"
+            [disabled]="editedRow"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            *ngIf="editedRow === expense"
             type="submit"
-            mat-mini-fab
+            mat-icon-button
             color="primary"
             [disabled]="!addExpenseFormGroup.valid"
           >
             <mat-icon>save</mat-icon>
           </button>
-          <button mat-icon-button (click)="endAddOrEditExpense()">
+          <button
+            *ngIf="editedRow !== expense"
+            type="button"
+            mat-icon-button
+            (click)="deleteExpense(expense)"
+            color="primary"
+            [disabled]="editedRow"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button
+            *ngIf="editedRow === expense"
+            type="button"
+            color="primary"
+            mat-icon-button
+            (click)="undo()"
+          >
             <mat-icon>undo</mat-icon>
           </button>
-        </div>
-      </form>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [class.edited]="editedRow === row"
+      ></tr>
+    </table>
+    <div *ngIf="!addExpenseFormVisible" class="bottom-table-button">
+      <button mat-mini-fab (click)="beginAddExpense()" color="primary">
+        <mat-icon>add</mat-icon>
+      </button>
     </div>
-  </div>
+  </form>
 </div>

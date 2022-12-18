@@ -78,6 +78,13 @@ export class TransactionComponent implements OnInit {
   beginAddExpense() {
     this.addExpenseFormGroup.reset();
     this.addExpenseFormVisible = true;
+    this.editedRow = <ExpenseRow>{
+      id: 0,
+      date: new Date(),
+    };
+    this.dataSource.data.push(this.editedRow);
+    this.dataSource._updateChangeSubscription();
+    this.beginEditExpense(this.editedRow);
   }
 
   beginEditExpense(row: ExpenseRow) {
@@ -85,10 +92,18 @@ export class TransactionComponent implements OnInit {
     this.addExpenseFormGroup.controls.date.setValue(row.date);
     this.addExpenseFormGroup.controls.name.setValue(row.name);
     this.editedRow = row;
-    this.addExpenseFormVisible = true;
   }
 
-  endAddOrEditExpense() {
+  undo() {
+    if (this.editedRow?.id === 0) {
+      const i = this.dataSource.data.findIndex(
+        (item) => this.editedRow === item,
+        0
+      );
+      this.dataSource.data.splice(i, 1);
+      this.dataSource._updateChangeSubscription();
+    }
+
     this.editedRow = null;
     this.addExpenseFormVisible = false;
   }
@@ -106,7 +121,7 @@ export class TransactionComponent implements OnInit {
         this.refreshExpenses();
       });
     }
-    this.endAddOrEditExpense();
+    this.editedRow = null;
   }
 
   deleteExpense(row: ExpenseRow) {

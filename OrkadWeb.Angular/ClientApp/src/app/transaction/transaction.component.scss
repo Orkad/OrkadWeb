@@ -15,28 +15,11 @@
   .mat-column-actions {
     width: 80px;
   }
-
-  .edited {
-    background-color: mat.get-color-from-palette($primary, A100);
-  }
 }
 
 #add-expense-form {
   padding-top: 8px;
   padding-left: 24px;
-
-  .date-form-field {
-    width: 120px;
-  }
-
-  .name-form-field {
-    width: 250px;
-  }
-
-  .amount-form-field {
-    width: 120px;
-    text-align: right;
-  }
 }
 
 .bottom-table-button {
@@ -57,4 +40,21 @@
   .flex-container {
     flex-direction: column;
   }
+}
+
+td {
+  .mat-form-field {
+    margin-top: -4px;
+    margin-bottom: -10px;
+  }
+}
+.date-form-field {
+  width: 120px;
+}
+.name-form-field {
+  width: 250px;
+}
+.amount-form-field {
+  width: 120px;
+  text-align: right;
 }
