@@ -123,6 +123,10 @@ export class RegistrationComponent implements OnInit {
           this.router.navigate(['/authentication']);
           this.notificationService.success('enregistrement effectué');
         },
+        error: (err) => {
+          console.error(err);
+          this.notificationService.error(err);
+        },
       });
   }
 }

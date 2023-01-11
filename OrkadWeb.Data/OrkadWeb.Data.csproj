@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentNHibernate" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.2" />
-    <PackageReference Include="MySql.Data" Version="8.0.28" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentNHibernate" Version="3.1.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.2" />
+		<PackageReference Include="MySql.Data" Version="8.0.28" />
+		<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+	</ItemGroup>
 
 </Project>

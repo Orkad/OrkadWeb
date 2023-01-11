@@ -1,4 +1,5 @@
-﻿using NHibernate.Cfg;
+﻿using Newtonsoft.Json;
+using NHibernate.Cfg;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -50,7 +51,8 @@ namespace OrkadWeb.Data.NHibernate
         public void SaveConfigurationToFile(Configuration configuration)
         {
             using var file = cacheFile.Open(FileMode.Create);
-            GetFormatter().Serialize(file, configuration);
+            using var writer = new BinaryWriter(file);
+            writer.Write(JsonConvert.SerializeObject(configuration));
         }
 
         /// <summary>
@@ -64,19 +66,8 @@ namespace OrkadWeb.Data.NHibernate
                 return null;
             }
             using var file = cacheFile.Open(FileMode.Open, FileAccess.Read);
-            return GetFormatter().Deserialize(file) as Configuration;
+            using var reader = new BinaryReader(file);
+            return JsonConvert.DeserializeObject<Configuration>(reader.ReadString());
         }
-
-        /// <summary>
-        /// Net std 2.0 compatible serializer (based on SurrogateSelector of Fluent NHibernate)
-        /// </summary>
-        /// <remarks>
-        /// Default BinaryFormatter can't serialize Systeme.Type in net.std 2.0
-        /// </remarks>
-        private IFormatter GetFormatter()
-            => new BinaryFormatter
-            {
-                SurrogateSelector = new FluentNHibernate.Infrastructure.NetStandardSerialization.SurrogateSelector()
-            };
     }
 }
