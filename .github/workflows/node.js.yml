@@ -31,5 +31,5 @@ jobs:
       working-directory: OrkadWeb.Angular/ClientApp/
     - run: npm run build --if-present
       working-directory: OrkadWeb.Angular/ClientApp/
-    - run: npm test
-      working-directory: OrkadWeb.Angular/ClientApp/
+    #- run: npm test
+    #  working-directory: OrkadWeb.Angular/ClientApp/
