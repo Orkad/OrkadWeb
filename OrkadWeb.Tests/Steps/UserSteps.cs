@@ -1,4 +1,6 @@
-﻿using OrkadWeb.Data;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NFluent;
+using OrkadWeb.Data;
 using OrkadWeb.Data.Models;
 using OrkadWeb.Logic.Users;
 using OrkadWeb.Tests.Models;
@@ -36,14 +38,14 @@ namespace OrkadWeb.Tests.Steps
         [Given(@"je suis connecté en tant que (.*)")]
         public void GivenJeSuisConnecteEnTantQue(string name)
         {
-            var user = service.Query<User>().Where(u => u.Username == name).SingleOrDefault();
+            var user = service.Query<User>().Where(u => u.Username == name).Single();
             AuthenticatedUser = new TestUser(user.Id, user.Username, user.Email);
         }
 
         [When(@"je tente de m'enregistrer avec les informations suivantes")]
         public void WhenJeTenteDeMenregistrerAvecLesInformationsSuivantes(Table table)
         {
-            
+
         }
 
     }
