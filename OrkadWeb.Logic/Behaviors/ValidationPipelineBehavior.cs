@@ -13,7 +13,7 @@ namespace OrkadWeb.Logic.Abstractions
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
         public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators) => _validators = validators;
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             if (!_validators.Any())
             {
