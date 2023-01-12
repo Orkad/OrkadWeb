@@ -45,7 +45,7 @@ namespace OrkadWeb.Logic.Expenses.Commands
         {
             public AddExpenseValidator(ITimeProvider timeProvider)
             {
-                CascadeMode = CascadeMode.Stop;
+                ClassLevelCascadeMode = CascadeMode.Stop;
                 RuleFor(command => command.Amount).GreaterThan(0)
                     .WithMessage("Le montant doit être suppérieur à 0€");
                 RuleFor(command => command.Name).NotEmpty()

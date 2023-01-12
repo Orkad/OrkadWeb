@@ -38,7 +38,7 @@ namespace OrkadWeb.Logic.Users.Commands
             public Validator(IDataService dataService)
             {
                 this.dataService = dataService;
-                CascadeMode = CascadeMode.Stop;
+                ClassLevelCascadeMode = CascadeMode.Stop;
 
                 RuleFor(command => command.UserName)
                     .NotEmpty().WithMessage("obligatoire")
