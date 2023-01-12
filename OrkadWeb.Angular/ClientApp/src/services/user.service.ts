@@ -11,10 +11,10 @@ export class UserService {
     email: string,
     password: string
   ): Observable<void> {
-    return this.httpClient.post<void>('api/user/register', {
+    return this.httpClient.post<void>('api/user/register', <RegisterCommand>{
       userName: username,
       email: email,
       password: password,
-    } as RegisterCommand);
+    });
   }
 }
