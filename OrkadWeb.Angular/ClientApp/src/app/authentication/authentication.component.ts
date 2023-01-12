@@ -36,6 +36,9 @@ export class AuthenticationComponent implements OnInit {
   }
 
   login(): void {
+    if (this.loginForm.invalid) {
+      return;
+    }
     this.loading = true;
     this.authenticationService
       .login(this.loginForm.value['username'], this.loginForm.value['password'])
