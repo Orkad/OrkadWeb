@@ -16,6 +16,9 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.13" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.13" />
+	
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.0" />
+		<PackageReference Include="System.Data.SQLite" Version="1.0.117" />
 	</ItemGroup>
 
 	<ItemGroup>

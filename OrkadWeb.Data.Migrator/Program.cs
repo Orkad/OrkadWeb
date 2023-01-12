@@ -10,8 +10,10 @@ namespace OrkadWeb.Data.Migrator
         {
             var serviceProvider = new ServiceCollection().AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
-                    .AddMySql5()
-                    .WithGlobalConnectionString("Server=localhost;Port=3306;Database=orkad_web;Username=root;Password=nicholas;")
+                    //.AddMySql5()
+                    //.WithGlobalConnectionString("Server=localhost;Port=3306;Database=orkad_web;Username=root;Password=nicholas;")
+                    .AddSQLite()
+                    .WithGlobalConnectionString("Data Source=OrkadWeb.db;Cache=Shared")
                     .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);

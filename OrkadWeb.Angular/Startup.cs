@@ -33,18 +33,18 @@ namespace OrkadWeb.Angular
         {
             ConfigureAuthentication(services);
 
-            var resolver = new MySQLSessionFactoryResolver(Configuration.GetConnectionString("OrkadWeb"));
+            var resolver = new SqliteSessionFactoryResolver(Configuration.GetConnectionString("OrkadWeb"));
             var sessionFactory = resolver.Resolve(Assembly.GetAssembly(typeof(IDataService)));
             services.AddSingleton<ISessionFactoryResolver>(resolver);
             services.AddSingleton(sessionFactory);
             services.AddData();
             services.AddLogic();
             services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist/client-app";
-            });
+            //// In production, the Angular files will be served from this directory
+            //services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = "ClientApp/dist/client-app";
+            //});
         }
 
         public void ConfigureAuthentication(IServiceCollection services)
