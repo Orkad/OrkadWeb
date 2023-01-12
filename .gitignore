@@ -342,5 +342,6 @@ nh.cfg
 
 
 #------- CUSTOM -------
-# exclusion des fichiers auto générés par specflow
+# custom exclusion
 *.feature.cs
+*.db

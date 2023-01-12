@@ -15,19 +15,11 @@ namespace OrkadWeb.Data.NHibernate
         }
         public ISessionFactory Resolve(Assembly assembly)
         {
-            var nhConfigCache = new NHibernateConfigurationCache(assembly);
-            var config = nhConfigCache.LoadConfigurationFromFile();
-            if (config == null)
-            {
-                config = Fluently.Configure()
-                    .Database(SQLiteConfiguration.Standard)
+            var config = Fluently.Configure()
+                    .Database(SQLiteConfiguration.Standard.ConnectionString(connectionString))
                     .Mappings(m => m.FluentMappings.AddFromAssembly(assembly)
                         .Conventions.Add<EnumConvention>())
                     .BuildConfiguration();
-                nhConfigCache.SaveConfigurationToFile(config);
-            }
-            // set connection string after (we don't want to keep it in cache file)
-            config.SetProperty("connection.connection_string", connectionString);
 
             return config.BuildSessionFactory();
         }
