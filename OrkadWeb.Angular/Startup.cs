@@ -33,9 +33,9 @@ namespace OrkadWeb.Angular
         {
             ConfigureAuthentication(services);
 
-            var resolver = new SqliteSessionFactoryResolver(Configuration.GetConnectionString("OrkadWeb"));
-            var sessionFactory = resolver.Resolve(Assembly.GetAssembly(typeof(IDataService)));
-            services.AddSingleton<ISessionFactoryResolver>(resolver);
+            var configuration = OrkadWebConfigurationBuilder.Build(Configuration.GetConnectionString("OrkadWeb"));
+            services.AddSingleton(configuration);
+            var sessionFactory = configuration.BuildSessionFactory();
             services.AddSingleton(sessionFactory);
             services.AddData();
             services.AddLogic();
