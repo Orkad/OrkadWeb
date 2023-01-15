@@ -6,7 +6,15 @@
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef style="width: 250px">Libellé</th>
         <td mat-cell *matCellDef="let charge">
-          {{ charge.name }}
+          <div *ngIf="editedCharge === charge">
+            <mat-form-field>
+              <mat-label>Libellé</mat-label>
+              <input matInput [formControl]="chargeFg.controls.name" />
+            </mat-form-field>
+          </div>
+          <div *ngIf="editedCharge !== charge">
+            {{ charge.name }}
+          </div>
         </td>
       </ng-container>
 
@@ -21,7 +29,22 @@
           Montant
         </th>
         <td mat-cell *matCellDef="let charge" ngClass="column-currency">
-          {{ charge.amount | currency: "EUR" }}
+          <div *ngIf="editedCharge === charge">
+            <mat-form-field>
+              <mat-label>Montant</mat-label>
+              <input
+                matInput
+                type="number"
+                [formControl]="chargeFg.controls.amount"
+              />
+              <mat-error *ngIf="chargeFg.controls.amount.hasError('required')"
+                >Requis</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div *ngIf="editedCharge !== charge">
+            {{ charge.amount | currency : "EUR" }}
+          </div>
         </td>
       </ng-container>
 
@@ -50,7 +73,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <div *ngIf="!addChargeVisible" class="bottom-table-button">
-      <button mat-mini-fab (click)="beginAddCharge()" color="primary">
+      <button mat-mini-fab (click)="addCharge()" color="primary">
         <mat-icon>add</mat-icon>
       </button>
     </div>
@@ -91,7 +114,7 @@
           Montant
         </th>
         <td mat-cell *matCellDef="let income" ngClass="column-currency">
-          {{ income.amount | currency: "EUR" }}
+          {{ income.amount | currency : "EUR" }}
         </td>
 
         <ng-container matColumnDef="actions">

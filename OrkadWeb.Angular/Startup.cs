@@ -1,3 +1,5 @@
+using FluentMigrator.Runner;
+using FluentNHibernate.Cfg.Db;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using OrkadWeb.Angular.Models;
 using OrkadWeb.Data;
 using OrkadWeb.Data.Builder;
+using OrkadWeb.Data.Migrator;
 using OrkadWeb.Data.NHibernate;
 using OrkadWeb.Logic;
 using OrkadWeb.Logic.Users;
@@ -33,10 +36,13 @@ namespace OrkadWeb.Angular
         {
             ConfigureAuthentication(services);
 
-            var configuration = OrkadWebConfigurationBuilder.Build(Configuration.GetConnectionString("OrkadWeb"));
+            var connectionString = Configuration.GetConnectionString("OrkadWeb");
+            var mysql = MySQLConfiguration.Standard.ConnectionString(connectionString);
+            var configuration = OrkadWebConfigurationBuilder.Build(mysql);
             services.AddSingleton(configuration);
             var sessionFactory = configuration.BuildSessionFactory();
             services.AddSingleton(sessionFactory);
+            services.AddOrkadWebMigrator("mariadb", connectionString);
             services.AddData();
             services.AddLogic();
             services.AddControllersWithViews();
@@ -129,6 +135,12 @@ namespace OrkadWeb.Angular
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
+
+            // automatic migration running
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                scope.ServiceProvider.GetService<IMigrationRunner>().MigrateUp();
+            }
         }
     }
 }

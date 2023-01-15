@@ -1,7 +1,5 @@
-﻿using MediatR;
-using NHibernate.Linq;
+﻿using NHibernate.Linq;
 using OrkadWeb.Data;
-using OrkadWeb.Data.Exceptions;
 using OrkadWeb.Data.Models;
 using OrkadWeb.Logic.CQRS;
 using OrkadWeb.Logic.Users;
@@ -56,35 +54,6 @@ namespace OrkadWeb.Logic.MonthlyTransactions.Queries
                 {
                     Items = await project.ToListAsync(cancellationToken),
                 };
-            }
-        }
-    }
-
-    public class DeleteChargeCommand : ICommand
-    {
-        public int ChargeId { get; set; }
-
-        public class Handler : ICommandHandler<DeleteChargeCommand>
-        {
-            private readonly IDataService dataService;
-            private readonly IAuthenticatedUser authenticatedUser;
-
-            public Handler(IDataService dataService, IAuthenticatedUser authenticatedUser)
-            {
-                this.dataService = dataService;
-                this.authenticatedUser = authenticatedUser;
-            }
-
-            public async Task<Unit> Handle(DeleteChargeCommand command, CancellationToken cancellationToken)
-            {
-                var transaction = await dataService.GetAsync<MonthlyTransaction>(command.ChargeId);
-                authenticatedUser.MustOwns(transaction);
-                if (!transaction.IsCharge())
-                {
-                    throw new DataNotFoundException<MonthlyTransaction>(command.ChargeId);
-                }
-                await dataService.DeleteAsync(transaction);
-                return Unit.Value;
             }
         }
     }

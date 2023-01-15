@@ -17,5 +17,7 @@ namespace OrkadWeb.Logic.Config
 
         public static readonly Regex EMAIL_REGEX = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
+
     }
+
 }

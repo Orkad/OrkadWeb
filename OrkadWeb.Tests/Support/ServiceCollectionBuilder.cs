@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentNHibernate.Cfg.Db;
+using Microsoft.Extensions.DependencyInjection;
 using OrkadWeb.Data;
 using OrkadWeb.Data.Builder;
 using OrkadWeb.Data.NHibernate;
+using OrkadWeb.Data.Migrator;
 using OrkadWeb.Logic;
 using OrkadWeb.Logic.Abstractions;
 using OrkadWeb.Tests.Contexts;
@@ -11,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using TechTalk.SpecFlow;
+using FluentMigrator.Runner;
 
 namespace OrkadWeb.Tests.Support
 {
@@ -21,17 +25,22 @@ namespace OrkadWeb.Tests.Support
         {
             var services = new ServiceCollection();
 
-            var resolver = new InMemorySessionFactoryResolver();
-            var sessionFactory = resolver.Resolve(typeof(IDataService).Assembly);
-            services.AddSingleton<ISessionFactoryResolver>(resolver);
+            var connectionString = "FullUri=file:memorydb.db?mode=memory&cache=shared";
+            var sqlite = SQLiteConfiguration.Standard.ConnectionString(connectionString);
+            var configuration = OrkadWebConfigurationBuilder.Build(sqlite);
+            var sessionFactory = configuration.BuildSessionFactory();
+            var connection = sessionFactory.OpenSession().Connection;
             services.AddSingleton(sessionFactory);
+            services.AddSingleton(connection); // for keeping in memory connection up
+            services.AddOrkadWebMigrator("sqlite", connectionString);
             services.AddData();
             services.AddLogic();
             var timeContext = new TimeContext();
             services.AddSingleton(timeContext);
             services.AddSingleton<ITimeProvider>(timeContext);
-
             return services;
         }
+
+
     }
 }

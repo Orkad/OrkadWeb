@@ -41,25 +41,22 @@ namespace OrkadWeb.Logic.Users.Commands
                 ClassLevelCascadeMode = CascadeMode.Stop;
 
                 RuleFor(command => command.UserName)
-                    .NotEmpty().WithMessage("obligatoire")
-                    .MinimumLength(GlobalConfiguration.USERNAME_MIN_LENGHT).WithMessage("trop court")
-                    .MaximumLength(GlobalConfiguration.USERNAME_MAX_LENGHT).WithMessage("trop long")
-                    .Matches(GlobalConfiguration.USERNAME_REGEX).WithMessage("alphanumérique uniquement")
-                    // BACKEND CHECK ONLY
-                    .Must(NotMatchAnotherUsername).WithMessage("déjà utilisé");
+                    .NotEmpty().WithErrorCode(ErrorCodes.USERNAME_REQUIRED)
+                    .MinimumLength(GlobalConfiguration.USERNAME_MIN_LENGHT).WithErrorCode(ErrorCodes.USERNAME_TOO_SHORT)
+                    .MaximumLength(GlobalConfiguration.USERNAME_MAX_LENGHT).WithErrorCode(ErrorCodes.USERNAME_TOO_LONG)
+                    .Matches(GlobalConfiguration.USERNAME_REGEX).WithErrorCode(ErrorCodes.USERNAME_WRONG_FORMAT)
+                    .Must(NotMatchAnotherUsername).WithErrorCode(ErrorCodes.USERNAME_ALREADY_EXISTS);
 
                 RuleFor(command => command.Email)
-                    .NotEmpty().WithMessage("obligatoire")
-                    .Matches(GlobalConfiguration.EMAIL_REGEX).WithMessage("email invalide")
-                    // BACKEND CHECK ONLY
-                    .Must(NotMatchAnotherEmail).WithMessage("déjà utilisé");
+                    .NotEmpty().WithErrorCode(ErrorCodes.EMAIL_REQUIRED)
+                    .Matches(GlobalConfiguration.EMAIL_REGEX).WithErrorCode(ErrorCodes.EMAIL_WRONG_FORMAT)
+                    .Must(NotMatchAnotherEmail).WithErrorCode(ErrorCodes.EMAIL_ALREADY_EXISTS);
 
                 RuleFor(command => command.Password)
-                    .NotEmpty().WithMessage("obligatoire")
-                    .MinimumLength(GlobalConfiguration.PASSWORD_MIN_LENGHT).WithMessage("trop court")
-                    .MaximumLength(GlobalConfiguration.PASSWORD_MAX_LENGHT).WithMessage("trop long")
-                    .Matches(GlobalConfiguration.PASSWORD_REGEX).WithMessage("au moins une majuscule, une minuscule et un caractère spécial");
-
+                    .NotEmpty().WithErrorCode("obligatoire")
+                    .MinimumLength(GlobalConfiguration.PASSWORD_MIN_LENGHT).WithErrorCode(ErrorCodes.PASSWORD_TOO_SHORT)
+                    .MaximumLength(GlobalConfiguration.PASSWORD_MAX_LENGHT).WithErrorCode(ErrorCodes.PASSWORD_TOO_LONG)
+                    .Matches(GlobalConfiguration.PASSWORD_REGEX).WithErrorCode(ErrorCodes.PASSWORD_WRONG_FORMAT);
             }
 
             private bool NotMatchAnotherUsername(string username) => dataService.NotExists<User>(u => u.Username == username);

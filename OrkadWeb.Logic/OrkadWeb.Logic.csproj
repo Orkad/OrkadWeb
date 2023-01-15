@@ -19,8 +19,4 @@
 		<ProjectReference Include="..\OrkadWeb.Data\OrkadWeb.Data.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="MonthlyTransactions\Commands\" />
-	</ItemGroup>
-
 </Project>

@@ -14,16 +14,15 @@
 		<PackageReference Include="SpecFlow.MsTest" Version="3.9.74" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
 		<PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Features\" />
-		<Folder Include="Hooks\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\OrkadWeb.Common\OrkadWeb.Common.csproj" />
-		<ProjectReference Include="..\OrkadWeb.Logic\OrkadWeb.Logic.csproj" />
+	  <ProjectReference Include="..\OrkadWeb.Angular\OrkadWeb.Angular.csproj" />
 	</ItemGroup>
 
 </Project>

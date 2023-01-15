@@ -22,9 +22,10 @@ export class MonthlyBudgetComponent implements OnInit {
     this.monthlyTransactionService
       .incomes()
       .subscribe((data) => (this.incomes.data = data.rows));
-    this.monthlyTransactionService
-      .charges()
-      .subscribe((data) => (this.charges.data = data.rows));
+    this.monthlyTransactionService.charges().subscribe((data) => {
+      console.log(data);
+      this.charges.data = data.items;
+    });
   }
 
   charges = new MatTableDataSource<MonthlyCharge>();
@@ -37,7 +38,29 @@ export class MonthlyBudgetComponent implements OnInit {
   });
 
   editedIncome: MonthlyIncome;
+  editedCharge: MonthlyCharge;
   addChargeVisible: boolean;
+
+  addCharge() {
+    if (this.editedCharge) {
+      return;
+    }
+    this.chargeFg.reset();
+    this.editedCharge = <MonthlyCharge>{};
+    this.charges.data.push(this.editedCharge);
+    this.charges._updateChangeSubscription();
+  }
+
+  editCharge(charge: MonthlyCharge) {
+    if (this.editedCharge) {
+      return;
+    }
+    this.editedCharge = charge;
+    this.chargeFg.controls.name.setValue(charge.name);
+    this.chargeFg.controls.amount.setValue(charge.amount.toString());
+  }
+
+  saveCharge() {}
 
   deleteCharge(charge: MonthlyCharge) {
     this.dialogService
@@ -64,12 +87,6 @@ export class MonthlyBudgetComponent implements OnInit {
 
   beginAddCharge() {
     this.addChargeVisible = true;
-  }
-
-  saveCharge() {
-    if (this.addChargeVisible) {
-    } else {
-    }
   }
 
   beginEditCharge(charge: MonthlyCharge) {}

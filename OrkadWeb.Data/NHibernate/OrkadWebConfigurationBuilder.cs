@@ -7,10 +7,10 @@ namespace OrkadWeb.Data.NHibernate
 {
     public static class OrkadWebConfigurationBuilder
     {
-        public static Configuration Build(string connectionString)
+        public static Configuration Build(IPersistenceConfigurer persistenceConfigurer)
         {
             return Fluently.Configure()
-                    .Database(MySQLConfiguration.Standard.ConnectionString(connectionString))
+                    .Database(persistenceConfigurer)
                     .Mappings(m => m
                         .FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly())
                         .Conventions.Add<EnumConvention>())

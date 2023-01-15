@@ -1,5 +1,5 @@
 export interface MonthlyCharges {
-  rows: MonthlyCharge[];
+  items: MonthlyCharge[];
 }
 
 export interface MonthlyCharge {

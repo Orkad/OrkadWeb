@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
 namespace OrkadWeb.Tests.Drivers
@@ -18,11 +19,11 @@ namespace OrkadWeb.Tests.Drivers
 
         public Exception? Exception { get; set; }
 
-        public void Run(IRequest<Unit> request)
+        public async Task Send(IRequest<Unit> request)
         {
             try
             {
-                mediator.Send(request);
+                await mediator.Send(request);
             }
             catch (Exception ex)
             {

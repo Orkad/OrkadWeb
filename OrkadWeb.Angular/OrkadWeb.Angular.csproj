@@ -27,6 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\OrkadWeb.Data.Migrator\OrkadWeb.Data.Migrator.csproj" />
 		<ProjectReference Include="..\OrkadWeb.Data\OrkadWeb.Data.csproj" />
 		<ProjectReference Include="..\OrkadWeb.Logic\OrkadWeb.Logic.csproj" />
 	</ItemGroup>
