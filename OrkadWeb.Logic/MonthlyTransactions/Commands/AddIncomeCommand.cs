@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Logic.MonthlyTransactions.Commands
 {
-    public class AddChargeCommand : ICommand<int>
+    public class AddIncomeCommand : ICommand<int>
     {
         public string Name { get; set; }
         public decimal Amount { get; set; }
-
-        public class Validator : AbstractValidator<AddChargeCommand>
+        public class Validator : AbstractValidator<AddIncomeCommand>
         {
             public Validator()
             {
@@ -21,8 +20,7 @@ namespace OrkadWeb.Logic.MonthlyTransactions.Commands
                 RuleFor(x => x.Amount).GreaterThan(0);
             }
         }
-
-        public class Handler : ICommandHandler<AddChargeCommand, int>
+        public class Handler : ICommandHandler<AddIncomeCommand, int>
         {
             private readonly IDataService dataService;
             private readonly IAuthenticatedUser authenticatedUser;
@@ -32,12 +30,12 @@ namespace OrkadWeb.Logic.MonthlyTransactions.Commands
                 this.dataService = dataService;
                 this.authenticatedUser = authenticatedUser;
             }
-            public async Task<int> Handle(AddChargeCommand command, CancellationToken cancellationToken)
+            public async Task<int> Handle(AddIncomeCommand command, CancellationToken cancellationToken)
             {
                 var monthlyTransaction = new MonthlyTransaction
                 {
                     Name = command.Name,
-                    Amount = -command.Amount, //negative
+                    Amount = command.Amount,
                     Owner = dataService.Load<User>(authenticatedUser.Id),
                 };
                 await dataService.InsertAsync(monthlyTransaction);

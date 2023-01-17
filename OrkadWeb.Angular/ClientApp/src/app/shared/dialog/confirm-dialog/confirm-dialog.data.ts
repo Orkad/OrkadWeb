@@ -1,4 +1,4 @@
 export interface ConfirmDialogData {
-  title: string | null;
+  title?: string;
   text: string;
 }

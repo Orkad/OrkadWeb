@@ -8,6 +8,7 @@ import { MonthlyTransactionService } from 'src/services/monthly-transaction.serv
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MonthlyChargeFormDialogComponent } from './monthly-charge-form-dialog/monthly-charge-form-dialog.component';
+import { MonthlyIncomeFormDialogComponent } from './monthly-income-form-dialog/monthly-income-form-dialog.component';
 
 @Component({
   selector: 'app-monthly-budget',
@@ -23,7 +24,7 @@ export class MonthlyBudgetComponent implements OnInit {
   ngOnInit(): void {
     this.monthlyTransactionService
       .incomes()
-      .subscribe((data) => (this.incomes.data = data.rows));
+      .subscribe((data) => (this.incomes.data = data));
     this.monthlyTransactionService.charges().subscribe((data) => {
       console.log(data);
       this.charges.data = data;
@@ -46,63 +47,89 @@ export class MonthlyBudgetComponent implements OnInit {
   addChargeVisible: boolean;
 
   addCharge() {
-    this.dialogService.dialog
-      .open(MonthlyChargeFormDialogComponent)
-      .afterClosed()
-      .subscribe((data) => {
-        if (data) {
-          this.monthlyTransactionService.addCharge(data).subscribe();
-          this.charges.data.push(data);
-          this.charges._updateChangeSubscription();
-        }
-      });
+    this.openChargeDialog().subscribe((data) => {
+      if (data) {
+        this.monthlyTransactionService.addCharge(data).subscribe();
+        this.charges.data.push(data);
+        this.charges._updateChangeSubscription();
+      }
+    });
   }
 
   editCharge(charge: MonthlyCharge) {
-    this.dialogService.dialog
-      .open(MonthlyChargeFormDialogComponent, {
-        data: charge,
-      })
-      .afterClosed()
-      .subscribe((data) => {
-        if (data) {
-          this.monthlyTransactionService.editCharge(data).subscribe();
-        }
-      });
+    this.openChargeDialog(charge).subscribe((data) => {
+      if (data) {
+        this.monthlyTransactionService.editCharge(data).subscribe();
+      }
+    });
   }
 
   deleteCharge(charge: MonthlyCharge) {
     this.dialogService
       .confirm({
-        text:
-          'Confirmer la suppression de ' +
-          charge.name +
-          " d'un montant de " +
-          charge.amount +
-          '€ ?',
-      } as ConfirmDialogData)
+        text: `Confirmer la suppression de ${charge.name} ?`,
+      })
       .subscribe((ok) => {
         if (ok) {
-          this.removeChargeFromTable(charge);
+          this.charges.data.remove(charge);
+          this.charges._updateChangeSubscription();
           this.monthlyTransactionService.deleteCharge(charge.id).subscribe({
             error: () => this.charges.data.push(charge),
           });
         }
       });
   }
-
-  removeChargeFromTable(charge: MonthlyCharge) {
-    this.charges.data = this.charges.data.filter((mc) => mc !== charge);
-    this.charges._updateChangeSubscription();
+  private openChargeDialog(charge: MonthlyCharge | null = null) {
+    return this.dialogService.dialog
+      .open(MonthlyChargeFormDialogComponent, {
+        data: charge,
+      })
+      .afterClosed();
   }
 
-  deleteIncome(income: MonthlyIncome) {}
-
-  beginAddCharge() {
-    this.addChargeVisible = true;
+  addIncome() {
+    this.openIncomeDialog().subscribe((data) => {
+      if (data) {
+        this.monthlyTransactionService.addIncome(data).subscribe();
+        this.incomes.data.push(data);
+        this.incomes._updateChangeSubscription();
+      }
+    });
+  }
+  editIncome(income: MonthlyIncome) {
+    const old = structuredClone(income);
+    this.openIncomeDialog(income).subscribe((data) => {
+      if (data) {
+        this.monthlyTransactionService.editIncome(data).subscribe({
+          error: () => {
+            this.incomes.data.replace(data, old);
+            this.incomes._updateChangeSubscription();
+          },
+        });
+      }
+    });
   }
 
-  beginEditCharge(charge: MonthlyCharge) {}
-
-  beginEditIncome(income: MonthlyIncome) {}
+  deleteIncome(income: MonthlyIncome) {
+    this.dialogService
+      .confirm({
+        text: `Confirmer la suppression de ${income.name} ?`,
+      })
+      .subscribe((ok) => {
+        if (ok) {
+          this.incomes.data.remove(income);
+          this.incomes._updateChangeSubscription();
+          this.monthlyTransactionService.deleteIncome(income.id).subscribe({
+            error: () => this.charges.data.push(income),
+          });
+        }
+      });
+  }
+  private openIncomeDialog(income: MonthlyIncome | null = null) {
+    return this.dialogService.dialog
+      .open(MonthlyIncomeFormDialogComponent, {
+        data: income,
+      })
+      .afterClosed();
+  }
 }

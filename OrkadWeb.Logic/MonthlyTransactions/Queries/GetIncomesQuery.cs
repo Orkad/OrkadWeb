@@ -2,6 +2,7 @@
 using OrkadWeb.Data;
 using OrkadWeb.Data.Models;
 using OrkadWeb.Logic.CQRS;
+using OrkadWeb.Logic.MonthlyTransactions.Models;
 using OrkadWeb.Logic.Users;
 using System;
 using System.Collections.Generic;
@@ -15,20 +16,9 @@ namespace OrkadWeb.Logic.MonthlyTransactions.Queries
     /// <summary>
     /// Get all monthly charges defined by the authenticated user
     /// </summary>
-    public class GetIncomesQuery : IQuery<GetIncomesQuery.Result>
+    public class GetIncomesQuery : IQuery<IEnumerable<MonthlyIncomeVM>>
     {
-        public class Result
-        {
-            public class Item
-            {
-                public int Id { get; set; }
-                public decimal Amount { get; set; }
-                public string Name { get; set; }
-            }
-            public List<Item> Items { get; set; }
-        }
-
-        public class Handler : IQueryHandler<GetIncomesQuery, Result>
+        public class Handler : IQueryHandler<GetIncomesQuery, IEnumerable<MonthlyIncomeVM>>
         {
             private readonly IDataService dataService;
             private readonly IAuthenticatedUser authenticatedUser;
@@ -39,21 +29,17 @@ namespace OrkadWeb.Logic.MonthlyTransactions.Queries
                 this.authenticatedUser = authenticatedUser;
             }
 
-            public async Task<Result> Handle(GetIncomesQuery request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<MonthlyIncomeVM>> Handle(GetIncomesQuery request, CancellationToken cancellationToken)
             {
                 var query = dataService.Query<MonthlyTransaction>()
                     .Where(mt => mt.Amount > 0) // Incomes
                     .Where(mt => mt.Owner.Id == authenticatedUser.Id);
-                var project = query.Select(mt => new Result.Item
+                return await query.Select(mt => new MonthlyIncomeVM
                 {
                     Id = mt.Id,
                     Amount = mt.Amount,
                     Name = mt.Name,
-                });
-                return new Result
-                {
-                    Items = await project.ToListAsync(cancellationToken),
-                };
+                }).ToListAsync(cancellationToken);
             }
         }
     }

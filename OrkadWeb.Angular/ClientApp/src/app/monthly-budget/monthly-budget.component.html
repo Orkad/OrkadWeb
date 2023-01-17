@@ -80,22 +80,19 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let income">
-            <button
-              mat-icon-button
-              (click)="beginEditIncome(income)"
-              color="primary"
-              [disabled]="editedIncome"
-            >
-              <mat-icon>edit</mat-icon>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_horiz</mat-icon>
             </button>
-            <button
-              mat-icon-button
-              (click)="deleteIncome(income)"
-              color="primary"
-              [disabled]="editedIncome"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="editIncome(income)">
+                <mat-icon color="primary">edit</mat-icon>
+                <span>Modifier</span>
+              </button>
+              <button mat-menu-item (click)="deleteIncome(income)">
+                <mat-icon color="warn">delete</mat-icon>
+                <span>Supprimer</span>
+              </button>
+            </mat-menu>
           </td>
         </ng-container>
       </ng-container>
@@ -103,5 +100,10 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    <div class="bottom-table-button">
+      <button mat-mini-fab (click)="addIncome()" color="primary">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
   </div>
 </div>
