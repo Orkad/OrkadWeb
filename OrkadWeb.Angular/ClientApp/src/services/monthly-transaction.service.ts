@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { MonthlyCharges } from 'src/shared/models/MonthlyCharge';
+import { map, Observable } from 'rxjs';
+import { MonthlyCharge } from 'src/shared/models/MonthlyCharge';
 import { MonthlyIncomes } from 'src/shared/models/MonthlyIncome';
 
 @Injectable({
@@ -10,9 +10,22 @@ import { MonthlyIncomes } from 'src/shared/models/MonthlyIncome';
 export class MonthlyTransactionService {
   constructor(private httpClient: HttpClient) {}
 
-  charges(): Observable<MonthlyCharges> {
-    return this.httpClient.get<MonthlyCharges>(
+  charges(): Observable<MonthlyCharge[]> {
+    return this.httpClient.get<MonthlyCharge[]>(
       'api/monthlytransaction/charges'
+    );
+  }
+
+  addCharge(charge: MonthlyCharge) {
+    return this.httpClient
+      .post<number>('api/monthlytransaction/charges/', charge)
+      .pipe(map((i) => (charge.id = i)));
+  }
+
+  editCharge(charge: MonthlyCharge) {
+    return this.httpClient.put<void>(
+      'api/monthlytransaction/charges/' + charge.id,
+      charge
     );
   }
 

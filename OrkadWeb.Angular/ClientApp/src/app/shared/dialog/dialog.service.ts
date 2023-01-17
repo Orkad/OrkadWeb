@@ -8,7 +8,7 @@ import { ConfirmDialogData } from './confirm-dialog/confirm-dialog.data';
   providedIn: 'root',
 })
 export class DialogService {
-  constructor(private dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) {}
 
   public confirm(data: ConfirmDialogData): Observable<boolean> {
     return this.dialog

@@ -6,15 +6,7 @@
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef style="width: 250px">Libellé</th>
         <td mat-cell *matCellDef="let charge">
-          <div *ngIf="editedCharge === charge">
-            <mat-form-field>
-              <mat-label>Libellé</mat-label>
-              <input matInput [formControl]="chargeFg.controls.name" />
-            </mat-form-field>
-          </div>
-          <div *ngIf="editedCharge !== charge">
-            {{ charge.name }}
-          </div>
+          {{ charge.name }}
         </td>
       </ng-container>
 
@@ -29,22 +21,7 @@
           Montant
         </th>
         <td mat-cell *matCellDef="let charge" ngClass="column-currency">
-          <div *ngIf="editedCharge === charge">
-            <mat-form-field>
-              <mat-label>Montant</mat-label>
-              <input
-                matInput
-                type="number"
-                [formControl]="chargeFg.controls.amount"
-              />
-              <mat-error *ngIf="chargeFg.controls.amount.hasError('required')"
-                >Requis</mat-error
-              >
-            </mat-form-field>
-          </div>
-          <div *ngIf="editedCharge !== charge">
-            {{ charge.amount | currency : "EUR" }}
-          </div>
+          {{ charge.amount | currency : "EUR" }}
         </td>
       </ng-container>
 
@@ -52,47 +29,30 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let charge">
-          <button
-            mat-icon-button
-            (click)="beginEditCharge(charge)"
-            color="primary"
-          >
-            <mat-icon>edit</mat-icon>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_horiz</mat-icon>
           </button>
-          <button
-            mat-icon-button
-            (click)="deleteCharge(charge)"
-            color="primary"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editCharge(charge)">
+              <mat-icon color="primary">edit</mat-icon>
+              <span>Modifier</span>
+            </button>
+            <button mat-menu-item (click)="deleteCharge(charge)">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Supprimer</span>
+            </button>
+          </mat-menu>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    <div *ngIf="!addChargeVisible" class="bottom-table-button">
+    <div class="bottom-table-button">
       <button mat-mini-fab (click)="addCharge()" color="primary">
         <mat-icon>add</mat-icon>
       </button>
     </div>
-    <form [formGroup]="chargeFg" (submit)="saveCharge()">
-      <mat-form-field>
-        <mat-label>Libellé</mat-label>
-        <input matInput formGroupName="name" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Montant</mat-label>
-        <input matInput type="number" formGroupName="amount" />
-        <mat-error *ngIf="chargeFg.controls.amount.hasError('required')"
-          >Requis</mat-error
-        >
-      </mat-form-field>
-      <button mat-mini-fab type="submit" color="primary">
-        <mat-icon>save</mat-icon>
-      </button>
-    </form>
   </div>
   <div class="monthly-income-container">
     <h1>Revenus</h1>

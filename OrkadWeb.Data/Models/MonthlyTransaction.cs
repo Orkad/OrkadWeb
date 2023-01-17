@@ -30,8 +30,8 @@ namespace OrkadWeb.Data.Models
         /// </summary>
         public virtual User Owner { get; set; }
 
-        public virtual bool IsCharge() => Amount > 0;
-        public virtual bool IsIncome() => Amount < 0;
+        public virtual bool IsCharge() => Amount < 0;
+        public virtual bool IsIncome() => Amount > 0;
     }
 
     public class MonthlyTransactionMap : ClassMap<MonthlyTransaction>

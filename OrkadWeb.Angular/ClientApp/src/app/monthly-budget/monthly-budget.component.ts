@@ -6,6 +6,8 @@ import { ConfirmDialogData } from '../shared/dialog/confirm-dialog/confirm-dialo
 import { DialogService } from '../shared/dialog/dialog.service';
 import { MonthlyTransactionService } from 'src/services/monthly-transaction.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MonthlyChargeFormDialogComponent } from './monthly-charge-form-dialog/monthly-charge-form-dialog.component';
 
 @Component({
   selector: 'app-monthly-budget',
@@ -24,7 +26,7 @@ export class MonthlyBudgetComponent implements OnInit {
       .subscribe((data) => (this.incomes.data = data.rows));
     this.monthlyTransactionService.charges().subscribe((data) => {
       console.log(data);
-      this.charges.data = data.items;
+      this.charges.data = data;
     });
   }
 
@@ -33,34 +35,41 @@ export class MonthlyBudgetComponent implements OnInit {
   displayedColumns = ['name', 'amount', 'actions'];
 
   chargeFg = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    amount: new FormControl('', [Validators.required, Validators.min(0.01)]),
+    name: new FormControl<string>('', [Validators.required]),
+    amount: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(0.01),
+    ]),
   });
 
   editedIncome: MonthlyIncome;
-  editedCharge: MonthlyCharge;
   addChargeVisible: boolean;
 
   addCharge() {
-    if (this.editedCharge) {
-      return;
-    }
-    this.chargeFg.reset();
-    this.editedCharge = <MonthlyCharge>{};
-    this.charges.data.push(this.editedCharge);
-    this.charges._updateChangeSubscription();
+    this.dialogService.dialog
+      .open(MonthlyChargeFormDialogComponent)
+      .afterClosed()
+      .subscribe((data) => {
+        if (data) {
+          this.monthlyTransactionService.addCharge(data).subscribe();
+          this.charges.data.push(data);
+          this.charges._updateChangeSubscription();
+        }
+      });
   }
 
   editCharge(charge: MonthlyCharge) {
-    if (this.editedCharge) {
-      return;
-    }
-    this.editedCharge = charge;
-    this.chargeFg.controls.name.setValue(charge.name);
-    this.chargeFg.controls.amount.setValue(charge.amount.toString());
+    this.dialogService.dialog
+      .open(MonthlyChargeFormDialogComponent, {
+        data: charge,
+      })
+      .afterClosed()
+      .subscribe((data) => {
+        if (data) {
+          this.monthlyTransactionService.editCharge(data).subscribe();
+        }
+      });
   }
-
-  saveCharge() {}
 
   deleteCharge(charge: MonthlyCharge) {
     this.dialogService
@@ -74,13 +83,17 @@ export class MonthlyBudgetComponent implements OnInit {
       } as ConfirmDialogData)
       .subscribe((ok) => {
         if (ok) {
-          this.charges.data = this.charges.data.filter((mc) => mc !== charge);
-          this.charges._updateChangeSubscription();
+          this.removeChargeFromTable(charge);
           this.monthlyTransactionService.deleteCharge(charge.id).subscribe({
             error: () => this.charges.data.push(charge),
           });
         }
       });
+  }
+
+  removeChargeFromTable(charge: MonthlyCharge) {
+    this.charges.data = this.charges.data.filter((mc) => mc !== charge);
+    this.charges._updateChangeSubscription();
   }
 
   deleteIncome(income: MonthlyIncome) {}

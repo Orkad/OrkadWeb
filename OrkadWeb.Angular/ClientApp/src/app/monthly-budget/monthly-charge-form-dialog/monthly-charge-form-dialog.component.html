@@ -1,0 +1,29 @@
+<h1 mat-dialog-title *ngIf="charge">Modifier une dépense mensuelle</h1>
+<h1 mat-dialog-title *ngIf="!charge">Ajouter une dépense mensuelle</h1>
+<div mat-dialog-content>
+  <form (submit)="save()">
+    <mat-form-field>
+      <mat-label>Libellé de la dépense</mat-label>
+      <input matInput [formControl]="name" />
+      <mat-error *ngIf="name.hasError('required')">Requis</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Montant</mat-label>
+      <input matInput type="number" [formControl]="amount" />
+      <mat-error *ngIf="amount.hasError('required')">Requis</mat-error>
+      <mat-error *ngIf="amount.hasError('min')">Au moins 1 centime</mat-error>
+    </mat-form-field>
+    <button type="submit"></button>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button
+    mat-flat-button
+    (click)="save()"
+    color="primary"
+    [disabled]="formGroup.invalid"
+  >
+    Enregistrer
+  </button>
+  <button mat-flat-button mat-dialog-close>Annuler</button>
+</div>

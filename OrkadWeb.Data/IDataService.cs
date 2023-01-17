@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrkadWeb.Data
@@ -15,7 +16,7 @@ namespace OrkadWeb.Data
         /// </summary>
         T Get<T>(object id);
         /// <inheritdoc cref="Get{T}(object)"/>
-        Task<T> GetAsync<T>(object id);
+        Task<T> GetAsync<T>(object id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Load entity assuming that is already exists.
@@ -32,21 +33,21 @@ namespace OrkadWeb.Data
         /// </summary>
         void Insert<T>(T data);
         /// <inheritdoc cref="Insert{T}(T)"/>
-        Task InsertAsync<T>(T data);
+        Task InsertAsync<T>(T data, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Update a existing entity.
         /// </summary>
         void Update<T>(T data);
         /// <inheritdoc cref="Insert{T}(T)"/>
-        Task UpdateAsync<T>(T data);
+        Task UpdateAsync<T>(T data, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Delete a existing entity.
         /// </summary>
         void Delete<T>(T data);
         /// <inheritdoc cref="Delete{T}(T)"/>
-        Task DeleteAsync<T>(T data);
+        Task DeleteAsync<T>(T data, CancellationToken cancellationToken = default);
     }
 
     /// <summary>

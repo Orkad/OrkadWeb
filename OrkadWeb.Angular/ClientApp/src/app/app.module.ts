@@ -20,6 +20,7 @@ import { MonthPickerComponent } from './shared/month-picker/month-picker.compone
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 import { NgChartsModule } from 'ng2-charts';
 import { MonthlyBudgetComponent } from './monthly-budget/monthly-budget.component';
+import { MonthlyChargeFormDialogComponent } from './monthly-budget/monthly-charge-form-dialog/monthly-charge-form-dialog.component';
 
 registerLocaleData(fr);
 
@@ -67,6 +68,7 @@ const localProvider = {
     MonthPickerComponent,
     ConfirmDialogComponent,
     MonthlyBudgetComponent,
+    MonthlyChargeFormDialogComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -2,11 +2,10 @@
 using OrkadWeb.Data;
 using OrkadWeb.Data.Models;
 using OrkadWeb.Logic.CQRS;
+using OrkadWeb.Logic.MonthlyTransactions.Models;
 using OrkadWeb.Logic.Users;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,20 +14,9 @@ namespace OrkadWeb.Logic.MonthlyTransactions.Queries
     /// <summary>
     /// Get all monthly charges defined by the authenticated user
     /// </summary>
-    public class GetChargesQuery : IQuery<GetChargesQuery.Result>
+    public class GetChargesQuery : IQuery<IEnumerable<MonthlyChargeVM>>
     {
-        public class Result
-        {
-            public class Item
-            {
-                public int Id { get; set; }
-                public decimal Amount { get; set; }
-                public string Name { get; set; }
-            }
-            public List<Item> Items { get; set; }
-        }
-
-        public class Handler : IQueryHandler<GetChargesQuery, Result>
+        public class Handler : IQueryHandler<GetChargesQuery, IEnumerable<MonthlyChargeVM>>
         {
             private readonly IDataService dataService;
             private readonly IAuthenticatedUser authenticatedUser;
@@ -39,21 +27,17 @@ namespace OrkadWeb.Logic.MonthlyTransactions.Queries
                 this.authenticatedUser = authenticatedUser;
             }
 
-            public async Task<Result> Handle(GetChargesQuery request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<MonthlyChargeVM>> Handle(GetChargesQuery request, CancellationToken cancellationToken)
             {
                 var query = dataService.Query<MonthlyTransaction>()
                     .Where(mt => mt.Amount < 0) // Charges
                     .Where(mt => mt.Owner.Id == authenticatedUser.Id);
-                var project = query.Select(mt => new Result.Item
+                return await query.Select(mt => new MonthlyChargeVM
                 {
                     Id = mt.Id,
-                    Amount = mt.Amount,
+                    Amount = -mt.Amount,
                     Name = mt.Name,
-                });
-                return new Result
-                {
-                    Items = await project.ToListAsync(cancellationToken),
-                };
+                }).ToListAsync(cancellationToken);
             }
         }
     }

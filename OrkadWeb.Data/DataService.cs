@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrkadWeb.Data
@@ -22,7 +23,7 @@ namespace OrkadWeb.Data
         public T Get<T>(object id) => session.Get<T>(id) ?? throw new DataNotFoundException<T>(id);
 
         /// <inheritdoc/>
-        public async Task<T> GetAsync<T>(object id) => await session.GetAsync<T>(id) ?? throw new DataNotFoundException<T>(id);
+        public async Task<T> GetAsync<T>(object id, CancellationToken cancellationToken = default) => await session.GetAsync<T>(id, cancellationToken) ?? throw new DataNotFoundException<T>(id);
 
         /// <inheritdoc/>
         public T Load<T>(object id) => session.Load<T>(id);
@@ -34,19 +35,19 @@ namespace OrkadWeb.Data
         public void Insert<T>(T obj) => session.Save(obj);
 
         /// <inheritdoc/>
-        public async Task InsertAsync<T>(T obj) => await session.SaveAsync(obj);
+        public async Task InsertAsync<T>(T obj, CancellationToken cancellationToken = default) => await session.SaveAsync(obj, cancellationToken);
 
         /// <inheritdoc/>
         public void Update<T>(T obj) => session.Update(obj);
 
         /// <inheritdoc/>
-        public async Task UpdateAsync<T>(T obj) => await session.UpdateAsync(obj);
+        public async Task UpdateAsync<T>(T obj, CancellationToken cancellationToken = default) => await session.UpdateAsync(obj, cancellationToken);
 
         /// <inheritdoc/>
         public void Delete<T>(T obj) => session.Delete(obj);
 
         /// <inheritdoc/>
-        public async Task DeleteAsync<T>(T obj) => await session.DeleteAsync(obj);
+        public async Task DeleteAsync<T>(T obj, CancellationToken cancellationToken = default) => await session.DeleteAsync(obj, cancellationToken);
 
         /// <inheritdoc/>
         public void Dispose() => session.Dispose();
