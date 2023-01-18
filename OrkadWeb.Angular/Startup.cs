@@ -46,11 +46,11 @@ namespace OrkadWeb.Angular
             services.AddData();
             services.AddLogic();
             services.AddControllersWithViews();
-            //// In production, the Angular files will be served from this directory
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "ClientApp/dist/client-app";
-            //});
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist/client-app";
+            });
         }
 
         public void ConfigureAuthentication(IServiceCollection services)
@@ -122,7 +122,7 @@ namespace OrkadWeb.Angular
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-
+            app.UseSpaStaticFiles();
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
