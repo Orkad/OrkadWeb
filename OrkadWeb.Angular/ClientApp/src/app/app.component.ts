@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { User } from 'src/shared/models/User';
 import { AuthenticationService } from './authentication/authentication.service';
 
@@ -11,10 +12,17 @@ export class AppComponent {
   constructor(private authenticationService: AuthenticationService) {}
   connected = false;
   username: string | undefined;
+  private authSubscription: Subscription;
 
-  ngOnInit(): void {
-    this.setUser(this.authenticationService.getUser());
+  ngOnInit() {
     this.authenticationService.user.subscribe((user) => this.setUser(user));
+    this.authSubscription = this.authenticationService
+      .checkTokenExpiration()
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
   }
 
   setUser(user: User | null) {
