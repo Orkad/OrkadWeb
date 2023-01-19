@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using MySql.Data.MySqlClient;
+using OrkadWeb.Angular.Config;
 using OrkadWeb.Angular.Models;
 using OrkadWeb.Data;
 using OrkadWeb.Data.Builder;
@@ -18,6 +21,7 @@ using OrkadWeb.Data.NHibernate;
 using OrkadWeb.Logic;
 using OrkadWeb.Logic.Users;
 using System;
+using System.Configuration;
 using System.Reflection;
 using System.Text;
 
@@ -36,13 +40,8 @@ namespace OrkadWeb.Angular
         {
             ConfigureAuthentication(services);
 
-            var connectionString = Configuration.GetConnectionString("OrkadWeb");
-            var mysql = MySQLConfiguration.Standard.ConnectionString(connectionString);
-            var configuration = OrkadWebConfigurationBuilder.Build(mysql);
-            services.AddSingleton(configuration);
-            var sessionFactory = configuration.BuildSessionFactory();
-            services.AddSingleton(sessionFactory);
-            services.AddOrkadWebMigrator("mariadb", connectionString);
+            ConfigureDatabase(services);
+
             services.AddData();
             services.AddLogic();
             services.AddControllersWithViews();
@@ -53,23 +52,28 @@ namespace OrkadWeb.Angular
             });
         }
 
-        public void ConfigureAuthentication(IServiceCollection services)
-        {
-            var issuer = Configuration["Jwt:Issuer"];
-            var audience = Configuration["Jwt:Audience"];
-            var key = Configuration["Jwt:Key"];
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
+        private string GetRequiredConfigValue(string key) => Configuration.GetRequiredSection(key).Value;
 
-                        ValidIssuer = issuer,
-                        ValidAudience = audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
-                    });
+        private void ConfigureDatabase(IServiceCollection services)
+        {
+            var builder = new MySqlConnectionStringBuilder(GetRequiredConfigValue("ConnectionStrings:OrkadWeb"));
+            builder.UserID = GetRequiredConfigValue("DbUsername");
+            builder.Password = GetRequiredConfigValue("DbPassword");
+            var connectionString = builder.ToString();
+            var mysql = MySQLConfiguration.Standard.ConnectionString(connectionString);
+            var configuration = OrkadWebConfigurationBuilder.Build(mysql);
+            services.AddSingleton(configuration);
+            var sessionFactory = configuration.BuildSessionFactory();
+            services.AddSingleton(sessionFactory);
+            services.AddOrkadWebMigrator("mariadb", connectionString);
+        }
+
+        private void ConfigureAuthentication(IServiceCollection services)
+        {
+            services.AddSingleton<JwtConfig>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer();
+            services.ConfigureOptions<JwtConfig>();
             services.AddSession();
             services.AddHttpContextAccessor();
             services.AddScoped<IAuthenticatedUser>(ResolveAuthenticatedUser);

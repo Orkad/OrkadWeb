@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using OrkadWeb.Angular.Config;
+using OrkadWeb.Logic.Abstractions;
 using OrkadWeb.Logic.Users.Commands;
 
 namespace OrkadWeb.Angular.Controllers
@@ -22,11 +24,15 @@ namespace OrkadWeb.Angular.Controllers
     public class AuthenticationController : ApiController
     {
         private readonly IConfiguration configuration;
+        private readonly ITimeProvider timeProvider;
+        private readonly JwtConfig jwtConfig;
 
-        public AuthenticationController(IMediator mediator, IConfiguration configuration)
+        public AuthenticationController(IMediator mediator, IConfiguration configuration, ITimeProvider timeProvider, JwtConfig jwtConfig)
             : base(mediator)
         {
             this.configuration = configuration;
+            this.timeProvider = timeProvider;
+            this.jwtConfig = jwtConfig;
         }
 
         [HttpPost]
@@ -36,17 +42,9 @@ namespace OrkadWeb.Angular.Controllers
             var response = await Command(command);
             if (response.Success)
             {
-                response.Token = GenerateJSONWebToken(response);
+                response.Token = jwtConfig.GenerateToken(GetClaims(response));
             }
             return response;
-        }
-
-        private string GenerateJSONWebToken(LoginCommand.Result loginResponse)
-        {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], GetClaims(loginResponse), expires: DateTime.Now.AddMinutes(120), signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private Claim[] GetClaims(LoginCommand.Result loginResponse)
