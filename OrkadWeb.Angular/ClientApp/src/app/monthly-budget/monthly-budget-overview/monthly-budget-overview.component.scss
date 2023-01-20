@@ -1,0 +1,15 @@
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-size: large;
+  font-weight: bold;
+  .total-charges {
+    color: red;
+  }
+  .total-budget {
+    font-size: x-large;
+  }
+  .total-incomes {
+    color: green;
+  }
+}

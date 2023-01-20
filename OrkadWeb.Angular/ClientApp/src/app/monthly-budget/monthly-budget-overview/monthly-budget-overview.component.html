@@ -1,0 +1,16 @@
+<div class="overview-container">
+  <div class="total">
+    <div class="total-charges">
+      {{ totalCharges() | currency : "EUR" }}
+    </div>
+    <div
+      [ngClass]="totalBudget() > 0 ? 'total-incomes' : 'total-charges'"
+      class="total-budget"
+    >
+      {{ totalBudget() | currency : "EUR" }}
+    </div>
+    <div class="total-incomes">
+      {{ totalIncomes() | currency : "EUR" }}
+    </div>
+  </div>
+</div>

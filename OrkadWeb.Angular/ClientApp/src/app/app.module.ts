@@ -22,6 +22,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { MonthlyBudgetComponent } from './monthly-budget/monthly-budget.component';
 import { MonthlyChargeFormDialogComponent } from './monthly-budget/monthly-charge-form-dialog/monthly-charge-form-dialog.component';
 import { MonthlyIncomeFormDialogComponent } from './monthly-budget/monthly-income-form-dialog/monthly-income-form-dialog.component';
+import { MonthlyBudgetOverviewComponent } from './monthly-budget/monthly-budget-overview/monthly-budget-overview.component';
 
 registerLocaleData(fr);
 
@@ -71,6 +72,7 @@ const localProvider = {
     MonthlyBudgetComponent,
     MonthlyChargeFormDialogComponent,
     MonthlyIncomeFormDialogComponent,
+    MonthlyBudgetOverviewComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
