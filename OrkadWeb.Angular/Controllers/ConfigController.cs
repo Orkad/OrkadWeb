@@ -9,8 +9,6 @@ namespace OrkadWeb.Angular.Controllers
 {
     public class ConfigController : ApiController
     {
-        public ConfigController(IMediator mediator) : base(mediator) { }
-
         /// <summary>
         /// Access to the global configuration
         /// </summary>

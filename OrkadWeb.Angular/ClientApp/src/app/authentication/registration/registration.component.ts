@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IFormBuilder, IFormGroup } from '@rxweb/types';
 import { GlobalConfigurationResult } from 'src/api/results/GlobalConfigurationResult';
 import { NotificationService } from 'src/services/notification.service';
-import { UserService } from 'src/services/user.service';
+import { AuthenticationService } from '../authentication.service';
 import { RegistrationForm } from './registration.form';
 
 @Component({
@@ -25,7 +25,7 @@ export class RegistrationComponent implements OnInit {
   formBuilder: IFormBuilder;
   constructor(
     formBuilder: UntypedFormBuilder,
-    private userService: UserService,
+    private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router
@@ -116,7 +116,7 @@ export class RegistrationComponent implements OnInit {
   };
 
   register() {
-    this.userService
+    this.authenticationService
       .register(this.username.value, this.email.value, this.password.value)
       .subscribe({
         next: () => {

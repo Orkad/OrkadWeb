@@ -23,15 +23,10 @@ namespace OrkadWeb.Angular.Controllers
 {
     public class AuthenticationController : ApiController
     {
-        private readonly IConfiguration configuration;
-        private readonly ITimeProvider timeProvider;
         private readonly JwtConfig jwtConfig;
 
-        public AuthenticationController(IMediator mediator, IConfiguration configuration, ITimeProvider timeProvider, JwtConfig jwtConfig)
-            : base(mediator)
+        public AuthenticationController(JwtConfig jwtConfig)
         {
-            this.configuration = configuration;
-            this.timeProvider = timeProvider;
             this.jwtConfig = jwtConfig;
         }
 
@@ -47,22 +42,19 @@ namespace OrkadWeb.Angular.Controllers
             return response;
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task Register(RegisterCommand command) => await Command(command);
+
         private Claim[] GetClaims(LoginCommand.Result loginResponse)
         {
             return new[] {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, ConvertToUnixTimestamp(DateTime.Now).ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToUnixTimestamp().ToString()),
                 new Claim("user_id", loginResponse.Id),
                 new Claim("user_name", loginResponse.Name),
                 new Claim("user_email", loginResponse.Email),
             };
-        }
-
-        public static double ConvertToUnixTimestamp(DateTime date)
-        {
-            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan diff = date.ToUniversalTime() - origin;
-            return Math.Floor(diff.TotalSeconds);
         }
     }
 }

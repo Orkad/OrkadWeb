@@ -170,7 +170,6 @@ namespace OrkadWeb.Angular
             {
                 scope.ServiceProvider.GetService<IMigrationRunner>().MigrateUp();
             }
-            BackgroundJob.Enqueue(() => Console.WriteLine("OrkadWeb Started"));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using OrkadWeb.Logic.CQRS;
 using System.Threading.Tasks;
 
@@ -14,12 +15,7 @@ namespace OrkadWeb.Angular.Controllers
     [Route("api/[controller]/[action]")]
     public abstract class ApiController : ControllerBase
     {
-        private readonly IMediator mediator;
-
-        protected ApiController(IMediator mediator)
-        {
-            this.mediator = mediator;
-        }
+        private IMediator mediator => HttpContext.RequestServices.GetRequiredService<IMediator>();
 
         /// <summary>
         /// Run a CQRS query

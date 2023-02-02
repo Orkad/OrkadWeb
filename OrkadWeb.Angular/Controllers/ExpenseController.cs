@@ -12,8 +12,6 @@ namespace OrkadWeb.Angular.Controllers
 {
     public class ExpenseController : ApiController
     {
-        public ExpenseController(IMediator mediator) : base(mediator) { }
-
         [HttpGet]
         public async Task<GetExpensesQuery.Result> GetAll() => await Query(new GetExpensesQuery());
 

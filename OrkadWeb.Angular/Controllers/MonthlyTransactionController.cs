@@ -12,8 +12,6 @@ namespace OrkadWeb.Angular.Controllers
     [Route("api/monthly")]
     public class MonthlyTransactionController : ApiController
     {
-        public MonthlyTransactionController(IMediator mediator) : base(mediator) { }
-
         [HttpGet]
         [Route("charges")]
         public async Task<IEnumerable<MonthlyChargeVM>> GetCharges() => await Query(new GetChargesQuery());

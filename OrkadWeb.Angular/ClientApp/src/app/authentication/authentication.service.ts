@@ -76,7 +76,17 @@ export class AuthenticationService {
     this.user.next(null);
   }
 
-  register(command: RegisterCommand): Observable<void> {
-    return this.httpClient.post<void>('api/authentication/register', command);
+  register(
+    username: string,
+    email: string,
+    password: string
+  ): Observable<void> {
+    return this.httpClient.post<void>('api/authentication/register', <
+      RegisterCommand
+    >{
+      userName: username,
+      email: email,
+      password: password,
+    });
   }
 }
