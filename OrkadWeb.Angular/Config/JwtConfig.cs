@@ -2,11 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using OrkadWeb.Logic.Abstractions;
 using System.Collections;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 namespace OrkadWeb.Angular.Config
@@ -23,12 +19,10 @@ namespace OrkadWeb.Angular.Config
         public const int DEFAULT_EXPIRATION = 15;
 
         private readonly IConfiguration configuration;
-        private readonly ITimeProvider timeProvider;
 
-        public JwtConfig(IConfiguration configuration, ITimeProvider timeProvider)
+        public JwtConfig(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.timeProvider = timeProvider;
         }
 
         /// <summary>
@@ -39,20 +33,6 @@ namespace OrkadWeb.Angular.Config
         public string Issuer => configuration.GetRequiredValue(CONFIG_ISSUER);
 
         public string Audience => configuration.GetRequiredValue(CONFIG_AUDIENCE);
-
-        /// <summary>
-        /// Generate a new JWT token
-        /// </summary>
-        /// <param name="claims">Claims to add to the token</param>
-        /// <param name="exp">(optionnal) expiration in minutes from nom</param>
-        public string GenerateToken(IEnumerable<Claim> claims, int exp = DEFAULT_EXPIRATION)
-        {
-            var credentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
-            var expiration = timeProvider.Now.AddMinutes(exp);
-            var token = new JwtSecurityToken(Issuer, Audience, claims, expires: expiration, signingCredentials: credentials);
-            var tokenHandler = new JwtSecurityTokenHandler();
-            return tokenHandler.WriteToken(token);
-        }
 
         public void Configure(JwtBearerOptions options)
         {

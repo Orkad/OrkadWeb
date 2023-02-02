@@ -98,6 +98,7 @@ namespace OrkadWeb.Angular
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer();
             services.ConfigureOptions<JwtConfig>();
+            services.AddSingleton<IIdentityTokenGenerator, JwtTokenGenerator>();
             services.AddSession();
             services.AddHttpContextAccessor();
             services.AddScoped<IAuthenticatedUser>(ResolveAuthenticatedUser);
