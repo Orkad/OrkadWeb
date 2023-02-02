@@ -1,5 +1,7 @@
 using FluentMigrator.Runner;
 using FluentNHibernate.Cfg.Db;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -50,6 +52,28 @@ namespace OrkadWeb.Angular
             {
                 configuration.RootPath = "ClientApp/dist/client-app";
             });
+
+            ConfigureHangfire(services);
+        }
+
+        private void ConfigureHangfire(IServiceCollection services)
+        {
+            // Add Hangfire services.
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(GetRequiredConfigValue("ConnectionStrings:Hangfire"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+                }));
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
         }
 
         private string GetRequiredConfigValue(string key) => Configuration.GetRequiredSection(key).Value;
@@ -119,14 +143,15 @@ namespace OrkadWeb.Angular
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
+            app.UseHangfireDashboard();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHangfireDashboard(); // réserve la route "/hangfire"
             });
-            app.UseSpaStaticFiles();
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
@@ -145,6 +170,7 @@ namespace OrkadWeb.Angular
             {
                 scope.ServiceProvider.GetService<IMigrationRunner>().MigrateUp();
             }
+            BackgroundJob.Enqueue(() => Console.WriteLine("OrkadWeb Started"));
         }
     }
 }
