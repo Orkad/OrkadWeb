@@ -1,0 +1,24 @@
+nosana:
+  description: dotnet build
+
+global:
+  image: registry.hub.docker.com/r/ubuntu/dotnet-deps:latest
+
+  trigger:
+    branch:
+      - master
+
+jobs:
+  - name: build
+    commands:
+      - dotnet build
+    artifacts:
+      - name: dotnet
+        path: ./dotnet/
+
+  - name: test
+    commands:
+      - dotnet test
+    resources:
+      - name: dotnet
+        path: ./dotnet/
