@@ -67,8 +67,6 @@ namespace OrkadWeb.Logic.Users.Commands
             private Claim[] GetClaims(string id, string name, string email)
             {
                 return new[] {
-                    new Claim("jti", Guid.NewGuid().ToString()),
-                    new Claim("iat", DateTime.Now.ToUnixTimestamp().ToString()),
                     new Claim("user_id", id),
                     new Claim("user_name", name),
                     new Claim("user_email", email),
