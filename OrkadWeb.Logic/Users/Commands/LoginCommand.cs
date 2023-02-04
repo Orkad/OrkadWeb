@@ -4,6 +4,7 @@ using OrkadWeb.Data;
 using OrkadWeb.Data.Models;
 using OrkadWeb.Logic.CQRS;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -67,9 +68,11 @@ namespace OrkadWeb.Logic.Users.Commands
             private Claim[] GetClaims(string id, string name, string email)
             {
                 return new[] {
-                    new Claim("user_id", id),
-                    new Claim("user_name", name),
-                    new Claim("user_email", email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+                    new Claim(JwtRegisteredClaimNames.Sub, id),
+                    new Claim(JwtRegisteredClaimNames.Email, email),
+                    new Claim(JwtRegisteredClaimNames.Name, name),
                 };
             }
         }
