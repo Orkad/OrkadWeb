@@ -24,7 +24,9 @@ using OrkadWeb.Logic;
 using OrkadWeb.Logic.Users;
 using System;
 using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 
 namespace OrkadWeb.Angular
@@ -111,9 +113,9 @@ namespace OrkadWeb.Angular
             {
                 return new AuthenticatedUser
                 {
-                    Id = int.Parse(user.FindFirst("user_id").Value),
-                    Name = user.FindFirst("user_name").Value,
-                    Email = user.FindFirst("user_email").Value,
+                    Id = int.Parse(user.FindFirst(ClaimTypes.NameIdentifier).Value),
+                    Name = user.FindFirst(ClaimTypes.Name).Value,
+                    Email = user.FindFirst(ClaimTypes.Email).Value,
                 };
             }
             return null;
@@ -140,7 +142,6 @@ namespace OrkadWeb.Angular
             }
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
