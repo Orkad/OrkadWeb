@@ -48,7 +48,7 @@ export class AuthenticationService {
     }
     const decodedToken = this.jwtHelper.decodeToken(token);
     return <User>{
-      id: decodedToken.user_id,
+      id: decodedToken.sub,
       name: decodedToken.user_name,
       email: decodedToken.user_email,
     };
