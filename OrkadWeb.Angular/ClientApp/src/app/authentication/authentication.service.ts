@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { interval, Observable, Subject, timer } from 'rxjs';
+import { BehaviorSubject, interval, Observable, Subject, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../../shared/models/User';
@@ -11,47 +11,40 @@ import { NotificationService } from 'src/services/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  user = new Subject<User | null>();
+  private userSubject: BehaviorSubject<User | null>;
+  user$: Observable<User | null>;
+  public get user() {
+    return this.userSubject.value;
+  }
 
   constructor(
     private httpClient: HttpClient,
-    private jwtHelper: JwtHelperService,
-    private router: Router,
-    private notificationService: NotificationService
-  ) {}
-
-  checkTokenExpiration() {
-    return timer(0, 3000).pipe(
-      map(() => {
-        const token = localStorage.getItem('jwt');
-        if (!token) {
-          return false;
-        }
-        if (this.jwtHelper.isTokenExpired(token)) {
-          this.logout();
-          this.router.navigate(['/authentication']);
-          this.notificationService.error(
-            'la session a expirée, veuillez vous reconnecter'
-          );
-          return false;
-        }
-        this.user.next(this.getUser(token));
-        return true;
-      })
-    );
+    private jwtHelper: JwtHelperService
+  ) {
+    this.userSubject = new BehaviorSubject<User | null>(this.readToken());
+    this.user$ = this.userSubject.asObservable();
   }
 
   /** retrieve the unexpired user based on the local token */
-  getUser(token: string): User | null {
-    if (!token) {
+  readToken(): User | null {
+    const token = localStorage.getItem('jwt');
+    if (!token || this.jwtHelper.isTokenExpired(token)) {
       return null;
     }
     const decodedToken = this.jwtHelper.decodeToken(token);
     return <User>{
       id: decodedToken.sub,
-      name: decodedToken.user_name,
-      email: decodedToken.user_email,
+      name: decodedToken.name,
+      email: decodedToken.email,
     };
+  }
+
+  saveToken(token: string | null) {
+    if (token == null) {
+      localStorage.removeItem('jwt');
+      return;
+    }
+    localStorage.setItem('jwt', token);
   }
 
   login(username: string, password: string): Observable<LoginResponse> {
@@ -63,8 +56,8 @@ export class AuthenticationService {
       .pipe(
         map((data) => {
           if (data && data.success && !data.error) {
-            localStorage.setItem('jwt', data.token);
-            this.user.next(this.getUser(data.token));
+            this.saveToken(data.token);
+            this.userSubject.next(this.readToken());
           }
           return data;
         })
@@ -72,8 +65,8 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    localStorage.removeItem('jwt');
-    this.user.next(null);
+    this.saveToken(null);
+    this.userSubject.next(null);
   }
 
   register(

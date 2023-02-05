@@ -26,7 +26,8 @@ export class AuthenticationComponent implements OnInit {
       username: [''],
       password: [''],
     });
-    this.authenticationService.user.subscribe((user) => this.setUser(user));
+    this.setUser(this.authenticationService.user);
+    this.authenticationService.user$.subscribe((user) => this.setUser(user));
   }
 
   setUser(user: User | null): void {

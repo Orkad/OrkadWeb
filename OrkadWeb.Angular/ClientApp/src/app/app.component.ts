@@ -12,18 +12,13 @@ export class AppComponent {
   constructor(private authenticationService: AuthenticationService) {}
   connected = false;
   username: string | undefined;
-  private authSubscription: Subscription;
 
   ngOnInit() {
-    this.authenticationService.user.subscribe((user) => this.setUser(user));
-    this.authSubscription = this.authenticationService
-      .checkTokenExpiration()
-      .subscribe();
+    this.setUser(this.authenticationService.user);
+    this.authenticationService.user$.subscribe((user) => this.setUser(user));
   }
 
-  ngOnDestroy() {
-    this.authSubscription.unsubscribe();
-  }
+  ngOnDestroy() {}
 
   setUser(user: User | null) {
     this.connected = user != null;
