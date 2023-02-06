@@ -1,15 +1,21 @@
 .total {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  font-size: large;
-  font-weight: bold;
+  gap: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 16px;
   .total-charges {
+    font-weight: bold;
     color: red;
+  }
+  .total-incomes {
+    font-weight: bold;
+    color: green;
   }
   .total-budget {
     font-size: x-large;
-  }
-  .total-incomes {
-    color: green;
+    font-weight: bold;
   }
 }

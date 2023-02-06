@@ -1,16 +1,25 @@
 <div class="overview-container">
   <div class="total">
-    <div class="total-charges">
-      {{ totalCharges() | currency : "EUR" }}
+    <div>
+      <div>Total des dépenses</div>
+      <div class="total-charges">
+        {{ totalCharges() | currency : "EUR" }}
+      </div>
     </div>
-    <div
-      [ngClass]="totalBudget() > 0 ? 'total-incomes' : 'total-charges'"
-      class="total-budget"
-    >
-      {{ totalBudget() | currency : "EUR" }}
+    <div>
+      <div>Total des revenus</div>
+      <div class="total-incomes">
+        {{ totalIncomes() | currency : "EUR" }}
+      </div>
     </div>
-    <div class="total-incomes">
-      {{ totalIncomes() | currency : "EUR" }}
+    <div>
+      <div>Reste à vivre</div>
+      <div
+        [ngClass]="totalBudget() > 0 ? 'total-incomes' : 'total-charges'"
+        class="total-budget"
+      >
+        {{ totalBudget() | currency : "EUR" }}
+      </div>
     </div>
   </div>
 </div>
