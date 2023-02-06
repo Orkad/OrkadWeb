@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, interval, Observable, Subject, timer } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../../shared/models/User';
 import { LoginResponse } from '../../shared/models/LoginResponse';
@@ -13,16 +13,13 @@ import { NotificationService } from 'src/services/notification.service';
 export class AuthenticationService {
   private userSubject: BehaviorSubject<User | null>;
   user$: Observable<User | null>;
-  public get user() {
-    return this.userSubject.value;
-  }
 
   constructor(
     private httpClient: HttpClient,
     private jwtHelper: JwtHelperService
   ) {
     this.userSubject = new BehaviorSubject<User | null>(this.readToken());
-    this.user$ = this.userSubject.asObservable();
+    this.user$ = this.userSubject.asObservable().pipe(shareReplay());
   }
 
   /** retrieve the unexpired user based on the local token */

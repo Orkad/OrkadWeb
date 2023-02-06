@@ -14,7 +14,6 @@ export class AppComponent {
   username: string | undefined;
 
   ngOnInit() {
-    this.setUser(this.authenticationService.user);
     this.authenticationService.user$.subscribe((user) => this.setUser(user));
   }
 
