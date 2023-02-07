@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
+import { map } from 'rxjs';
 import { AddExpenseCommand } from 'src/api/commands/AddExpenseCommand';
 import { UpdateExpenseCommand } from 'src/api/commands/UpdateExpenseCommand';
 import { ExpenseService } from 'src/services/expense.service';
 import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
 import { ConfirmDialogData } from '../shared/dialog/confirm-dialog/confirm-dialog.data';
 import { DialogService } from '../shared/dialog/dialog.service';
+import { ExpenseFormDialogComponent } from './expense-form-dialog/expense-form-dialog.component';
 
 @Component({
   selector: 'app-transaction',
@@ -140,6 +142,35 @@ export class TransactionComponent implements OnInit {
           });
         }
       });
+  }
+
+  editExpense(expense: ExpenseRow) {
+    this.openExpenseDialog(expense).subscribe((data) => {
+      if (data) {
+        this.expenseService.update(expense).subscribe();
+      }
+    });
+  }
+
+  addExpense() {
+    this.openExpenseDialog().subscribe((expense) => {
+      if (expense) {
+        this.expenseService
+          .add(expense)
+          .pipe(map((r) => (expense.id = r.id)))
+          .subscribe();
+        this.dataSource.data.push(expense);
+        this.dataSource._updateChangeSubscription();
+      }
+    });
+  }
+
+  private openExpenseDialog(expense: ExpenseRow | null = null) {
+    return this.dialogService.dialog
+      .open(ExpenseFormDialogComponent, {
+        data: expense,
+      })
+      .afterClosed();
   }
 }
 

@@ -23,6 +23,7 @@ import { MonthlyBudgetComponent } from './monthly-budget/monthly-budget.componen
 import { MonthlyChargeFormDialogComponent } from './monthly-budget/monthly-charge-form-dialog/monthly-charge-form-dialog.component';
 import { MonthlyIncomeFormDialogComponent } from './monthly-budget/monthly-income-form-dialog/monthly-income-form-dialog.component';
 import { MonthlyBudgetOverviewComponent } from './monthly-budget/monthly-budget-overview/monthly-budget-overview.component';
+import { ExpenseFormDialogComponent } from './transaction/expense-form-dialog/expense-form-dialog.component';
 
 registerLocaleData(fr);
 
@@ -73,6 +74,7 @@ const localProvider = {
     MonthlyChargeFormDialogComponent,
     MonthlyIncomeFormDialogComponent,
     MonthlyBudgetOverviewComponent,
+    ExpenseFormDialogComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

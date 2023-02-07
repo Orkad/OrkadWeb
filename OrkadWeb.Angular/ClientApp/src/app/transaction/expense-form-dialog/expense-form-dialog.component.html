@@ -1,9 +1,15 @@
-<h1 mat-dialog-title *ngIf="income">Modifier un revenu mensuel</h1>
-<h1 mat-dialog-title *ngIf="!income">Ajouter un revenu mensuel</h1>
+<h1 mat-dialog-title *ngIf="expense">Modifier une dépense</h1>
+<h1 mat-dialog-title *ngIf="!expense">Ajouter une dépense</h1>
 <div mat-dialog-content>
   <form (submit)="save()">
     <mat-form-field>
-      <mat-label>Libellé du revenu</mat-label>
+      <input matInput [matDatepicker]="picker" [formControl]="date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="date.hasError('required')">Requis</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Libellé</mat-label>
       <input matInput [formControl]="name" />
       <mat-error *ngIf="name.hasError('required')">Requis</mat-error>
     </mat-form-field>
