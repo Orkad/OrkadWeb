@@ -5,6 +5,7 @@ import { AddExpenseCommand } from 'src/shared/models/expenses/AddExpenseCommand'
 import { AddExpenseResult } from 'src/shared/models/expenses/AddExpenseResult';
 import { ExpenseRow, ExpenseRows } from 'src/shared/models/expenses/ExpenseRow';
 import { UpdateExpenseCommand } from 'src/api/commands/UpdateExpenseCommand';
+import { Moment } from 'moment';
 
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
@@ -14,7 +15,7 @@ export class ExpenseService {
     return this.httpClient.get<ExpenseRows>('api/expense/getAll');
   }
 
-  getMonthly(month: Date): Observable<ExpenseRows> {
+  getMonthly(month: Moment): Observable<ExpenseRows> {
     let params = new HttpParams();
     params = params.set('month', month.toISOString());
     return this.httpClient.get<ExpenseRows>('api/expense/getMonthly', {

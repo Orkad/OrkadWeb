@@ -24,6 +24,8 @@ import { MonthlyChargeFormDialogComponent } from './monthly-budget/monthly-charg
 import { MonthlyIncomeFormDialogComponent } from './monthly-budget/monthly-income-form-dialog/monthly-income-form-dialog.component';
 import { MonthlyBudgetOverviewComponent } from './monthly-budget/monthly-budget-overview/monthly-budget-overview.component';
 import { ExpenseFormDialogComponent } from './transaction/expense-form-dialog/expense-form-dialog.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 registerLocaleData(fr);
 
@@ -56,11 +58,6 @@ const routes = [
   },
 ] as Routes;
 
-const localProvider = {
-  provide: LOCALE_ID,
-  useValue: 'fr-FR',
-} as Provider;
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -90,9 +87,32 @@ const localProvider = {
       },
     }),
     MaterialModule,
+    MatMomentDateModule,
     NgChartsModule,
   ],
-  providers: [AuthenticationGuard, localProvider],
+  providers: [
+    AuthenticationGuard,
+    {
+      provide: LOCALE_ID,
+      useValue: 'fr-FR',
+    },
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'fr-FR',
+    },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'DD/MM/YYYY',
+        },
+        display: {
+          dateInput: 'DD/MM/YYYY',
+          monthYearLabel: 'MMMM YYYY',
+        },
+      },
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

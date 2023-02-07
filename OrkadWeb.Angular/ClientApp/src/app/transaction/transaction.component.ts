@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
+import { Moment } from 'moment';
 import { map } from 'rxjs';
 import { AddExpenseCommand } from 'src/api/commands/AddExpenseCommand';
 import { UpdateExpenseCommand } from 'src/api/commands/UpdateExpenseCommand';
@@ -20,8 +21,8 @@ export class TransactionComponent implements OnInit {
   readonly minAmount = 0.01;
   readonly maxAmount = 10000;
 
-  currentMonth = new Date();
-  month = new FormControl<Date>(new Date());
+  currentMonth = moment();
+  month = new FormControl<Moment>(moment());
 
   dataSource = new MatTableDataSource<ExpenseRow>([
     { amount: 1, name: 'test', date: new Date() } as ExpenseRow,

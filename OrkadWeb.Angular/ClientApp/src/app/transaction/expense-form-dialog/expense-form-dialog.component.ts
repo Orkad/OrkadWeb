@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
 
 @Component({
@@ -10,7 +11,7 @@ import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
 })
 export class ExpenseFormDialogComponent {
   formGroup = new FormGroup({
-    date: new FormControl(new Date(), {
+    date: new FormControl(moment(), {
       nonNullable: true,
       validators: [Validators.required],
     }),
@@ -37,7 +38,7 @@ export class ExpenseFormDialogComponent {
     @Inject(MAT_DIALOG_DATA) public expense: ExpenseRow | null
   ) {
     if (expense) {
-      this.date.setValue(expense.date);
+      this.date.setValue(moment(expense.date));
       this.name.setValue(expense.name);
       this.amount.setValue(expense.amount);
     }
@@ -50,7 +51,7 @@ export class ExpenseFormDialogComponent {
     if (!this.expense) {
       this.expense = <ExpenseRow>{};
     }
-    this.expense.date = this.date.value;
+    this.expense.date = this.date.value.toDate();
     this.expense.name = this.name.value;
     this.expense.amount = this.amount.value;
     this.dialogRef.close(this.expense);

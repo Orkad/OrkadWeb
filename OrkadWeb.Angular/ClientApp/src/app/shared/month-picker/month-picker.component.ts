@@ -37,22 +37,14 @@ export const MONTH_FORMATS = {
   selector: 'app-month-picker',
   templateUrl: './month-picker.component.html',
   styleUrls: ['./month-picker.component.css'],
-  providers: [
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-
-    { provide: MAT_DATE_FORMATS, useValue: MONTH_FORMATS },
-  ],
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: MONTH_FORMATS }],
 })
 export class MonthPickerComponent {
-  @Input() control: UntypedFormControl = new UntypedFormControl(new Date());
-  @Input() min: Date | null = null;
-  @Input() max: Date | null = null;
+  @Input() control: UntypedFormControl = new UntypedFormControl(moment());
+  @Input() min: Moment | null = null;
+  @Input() max: Moment | null = null;
 
-  filter = (d: Date | null): boolean => {
+  filter = (d: Moment | null): boolean => {
     if (d === null) {
       return true;
     }
