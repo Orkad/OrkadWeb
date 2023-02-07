@@ -18,8 +18,5 @@ namespace OrkadWeb.Common
         /// <param name="subject">Subject of the email.</param>
         /// <param name="html">Html content of the email.</param>
         void Send(string to, string subject, string html);
-
-        /// <inheritdoc cref="Send(string, string, string)"/>
-        Task SendAsync(string to, string subject, string html, CancellationToken cancellationToken = default);
     }
 }

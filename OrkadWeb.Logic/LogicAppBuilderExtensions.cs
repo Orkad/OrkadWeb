@@ -26,7 +26,6 @@ namespace OrkadWeb.Logic
             services.AddValidatorsFromAssembly(asm);
             services.AddAutoMapper(asm);
             services.AddSingleton<ITimeProvider, RealTimeProvider>();
-            services.AddSingleton<IEmailService, FileEmailService>();
         }
     }
 }

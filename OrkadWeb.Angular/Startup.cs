@@ -16,15 +16,18 @@ using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
 using OrkadWeb.Angular.Config;
 using OrkadWeb.Angular.Models;
+using OrkadWeb.Common;
 using OrkadWeb.Data;
 using OrkadWeb.Data.Builder;
 using OrkadWeb.Data.Migrator;
 using OrkadWeb.Data.NHibernate;
 using OrkadWeb.Logic;
+using OrkadWeb.Logic.Services;
 using OrkadWeb.Logic.Users;
 using System;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
@@ -43,7 +46,7 @@ namespace OrkadWeb.Angular
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureAuthentication(services);
-
+            ConfigureEmail(services);
             ConfigureDatabase(services);
 
             services.AddData();
@@ -104,6 +107,13 @@ namespace OrkadWeb.Angular
             services.AddSession();
             services.AddHttpContextAccessor();
             services.AddScoped<IAuthenticatedUser>(ResolveAuthenticatedUser);
+        }
+
+        private void ConfigureEmail(IServiceCollection services)
+        {
+            services.AddSingleton<ISmtpClientProvider, SmtpConfig>();
+            services.AddSingleton<IEmailService, SmtpEmailService>();
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
         }
 
         private AuthenticatedUser ResolveAuthenticatedUser(IServiceProvider serviceProvider)

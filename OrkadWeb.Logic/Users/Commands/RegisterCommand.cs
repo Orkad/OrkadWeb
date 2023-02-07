@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using FluentValidation.Validators;
+using Hangfire;
 using MediatR;
 using OrkadWeb.Common;
 using OrkadWeb.Data;
@@ -7,10 +7,9 @@ using OrkadWeb.Data.Models;
 using OrkadWeb.Logic.Config;
 using OrkadWeb.Logic.CQRS;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using GlobalConfiguration = OrkadWeb.Logic.Config.GlobalConfiguration;
 
 namespace OrkadWeb.Logic.Users.Commands
 {
@@ -67,10 +66,12 @@ namespace OrkadWeb.Logic.Users.Commands
         public class Handler : ICommandHandler<RegisterCommand>
         {
             private readonly IDataService dataService;
+            private readonly IEmailService emailService;
 
-            public Handler(IDataService dataService)
+            public Handler(IDataService dataService, IEmailService emailService)
             {
                 this.dataService = dataService;
+                this.emailService = emailService;
             }
             public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
@@ -81,6 +82,13 @@ namespace OrkadWeb.Logic.Users.Commands
                     Password = Hash.Create(request.Password),
                     Creation = DateTime.Now,
                 });
+                var hash = 1234;
+                var message = $@"Hello {request.UserName},
+
+You just register using this email adress.
+Please follow the link to validate your inscription : {hash}
+";
+                emailService.Send(request.Email, "Confirm your email adress", message);
                 return Unit.Value;
             }
         }

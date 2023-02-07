@@ -13,5 +13,15 @@ namespace Microsoft.Extensions.Configuration
             }
             return value;
         }
+
+        public static int GetRequiredIntValue(this IConfiguration configuration, string key)
+        {
+            var value = configuration.GetRequiredSection(key).Value;
+            if (!int.TryParse(value, out var intValue))
+            {
+                throw new System.InvalidCastException($"The value provided by key '{key}' is not a number");
+            }
+            return intValue;
+        }
     }
 }
