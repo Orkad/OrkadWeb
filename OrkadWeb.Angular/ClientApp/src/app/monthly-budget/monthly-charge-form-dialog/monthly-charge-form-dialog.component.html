@@ -1,9 +1,9 @@
-<h1 mat-dialog-title *ngIf="charge">Modifier une dépense mensuelle</h1>
-<h1 mat-dialog-title *ngIf="!charge">Ajouter une dépense mensuelle</h1>
+<h1 mat-dialog-title *ngIf="charge">Modifier une charge mensuelle</h1>
+<h1 mat-dialog-title *ngIf="!charge">Ajouter une charge mensuelle</h1>
 <div mat-dialog-content>
   <form (submit)="save()">
     <mat-form-field>
-      <mat-label>Libellé de la dépense</mat-label>
+      <mat-label>Libellé de la charge</mat-label>
       <input matInput [formControl]="name" />
       <mat-error *ngIf="name.hasError('required')">Requis</mat-error>
     </mat-form-field>

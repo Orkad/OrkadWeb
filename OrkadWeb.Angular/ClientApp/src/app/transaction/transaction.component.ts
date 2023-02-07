@@ -24,34 +24,9 @@ export class TransactionComponent implements OnInit {
   currentMonth = moment();
   month = new FormControl<Moment>(moment());
 
-  dataSource = new MatTableDataSource<ExpenseRow>([
-    { amount: 1, name: 'test', date: new Date() } as ExpenseRow,
-  ]);
+  dataSource = new MatTableDataSource<ExpenseRow>();
+  loaded = false;
   displayedColumns = ['date', 'name', 'amount', 'actions'];
-  editedRow: ExpenseRow | null;
-  addExpenseFormVisible = false;
-  addExpenseFormGroup = new FormGroup<AddExpenseFormGroup>({
-    amount: new FormControl<number | null>(null, {
-      nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.min(this.minAmount),
-        Validators.max(this.maxAmount),
-      ],
-    }),
-    date: new FormControl<Date | null>(null, {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    name: new FormControl<string>('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-  });
-
-  get addExpenseControls() {
-    return this.addExpenseFormGroup.controls;
-  }
 
   constructor(
     private expenseService: ExpenseService,
@@ -69,6 +44,7 @@ export class TransactionComponent implements OnInit {
     }
     this.expenseService.getMonthly(this.month.value).subscribe((data) => {
       this.dataSource.data = data.rows;
+      this.loaded = true;
     });
   }
 
@@ -76,55 +52,6 @@ export class TransactionComponent implements OnInit {
     return (
       !!this.month.value && moment(this.month.value) < moment(this.currentMonth)
     );
-  }
-
-  beginAddExpense() {
-    this.addExpenseFormGroup.reset();
-    this.addExpenseFormVisible = true;
-    this.editedRow = <ExpenseRow>{
-      id: 0,
-      date: new Date(),
-    };
-    this.dataSource.data.push(this.editedRow);
-    this.dataSource._updateChangeSubscription();
-    this.beginEditExpense(this.editedRow);
-  }
-
-  beginEditExpense(row: ExpenseRow) {
-    this.addExpenseFormGroup.controls.amount.setValue(row.amount);
-    this.addExpenseFormGroup.controls.date.setValue(row.date);
-    this.addExpenseFormGroup.controls.name.setValue(row.name);
-    this.editedRow = row;
-  }
-
-  undo() {
-    if (this.editedRow?.id === 0) {
-      const i = this.dataSource.data.findIndex(
-        (item) => this.editedRow === item,
-        0
-      );
-      this.dataSource.data.splice(i, 1);
-      this.dataSource._updateChangeSubscription();
-    }
-
-    this.editedRow = null;
-    this.addExpenseFormVisible = false;
-  }
-
-  saveExpense() {
-    if (!this.editedRow) {
-      let command = this.addExpenseFormGroup.value as AddExpenseCommand;
-      this.expenseService.add(command).subscribe(() => {
-        this.refreshExpenses();
-      });
-    } else {
-      let command = this.addExpenseFormGroup.value as UpdateExpenseCommand;
-      command.id = this.editedRow.id;
-      this.expenseService.update(command).subscribe(() => {
-        this.refreshExpenses();
-      });
-    }
-    this.editedRow = null;
   }
 
   deleteExpense(row: ExpenseRow) {
@@ -145,14 +72,6 @@ export class TransactionComponent implements OnInit {
       });
   }
 
-  editExpense(expense: ExpenseRow) {
-    this.openExpenseDialog(expense).subscribe((data) => {
-      if (data) {
-        this.expenseService.update(expense).subscribe();
-      }
-    });
-  }
-
   addExpense() {
     this.openExpenseDialog().subscribe((expense) => {
       if (expense) {
@@ -166,6 +85,14 @@ export class TransactionComponent implements OnInit {
     });
   }
 
+  editExpense(expense: ExpenseRow) {
+    this.openExpenseDialog(expense).subscribe((data) => {
+      if (data) {
+        this.expenseService.update(expense).subscribe();
+      }
+    });
+  }
+
   private openExpenseDialog(expense: ExpenseRow | null = null) {
     return this.dialogService.dialog
       .open(ExpenseFormDialogComponent, {
@@ -173,10 +100,4 @@ export class TransactionComponent implements OnInit {
       })
       .afterClosed();
   }
-}
-
-export interface AddExpenseFormGroup {
-  date: FormControl<Date | null>;
-  amount: FormControl<number | null>;
-  name: FormControl<string>;
 }

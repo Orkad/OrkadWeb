@@ -22,17 +22,20 @@ export class MonthlyBudgetComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.monthlyTransactionService
-      .incomes()
-      .subscribe((data) => (this.incomes.data = data));
     this.monthlyTransactionService.charges().subscribe((data) => {
-      console.log(data);
       this.charges.data = data;
+      this.chargesLoaded = true;
+    });
+    this.monthlyTransactionService.incomes().subscribe((data) => {
+      this.incomes.data = data;
+      this.incomesLoaded = true;
     });
   }
 
   charges = new MatTableDataSource<MonthlyCharge>();
+  chargesLoaded = false;
   incomes = new MatTableDataSource<MonthlyIncome>();
+  incomesLoaded = false;
   displayedColumns = ['name', 'amount', 'actions'];
 
   chargeFg = new FormGroup({

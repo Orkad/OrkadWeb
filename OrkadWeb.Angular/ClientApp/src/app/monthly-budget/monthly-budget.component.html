@@ -1,6 +1,6 @@
-<div class="monthly-budget-container">
+<div class="monthly-budget-container" *ngIf="chargesLoaded && incomesLoaded">
   <div>
-    <h1>Dépenses</h1>
+    <h1>Charges</h1>
     <table id="monthly-charges-table" mat-table [dataSource]="charges">
       <!-- Name Column -->
       <ng-container matColumnDef="name">

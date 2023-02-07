@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { AuthenticationGuard } from './authentication/authentication.guard';
-import { ExpenseComponent } from './expense/expense.component';
 import { MaterialModule } from '../shared/modules/material.module';
 import fr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
@@ -41,11 +40,6 @@ const routes = [
     canActivate: [AuthenticationGuard],
   },
   {
-    path: 'expenses',
-    component: ExpenseComponent,
-    canActivate: [AuthenticationGuard],
-  },
-  {
     path: 'authentication',
     component: AuthenticationComponent,
   },
@@ -62,7 +56,6 @@ const routes = [
   declarations: [
     AppComponent,
     AuthenticationComponent,
-    ExpenseComponent,
     RegistrationComponent,
     TransactionComponent,
     MonthPickerComponent,
