@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow;
 using FluentMigrator.Runner;
+using OrkadWeb.Common;
 
 namespace OrkadWeb.Tests.Support
 {
@@ -38,6 +39,9 @@ namespace OrkadWeb.Tests.Support
             var timeContext = new TimeContext();
             services.AddSingleton(timeContext);
             services.AddSingleton<ITimeProvider>(timeContext);
+            var emailContext = new EmailContext();
+            services.AddSingleton(emailContext);
+            services.AddSingleton<IEmailService>(emailContext);
             return services;
         }
 
