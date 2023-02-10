@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NFluent;
-using OrkadWeb.Data;
-using OrkadWeb.Data.Models;
+using OrkadWeb.Domain;
+using OrkadWeb.Domain.Entities;
 using OrkadWeb.Logic.Users;
 using OrkadWeb.Logic.Users.Commands;
 using OrkadWeb.Tests.Drivers;

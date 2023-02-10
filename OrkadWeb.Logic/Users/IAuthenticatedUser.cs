@@ -1,4 +1,4 @@
-﻿using OrkadWeb.Data.Models;
+﻿using OrkadWeb.Domain.Entities;
 using OrkadWeb.Logic.Users.Exceptions;
 
 namespace OrkadWeb.Logic.Users

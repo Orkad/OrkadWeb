@@ -1,5 +1,5 @@
 ﻿using NHibernate;
-using OrkadWeb.Data.Exceptions;
+using OrkadWeb.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OrkadWeb.Data
+namespace OrkadWeb.Domain
 {
     /// <inheritdoc cref="IDataService"/>
     internal class DataService : IDisposable, IDataService

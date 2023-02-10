@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OrkadWeb.Data
+namespace OrkadWeb.Domain
 {
     /// <summary>
     /// Service for manipulating persistent database data

@@ -3,7 +3,7 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate.Cfg;
 using System.Reflection;
 
-namespace OrkadWeb.Data.NHibernate
+namespace OrkadWeb.Domain.NHibernate
 {
     public static class OrkadWebConfigurationBuilder
     {

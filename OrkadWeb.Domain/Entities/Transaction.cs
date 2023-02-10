@@ -1,7 +1,7 @@
 ﻿using FluentNHibernate.Mapping;
 using System;
 
-namespace OrkadWeb.Data.Models
+namespace OrkadWeb.Domain.Entities
 {
     /// <summary>
     /// A money loss of a user. Amount can be negative for incomes.

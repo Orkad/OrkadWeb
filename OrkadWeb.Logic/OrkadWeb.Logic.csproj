@@ -18,7 +18,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\OrkadWeb.Common\OrkadWeb.Common.csproj" />
-		<ProjectReference Include="..\OrkadWeb.Data\OrkadWeb.Data.csproj" />
+		<ProjectReference Include="..\OrkadWeb.Domain\OrkadWeb.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

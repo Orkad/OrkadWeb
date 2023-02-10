@@ -2,13 +2,13 @@
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
-using OrkadWeb.Data.NHibernate;
+using OrkadWeb.Domain.NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace OrkadWeb.Data.Builder
+namespace OrkadWeb.Domain.Builder
 {
     public static class DataAppBuilderExtensions
     {

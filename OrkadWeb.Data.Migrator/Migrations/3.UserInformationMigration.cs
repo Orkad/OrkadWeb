@@ -1,7 +1,7 @@
 ﻿using FluentMigrator;
 using System;
 
-namespace OrkadWeb.Data.Migrator
+namespace OrkadWeb.Domain.Migrator
 {
     [Migration(3, "add user informations")]
     public class UserInformationMigration : Migration

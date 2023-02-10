@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using OrkadWeb.Data;
-using OrkadWeb.Data.Models;
+using OrkadWeb.Domain;
+using OrkadWeb.Domain.Entities;
 using OrkadWeb.Logic.Abstractions;
 using OrkadWeb.Logic.CQRS;
 using OrkadWeb.Logic.Users;

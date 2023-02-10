@@ -2,8 +2,8 @@
 using Hangfire;
 using MediatR;
 using OrkadWeb.Common;
-using OrkadWeb.Data;
-using OrkadWeb.Data.Models;
+using OrkadWeb.Domain;
+using OrkadWeb.Domain.Entities;
 using OrkadWeb.Logic.Config;
 using OrkadWeb.Logic.CQRS;
 using System;

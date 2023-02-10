@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrkadWeb.Data.Migrator
+namespace OrkadWeb.Domain.Migrator
 {
 
     [Migration(2)]

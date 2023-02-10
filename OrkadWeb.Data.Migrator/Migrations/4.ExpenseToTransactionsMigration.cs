@@ -1,7 +1,7 @@
 ﻿using FluentMigrator;
 using System;
 
-namespace OrkadWeb.Data.Migrator
+namespace OrkadWeb.Domain.Migrator
 {
     [Migration(4, "renaming table")]
     public class ExpenseToTransactionMigration : Migration

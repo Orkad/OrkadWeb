@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OrkadWeb.Data.Models
+namespace OrkadWeb.Domain.Entities
 {
     /// <summary>
     /// Monthly charge or income

@@ -1,9 +1,9 @@
 ﻿using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
-using OrkadWeb.Data;
-using OrkadWeb.Data.Builder;
-using OrkadWeb.Data.NHibernate;
-using OrkadWeb.Data.Migrator;
+using OrkadWeb.Domain;
+using OrkadWeb.Domain.Builder;
+using OrkadWeb.Domain.NHibernate;
+using OrkadWeb.Domain.Migrator;
 using OrkadWeb.Logic;
 using OrkadWeb.Logic.Abstractions;
 using OrkadWeb.Tests.Contexts;

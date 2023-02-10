@@ -1,7 +1,7 @@
 ﻿using FluentMigrator;
 using System;
 
-namespace OrkadWeb.Data.Migrator
+namespace OrkadWeb.Domain.Migrator
 {
     [Migration(5, "monthly transaction")]
     public class MonthlyTransactionMigration : Migration

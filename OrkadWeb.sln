@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Angular", "OrkadWeb.Angular\OrkadWeb.Angular.csproj", "{49C031F1-506D-409C-AE38-DB1431B93ADC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Data", "OrkadWeb.Data\OrkadWeb.Data.csproj", "{74F5D9DD-501D-434C-9994-E32DC8F097E1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Logic", "OrkadWeb.Logic\OrkadWeb.Logic.csproj", "{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Tests", "OrkadWeb.Tests\OrkadWeb.Tests.csproj", "{237FA01B-1FDB-4224-B44A-A50F8E391617}"
@@ -28,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github", "Github", "{49820C
 		.github\workflows\node.js.yml = .github\workflows\node.js.yml
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Domain", "OrkadWeb.Domain\OrkadWeb.Domain.csproj", "{B3196DED-6705-4DD3-B96F-57C58BF261D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,10 +38,6 @@ Global
 		{49C031F1-506D-409C-AE38-DB1431B93ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49C031F1-506D-409C-AE38-DB1431B93ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49C031F1-506D-409C-AE38-DB1431B93ADC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74F5D9DD-501D-434C-9994-E32DC8F097E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74F5D9DD-501D-434C-9994-E32DC8F097E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74F5D9DD-501D-434C-9994-E32DC8F097E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74F5D9DD-501D-434C-9994-E32DC8F097E1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72B63C33-AAAE-45CF-B9EF-A6918680D2EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -58,6 +54,10 @@ Global
 		{8ECFD81D-6557-49D7-9CCD-19C8A6E4F151}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8ECFD81D-6557-49D7-9CCD-19C8A6E4F151}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8ECFD81D-6557-49D7-9CCD-19C8A6E4F151}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3196DED-6705-4DD3-B96F-57C58BF261D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3196DED-6705-4DD3-B96F-57C58BF261D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3196DED-6705-4DD3-B96F-57C58BF261D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3196DED-6705-4DD3-B96F-57C58BF261D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

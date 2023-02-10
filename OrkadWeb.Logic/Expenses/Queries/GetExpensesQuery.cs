@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using NHibernate.Linq;
-using OrkadWeb.Data;
-using OrkadWeb.Data.Models;
+using OrkadWeb.Domain;
+using OrkadWeb.Domain.Entities;
 using OrkadWeb.Logic.CQRS;
 using OrkadWeb.Logic.Users;
 using System;

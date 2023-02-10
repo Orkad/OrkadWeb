@@ -4,7 +4,7 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 using System;
 
-namespace OrkadWeb.Data.NHibernate
+namespace OrkadWeb.Domain.NHibernate
 {
     public class EnumConvention : IPropertyConvention, IPropertyConventionAcceptance
     {

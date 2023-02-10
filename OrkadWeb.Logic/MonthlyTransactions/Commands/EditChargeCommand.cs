@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
-using OrkadWeb.Data;
-using OrkadWeb.Data.Models;
+using OrkadWeb.Domain;
+using OrkadWeb.Domain.Entities;
 using OrkadWeb.Logic.CQRS;
 using OrkadWeb.Logic.Exceptions;
 using OrkadWeb.Logic.Users;

@@ -1,7 +1,7 @@
 ﻿using FluentMigrator;
 using OrkadWeb.Common;
 
-namespace OrkadWeb.Data.Migrator
+namespace OrkadWeb.Domain.Migrator
 {
     [Migration(1)]
     public class InitialMigration : Migration

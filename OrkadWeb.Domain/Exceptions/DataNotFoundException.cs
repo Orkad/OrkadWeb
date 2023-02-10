@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace OrkadWeb.Data.Exceptions
+namespace OrkadWeb.Domain.Exceptions
 {
     [Serializable]
     public class DataNotFoundException<T> : Exception

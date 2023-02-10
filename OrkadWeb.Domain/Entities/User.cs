@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OrkadWeb.Data.Models
+namespace OrkadWeb.Domain.Entities
 {
     /// <summary>
     /// Représente un utilisateur de "OrkadWeb"

@@ -1,7 +1,7 @@
 ﻿using NHibernate.Linq;
 using OrkadWeb.Common;
-using OrkadWeb.Data;
-using OrkadWeb.Data.Models;
+using OrkadWeb.Domain;
+using OrkadWeb.Domain.Entities;
 using OrkadWeb.Logic.CQRS;
 using System;
 using System.IdentityModel.Tokens.Jwt;

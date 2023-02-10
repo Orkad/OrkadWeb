@@ -1,4 +1,4 @@
-﻿namespace OrkadWeb.Data.Models
+﻿namespace OrkadWeb.Domain.Entities
 {
     /// <summary>
     /// Owned by a user.
