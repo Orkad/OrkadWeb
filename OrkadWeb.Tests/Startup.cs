@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Cfg.Db;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrkadWeb.Application;
 using OrkadWeb.Application.Common.Interfaces;
@@ -7,23 +8,17 @@ using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Tests.Contexts;
 using SolidToken.SpecFlow.DependencyInjection;
 
-namespace OrkadWeb.Tests.Support
+namespace OrkadWeb.Tests
 {
-    public static class ServiceCollectionBuilder
+    public static class Startup
     {
         [ScenarioDependencies]
         public static IServiceCollection BuildServiceCollection()
         {
             var services = new ServiceCollection();
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-            var connectionString = "FullUri=file:memorydb.db?mode=memory&cache=shared";
-            var sqlite = SQLiteConfiguration.Standard.ConnectionString(connectionString);
-            var configuration = OrkadWebConfigurationBuilder.Build(sqlite);
-            var sessionFactory = configuration.BuildSessionFactory();
-            var connection = sessionFactory.OpenSession().Connection;
-            services.AddSingleton(sessionFactory);
-            services.AddSingleton(connection); // for keeping in memory connection up
-            services.AddInfrastructureServices("sqlite", connectionString);
+            services.AddInfrastructureServices(configuration);
             services.AddApplicationServices();
             var timeContext = new TimeContext();
             services.AddSingleton(timeContext);

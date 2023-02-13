@@ -37,7 +37,7 @@ namespace OrkadWeb.Angular
             ConfigureAuthentication(services);
 
             services.AddApplicationServices();
-            services.AddInfrastructureServices(Configuration, "mysql");
+            services.AddInfrastructureServices(Configuration);
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

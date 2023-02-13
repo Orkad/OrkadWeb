@@ -1,4 +1,5 @@
 ﻿using NHibernate;
+using OrkadWeb.Application.Common.Interfaces;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
@@ -14,10 +15,10 @@ namespace OrkadWeb.Tests.Hooks
         }
 
         [AfterScenario]
-        public async Task AfterScenario(ISession session)
+        public async Task AfterScenario(ISession session, IUnitOfWork unitOfWork)
         {
             await session.FlushAsync();
-            await session.GetCurrentTransaction().RollbackAsync();
+            await unitOfWork.CancelChangesAsync(default);
         }
     }
 }
