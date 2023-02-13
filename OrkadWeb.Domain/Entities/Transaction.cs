@@ -1,5 +1,4 @@
-﻿using FluentNHibernate.Mapping;
-using System;
+﻿using System;
 
 namespace OrkadWeb.Domain.Entities
 {
@@ -33,18 +32,5 @@ namespace OrkadWeb.Domain.Entities
         /// </summary>
         public virtual DateTime Date { get; set; }
 
-    }
-
-    public class TransactionMap : ClassMap<Transaction>
-    {
-        public TransactionMap()
-        {
-            Table("transaction");
-            Id(x => x.Id, "id");
-            References(x => x.Owner, "owner").Not.Nullable();
-            Map(x => x.Amount, "amount");
-            Map(x => x.Name, "name");
-            Map(x => x.Date, "date");
-        }
     }
 }

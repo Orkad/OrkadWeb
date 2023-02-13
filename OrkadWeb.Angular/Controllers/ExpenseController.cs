@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OrkadWeb.Logic.Expenses.Commands;
-using OrkadWeb.Logic.Expenses.Queries;
+using OrkadWeb.Application.Expenses.Commands;
+using OrkadWeb.Application.Expenses.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OrkadWeb.Logic.Config.Queries;
+using OrkadWeb.Application.Config.Queries;
 using System.Threading.Tasks;
 
 namespace OrkadWeb.Angular.Controllers

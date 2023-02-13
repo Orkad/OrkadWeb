@@ -16,9 +16,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OrkadWeb.Angular.Config;
-using OrkadWeb.Logic.Abstractions;
-using OrkadWeb.Logic.Users;
-using OrkadWeb.Logic.Users.Commands;
+using OrkadWeb.Application.Abstractions;
+using OrkadWeb.Application.Users;
+using OrkadWeb.Application.Users.Commands;
 
 namespace OrkadWeb.Angular.Controllers
 {

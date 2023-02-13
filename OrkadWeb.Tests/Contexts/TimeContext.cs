@@ -1,4 +1,4 @@
-﻿using OrkadWeb.Logic.Abstractions;
+﻿using OrkadWeb.Application.Common.Interfaces;
 using System;
 
 namespace OrkadWeb.Tests.Contexts

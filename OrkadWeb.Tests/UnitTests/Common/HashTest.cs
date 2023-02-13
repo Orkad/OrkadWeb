@@ -1,10 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NFluent;
-using OrkadWeb.Common;
+using OrkadWeb.Domain.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OrkadWeb.Tests.UnitTests.Common
 {

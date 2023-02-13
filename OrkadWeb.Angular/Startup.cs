@@ -6,31 +6,20 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
 using OrkadWeb.Angular.Config;
 using OrkadWeb.Angular.Models;
-using OrkadWeb.Common;
-using OrkadWeb.Domain;
-using OrkadWeb.Domain.Builder;
-using OrkadWeb.Domain.Migrator;
-using OrkadWeb.Domain.NHibernate;
-using OrkadWeb.Logic;
-using OrkadWeb.Logic.Services;
-using OrkadWeb.Logic.Users;
+using OrkadWeb.Application;
+using OrkadWeb.Application.Users;
+using OrkadWeb.Infrastructure;
+using OrkadWeb.Infrastructure.Persistence;
+using OrkadWeb.Infrastructure.Services;
 using System;
-using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Reflection;
 using System.Security.Claims;
-using System.Text;
 
 namespace OrkadWeb.Angular
 {
@@ -46,11 +35,9 @@ namespace OrkadWeb.Angular
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureAuthentication(services);
-            ConfigureEmail(services);
-            ConfigureDatabase(services);
 
-            services.AddData();
-            services.AddLogic();
+            services.AddApplicationServices();
+            services.AddInfrastructureServices(Configuration, "mysql");
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -83,20 +70,6 @@ namespace OrkadWeb.Angular
 
         private string GetRequiredConfigValue(string key) => Configuration.GetRequiredSection(key).Value;
 
-        private void ConfigureDatabase(IServiceCollection services)
-        {
-            var builder = new MySqlConnectionStringBuilder(GetRequiredConfigValue("ConnectionStrings:OrkadWeb"));
-            builder.UserID = GetRequiredConfigValue("DbUsername");
-            builder.Password = GetRequiredConfigValue("DbPassword");
-            var connectionString = builder.ToString();
-            var mysql = MySQLConfiguration.Standard.ConnectionString(connectionString);
-            var configuration = OrkadWebConfigurationBuilder.Build(mysql);
-            services.AddSingleton(configuration);
-            var sessionFactory = configuration.BuildSessionFactory();
-            services.AddSingleton(sessionFactory);
-            services.AddOrkadWebMigrator("mariadb", connectionString);
-        }
-
         private void ConfigureAuthentication(IServiceCollection services)
         {
             services.AddSingleton<JwtConfig>();
@@ -109,12 +82,6 @@ namespace OrkadWeb.Angular
             services.AddScoped<IAuthenticatedUser>(ResolveAuthenticatedUser);
         }
 
-        private void ConfigureEmail(IServiceCollection services)
-        {
-            services.AddSingleton<ISmtpClientProvider, SmtpConfig>();
-            services.AddSingleton<IEmailService, SmtpEmailService>();
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-        }
 
         private AuthenticatedUser ResolveAuthenticatedUser(IServiceProvider serviceProvider)
         {

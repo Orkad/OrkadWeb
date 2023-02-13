@@ -1,9 +1,5 @@
-﻿using OrkadWeb.Common;
-using System;
+﻿using OrkadWeb.Application.Common.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrkadWeb.Tests.Contexts
 {

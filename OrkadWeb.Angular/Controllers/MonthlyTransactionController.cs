@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OrkadWeb.Logic.MonthlyTransactions.Commands;
-using OrkadWeb.Logic.MonthlyTransactions.Models;
-using OrkadWeb.Logic.MonthlyTransactions.Queries;
+using OrkadWeb.Application.MonthlyTransactions.Commands;
+using OrkadWeb.Application.MonthlyTransactions.Models;
+using OrkadWeb.Application.MonthlyTransactions.Queries;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

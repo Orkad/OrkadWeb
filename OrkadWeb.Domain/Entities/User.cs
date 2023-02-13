@@ -1,6 +1,4 @@
-﻿using FluentNHibernate.Mapping;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace OrkadWeb.Domain.Entities
 {
@@ -38,19 +36,5 @@ namespace OrkadWeb.Domain.Entities
         /// User confirmation date (email confirmation)
         /// </summary>
         public virtual DateTime? Confirmation { get; set; }
-    }
-
-    public class UserMap : ClassMap<User>
-    {
-        public UserMap()
-        {
-            Table("user");
-            Id(x => x.Id, "id");
-            Map(x => x.Username).Column("username").Not.Nullable();
-            Map(x => x.Password).Column("password").Not.Nullable();
-            Map(x => x.Email).Column("email").Not.Nullable();
-            Map(x => x.Creation).Column("creation").Not.Nullable();
-            Map(x => x.Confirmation).Column("confirmation").Nullable();
-        }
     }
 }

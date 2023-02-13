@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections;
+using OrkadWeb.Domain.Extensions;
 using System.Text;
 
 namespace OrkadWeb.Angular.Config

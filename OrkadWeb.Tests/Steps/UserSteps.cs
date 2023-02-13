@@ -2,8 +2,8 @@
 using NFluent;
 using OrkadWeb.Domain;
 using OrkadWeb.Domain.Entities;
-using OrkadWeb.Logic.Users;
-using OrkadWeb.Logic.Users.Commands;
+using OrkadWeb.Application.Users;
+using OrkadWeb.Application.Users.Commands;
 using OrkadWeb.Tests.Drivers;
 using OrkadWeb.Tests.Models;
 using System;
@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using OrkadWeb.Application.Common.Interfaces;
 
 namespace OrkadWeb.Tests.Steps
 {

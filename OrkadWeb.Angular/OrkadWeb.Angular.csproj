@@ -20,7 +20,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.13" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.13" />
-		<PackageReference Include="MySql.Data" Version="8.0.32" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,9 +30,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\OrkadWeb.Data.Migrator\OrkadWeb.Data.Migrator.csproj" />
+		<ProjectReference Include="..\OrkadWeb.Infrastructure\OrkadWeb.Infrastructure.csproj" />
 		<ProjectReference Include="..\OrkadWeb.Domain\OrkadWeb.Domain.csproj" />
-		<ProjectReference Include="..\OrkadWeb.Logic\OrkadWeb.Logic.csproj" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

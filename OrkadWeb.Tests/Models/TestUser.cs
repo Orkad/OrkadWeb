@@ -1,4 +1,4 @@
-﻿using OrkadWeb.Logic.Users;
+﻿using OrkadWeb.Application.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +20,6 @@ namespace OrkadWeb.Tests.Models
 
         public string Email { get; set; }
 
-        
+
     }
 }

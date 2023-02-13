@@ -1,4 +1,4 @@
-﻿using OrkadWeb.Logic.Users;
+﻿using OrkadWeb.Application.Users;
 
 namespace OrkadWeb.Angular.Models
 {

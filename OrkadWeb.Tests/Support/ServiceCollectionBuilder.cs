@@ -1,21 +1,11 @@
 ﻿using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
-using OrkadWeb.Domain;
-using OrkadWeb.Domain.Builder;
-using OrkadWeb.Domain.NHibernate;
-using OrkadWeb.Domain.Migrator;
-using OrkadWeb.Logic;
-using OrkadWeb.Logic.Abstractions;
+using OrkadWeb.Application;
+using OrkadWeb.Application.Common.Interfaces;
+using OrkadWeb.Infrastructure;
+using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Tests.Contexts;
-using OrkadWeb.Tests.Models;
 using SolidToken.SpecFlow.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using TechTalk.SpecFlow;
-using FluentMigrator.Runner;
-using OrkadWeb.Common;
 
 namespace OrkadWeb.Tests.Support
 {
@@ -33,9 +23,8 @@ namespace OrkadWeb.Tests.Support
             var connection = sessionFactory.OpenSession().Connection;
             services.AddSingleton(sessionFactory);
             services.AddSingleton(connection); // for keeping in memory connection up
-            services.AddOrkadWebMigrator("sqlite", connectionString);
-            services.AddData();
-            services.AddLogic();
+            services.AddInfrastructureServices("sqlite", connectionString);
+            services.AddApplicationServices();
             var timeContext = new TimeContext();
             services.AddSingleton(timeContext);
             services.AddSingleton<ITimeProvider>(timeContext);
