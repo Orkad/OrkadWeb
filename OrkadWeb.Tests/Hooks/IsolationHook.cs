@@ -17,7 +17,6 @@ namespace OrkadWeb.Tests.Hooks
         [AfterScenario]
         public async Task AfterScenario(ISession session, IUnitOfWork unitOfWork)
         {
-            await session.FlushAsync();
             await unitOfWork.CancelChangesAsync(default);
         }
     }

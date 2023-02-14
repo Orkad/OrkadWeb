@@ -8,25 +8,40 @@ namespace OrkadWeb.Infrastructure.Persistence
     internal class UnitOfWork : IUnitOfWork
     {
         private readonly ITransaction transaction;
+        private readonly ISession session;
 
         public UnitOfWork(ISession session)
         {
-            transaction = session.BeginTransaction();
+            var currentTransaction = session.GetCurrentTransaction();
+            // in case of nested context, only the last one can commit
+            if (currentTransaction?.IsActive != true)
+            {
+                transaction = session.BeginTransaction();
+            }
+
+            this.session = session;
         }
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
-            await transaction.CommitAsync(cancellationToken);
+            await session.FlushAsync(cancellationToken);
+            if (transaction != null)
+            {
+                await transaction.CommitAsync(cancellationToken);
+            }
         }
 
         public async Task CancelChangesAsync(CancellationToken cancellationToken)
         {
-            await transaction.RollbackAsync(cancellationToken);
+            if (transaction != null)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+            }
         }
 
         public void Dispose()
         {
-            transaction.Dispose();
+            transaction?.Dispose();
         }
     }
 }
