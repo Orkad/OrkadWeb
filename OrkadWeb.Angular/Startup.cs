@@ -17,6 +17,8 @@ using System;
 using System.Security.Claims;
 using OrkadWeb.Domain.Extensions;
 using OrkadWeb.Angular.Hubs;
+using MediatR;
+using System.Reflection;
 
 namespace OrkadWeb.Angular
 {
@@ -70,6 +72,7 @@ namespace OrkadWeb.Angular
 
             // SIGNALR
             services.AddSignalR();
+            services.AddMediatR(Assembly.GetExecutingAssembly());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -103,7 +106,7 @@ namespace OrkadWeb.Angular
                 // hangfire
                 endpoints.MapHangfireDashboard();
                 // signalr
-                endpoints.MapHub<MainHub>("/hubs/main");
+                endpoints.MapHub<NotificationHub>("/hub/notification");
             });
             app.UseSpa(spa =>
             {
