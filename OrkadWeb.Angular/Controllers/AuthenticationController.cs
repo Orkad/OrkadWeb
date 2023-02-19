@@ -19,6 +19,7 @@ using OrkadWeb.Angular.Config;
 using OrkadWeb.Application.Abstractions;
 using OrkadWeb.Application.Users;
 using OrkadWeb.Application.Users.Commands;
+using OrkadWeb.Application.Users.Notifications;
 
 namespace OrkadWeb.Angular.Controllers
 {
@@ -26,10 +27,25 @@ namespace OrkadWeb.Angular.Controllers
     {
         [HttpPost]
         [AllowAnonymous]
-        public async Task<LoginCommand.Result> Login(LoginCommand command) => await Command(command);
+        public async Task<LoginCommand.Result> Login(LoginCommand command)
+        {
+            var result = await Command(command);
+            await Publish(new UserLoggedInNotification
+            {
+                UserName = command.Username,
+            });
+            return result;
+        }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task Register(RegisterCommand command) => await Command(command);
+        public async Task Register(RegisterCommand command)
+        {
+            await Command(command);
+            await Publish(new UserRegisteredNotification
+            {
+                UserName = command.UserName,
+            });
+        }
     }
 }

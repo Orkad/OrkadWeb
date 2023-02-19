@@ -31,5 +31,10 @@ namespace OrkadWeb.Angular.Controllers
         /// Run a CQRS command
         /// </summary>
         public async Task<T> Command<T>(ICommand<T> command) => await mediator.Send(command, HttpContext.RequestAborted);
+
+        /// <summary>
+        /// Publish a notification
+        /// </summary>
+        public async Task Publish(INotification notification) => await mediator.Publish(notification, HttpContext.RequestAborted);
     }
 }
