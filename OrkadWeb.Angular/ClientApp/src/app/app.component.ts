@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NotificationHubService } from 'src/services/notification-hub.service';
+import { ServerEventsService } from 'src/services/ServerEventsService';
 import { User } from 'src/shared/models/User';
 import { AuthenticationService } from './authentication/authentication.service';
 
@@ -12,18 +12,16 @@ import { AuthenticationService } from './authentication/authentication.service';
 export class AppComponent {
   constructor(
     private authenticationService: AuthenticationService,
-    private notificationHubService: NotificationHubService
+    private serverEventsService: ServerEventsService
   ) {}
   connected = false;
   username: string | undefined;
 
   ngOnInit() {
     this.authenticationService.user$.subscribe((user) => this.setUser(user));
-    this.notificationHubService.startListening();
-  }
-
-  ngOnDestroy() {
-    this.notificationHubService.stopListening();
+    this.serverEventsService.userLoggedIn$.subscribe((str) =>
+      console.log('user ' + str + ' connected')
+    );
   }
 
   setUser(user: User | null) {
