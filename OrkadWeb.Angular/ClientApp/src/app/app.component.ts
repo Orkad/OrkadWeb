@@ -19,9 +19,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.authenticationService.user$.subscribe((user) => this.setUser(user));
-    this.serverEventsService.userLoggedIn$.subscribe((str) =>
-      console.log('user ' + str + ' connected')
-    );
+    this.serverEventsService.userLoggedIn$.subscribe((str) => console.log(str));
   }
 
   setUser(user: User | null) {
