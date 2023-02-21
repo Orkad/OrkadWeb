@@ -1,4 +1,5 @@
 <mat-card>
+  <mat-card-title>S'inscrire</mat-card-title>
   <mat-card-content>
     <form [formGroup]="formGroup" (submit)="register()">
       <mat-form-field>
@@ -40,11 +41,14 @@
         color="primary"
         [disabled]="!formGroup.valid"
       >
-        S'inscrire
+        Créer un compte
       </button>
     </form>
-    <button type="button" mat-stroked-button routerLink="/authentication">
-      Déjà un compte ?
-    </button>
+  </mat-card-content>
+</mat-card>
+<mat-card>
+  <mat-card-content>
+    <span>Déjà un compte ? </span>
+    <a routerLink="/authentication">Se connecter</a>
   </mat-card-content>
 </mat-card>

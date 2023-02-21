@@ -1,4 +1,5 @@
 <mat-card *ngIf="!loggedIn">
+  <mat-card-title>Se connecter</mat-card-title>
   <mat-card-content>
     <form [formGroup]="loginForm" (submit)="login()">
       <mat-form-field>
@@ -19,10 +20,12 @@
       </button>
       <mat-error class="server-error" *ngIf="error">{{ error }}</mat-error>
     </form>
-
-    <button type="button" mat-stroked-button routerLink="registration">
-      Créer un compte
-    </button>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngIf="!loggedIn">
+  <mat-card-content>
+    <span>Aucun compte ? </span>
+    <a routerLink="registration">Créer un compte</a>
   </mat-card-content>
 </mat-card>
 <mat-card *ngIf="loggedIn">
