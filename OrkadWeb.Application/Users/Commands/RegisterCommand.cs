@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Hangfire;
 using MediatR;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Application.Config;
@@ -87,7 +88,7 @@ namespace OrkadWeb.Application.Users.Commands
 You just register using this email adress.
 Please follow the link to validate your inscription : {hash}
 ";
-                emailService.Send(request.Email, "Confirm your email adress", message);
+                BackgroundJob.Enqueue(() => emailService.Send(request.Email, "Confirm your email adress", message));
                 return Unit.Value;
             }
         }
