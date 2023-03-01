@@ -8,28 +8,24 @@ namespace OrkadWeb.Infrastructure.Services
 {
     public class SmtpEmailService : IEmailService
     {
-        public const string CONFIG_SMTP_HOST = "Smtp:Host";
-        public const string CONFIG_SMTP_PORT = "Smtp:Port";
-        public const string CONFIG_SMTP_USERNAME = "Smtp:Username";
-        public const string CONFIG_SMTP_PASSWORD = "Smtp:Password";
-        private readonly IConfiguration configuration;
+        private readonly string host;
+        private readonly int port;
+        private readonly NetworkCredential credentials;
 
-        public SmtpEmailService(IConfiguration configuration)
+        public SmtpEmailService(string host, int port, string username, string password)
         {
-            this.configuration = configuration;
+            this.host = host;
+            this.port = port;
+            this.credentials = new NetworkCredential(username, password);
         }
 
         public void Send(string to, string subject, string html)
         {
-            using var client = new SmtpClient(Host, Port);
+            using var client = new SmtpClient(host, port);
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
-            client.Credentials = Credentials;
+            client.Credentials = credentials;
             client.Send("noreply@orkad.fr", to, subject, html);
         }
-
-        protected string Host => configuration.GetRequiredValue(CONFIG_SMTP_HOST);
-        protected int Port => configuration.GetRequiredIntValue(CONFIG_SMTP_PORT);
-        protected NetworkCredential Credentials => new NetworkCredential(configuration.GetRequiredValue(CONFIG_SMTP_USERNAME), configuration.GetRequiredValue(CONFIG_SMTP_PASSWORD));
     }
 }

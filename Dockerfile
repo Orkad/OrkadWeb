@@ -8,9 +8,9 @@ RUN apt-get install -y nodejs
 # Copy everything
 COPY . ./
 # Restore as distinct layers
-RUN dotnet restore
+RUN dotnet restore OrkadWeb.Angular
 # Build and publish a release
-RUN dotnet publish -c Release -o out
+RUN dotnet publish OrkadWeb.Angular -c Release -o out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0

@@ -1,6 +1,6 @@
 using FluentMigrator.Runner;
 using Hangfire;
-using Hangfire.SqlServer;
+using Hangfire.MySql;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +17,7 @@ using OrkadWeb.Infrastructure;
 using System;
 using System.Reflection;
 using System.Security.Claims;
+using System.Transactions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -62,14 +63,19 @@ services.AddHangfire(h => h
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
-    .UseSqlServerStorage(configuration.GetRequiredValue("ConnectionStrings:Hangfire"), new SqlServerStorageOptions
-    {
-        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-        QueuePollInterval = TimeSpan.Zero,
-        UseRecommendedIsolationLevel = true,
-        DisableGlobalLocks = true
-    }));
+    .UseStorage(new MySqlStorage(
+        configuration.GetRequiredValue("ConnectionStrings:OrkadWeb"),
+        new MySqlStorageOptions
+        {
+            TransactionIsolationLevel = IsolationLevel.ReadCommitted,
+            QueuePollInterval = TimeSpan.FromSeconds(15),
+            JobExpirationCheckInterval = TimeSpan.FromHours(1),
+            CountersAggregateInterval = TimeSpan.FromMinutes(5),
+            PrepareSchemaIfNecessary = true,
+            DashboardJobListLimit = 50000,
+            TransactionTimeout = TimeSpan.FromMinutes(1),
+            TablesPrefix = "Hangfire"
+        })));
 services.AddHangfireServer();
 
 // SIGNALR
