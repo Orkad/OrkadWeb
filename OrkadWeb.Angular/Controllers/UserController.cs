@@ -1,14 +1,15 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using OrkadWeb.Application.Users.Commands;
+﻿using Microsoft.AspNetCore.Mvc;
+using OrkadWeb.Application.Users.Queries;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OrkadWeb.Angular.Controllers
 {
+    [Route("api/users")]
     public class UserController : ApiController
     {
-
+        [HttpGet]
+        [Route("")]
+        public async Task<List<GetAllUsersQuery.Result>> GetAll() => await Query(new GetAllUsersQuery());
     }
 }

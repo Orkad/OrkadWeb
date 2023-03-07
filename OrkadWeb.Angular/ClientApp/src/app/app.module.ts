@@ -25,6 +25,7 @@ import { MonthlyBudgetOverviewComponent } from './monthly-budget/monthly-budget-
 import { ExpenseFormDialogComponent } from './transaction/expense-form-dialog/expense-form-dialog.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { UserListComponent } from './user-list/user-list.component';
 
 registerLocaleData(fr);
 
@@ -50,6 +51,11 @@ const routes = [
       config: ConfigurationResolver,
     },
   },
+  {
+    path: 'users',
+    component: UserListComponent,
+    canActivate: [AuthenticationGuard],
+  },
 ] as Routes;
 
 @NgModule({
@@ -65,6 +71,7 @@ const routes = [
     MonthlyIncomeFormDialogComponent,
     MonthlyBudgetOverviewComponent,
     ExpenseFormDialogComponent,
+    UserListComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

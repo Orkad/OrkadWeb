@@ -8,6 +8,10 @@
       <mat-icon>payment</mat-icon>
       Budget mensuel
     </button>
+    <button mat-button [routerLink]="['/users']" class="big" *ngIf="connected">
+      <mat-icon>account_circle</mat-icon>
+      utilisateurs
+    </button>
     <span class="menu-spacer"></span>
     <button
       mat-button
