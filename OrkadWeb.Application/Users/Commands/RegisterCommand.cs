@@ -1,8 +1,5 @@
 ﻿using FluentValidation;
-using Hangfire;
-using MediatR;
 using OrkadWeb.Application.Common.Interfaces;
-using OrkadWeb.Application.Config;
 using OrkadWeb.Domain.Common;
 using OrkadWeb.Domain.Entities;
 using OrkadWeb.Domain.Utils;
@@ -67,11 +64,13 @@ namespace OrkadWeb.Application.Users.Commands
         {
             private readonly IDataService dataService;
             private readonly IEmailService emailService;
+            private readonly IJobRunner jobClient;
 
-            public Handler(IDataService dataService, IEmailService emailService)
+            public Handler(IDataService dataService, IEmailService emailService, IJobRunner jobClient)
             {
                 this.dataService = dataService;
                 this.emailService = emailService;
+                this.jobClient = jobClient;
             }
             public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
@@ -88,7 +87,7 @@ namespace OrkadWeb.Application.Users.Commands
 You just register using this email adress.
 Please follow the link to validate your inscription : {hash}
 ";
-                BackgroundJob.Enqueue(() => emailService.Send(request.Email, "Confirm your email adress", message));
+                jobClient.Run(() => emailService.Send(request.Email, "Confirm your email adress", message));
                 return Unit.Value;
             }
         }

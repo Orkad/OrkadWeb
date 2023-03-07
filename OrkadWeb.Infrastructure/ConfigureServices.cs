@@ -7,6 +7,7 @@ using NHibernate;
 using NHibernate.Cfg;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Domain.Extensions;
+using OrkadWeb.Infrastructure.Jobs;
 using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Infrastructure.Persistence.Conventions;
 using OrkadWeb.Infrastructure.Services;
@@ -61,7 +62,8 @@ namespace OrkadWeb.Infrastructure
             .AddScoped(sp => sp.GetService<ISessionFactory>().OpenStatelessSession())
             .AddScoped<IDataService, DataService>()
             .AddScoped<IUnitOfWork, UnitOfWork>()
-            .AddSmtpEmailService(configuration); ;
+            .AddSmtpEmailService(configuration)
+            .AddScoped<IJobRunner, JobRunner>();
         }
 
         private static IServiceCollection AddSmtpEmailService(this IServiceCollection services, IConfiguration configuration)
