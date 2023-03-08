@@ -31,6 +31,13 @@ namespace OrkadWeb.Application.Common.Interfaces
         IQueryable<T> Query<T>();
 
         /// <summary>
+        /// Find the single matching entity.
+        /// </summary>
+        T Find<T>(Expression<Func<T, bool>> predicate);
+        /// <inheritdoc cref="Find{T}(Expression{Func{T, bool}})"/>
+        Task<T> FindAsync<T>(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Add a new entity.
         /// </summary>
         void Insert<T>(T data);

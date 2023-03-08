@@ -47,5 +47,12 @@ namespace OrkadWeb.Angular.Controllers
                 UserName = command.UserName,
             });
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task EmailConfirm(EmailConfirmCommand command)
+        {
+            await Command(command);
+        }
     }
 }

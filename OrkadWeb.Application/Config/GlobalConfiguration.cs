@@ -17,7 +17,7 @@ namespace OrkadWeb.Application.Config
 
         public static readonly Regex EMAIL_REGEX = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
-
+        public const int EMAIL_CONFIRMATION_HASH_LENGHT = 8;
     }
 
 }

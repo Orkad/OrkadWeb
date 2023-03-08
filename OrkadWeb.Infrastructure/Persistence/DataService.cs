@@ -1,9 +1,11 @@
 ﻿using NHibernate;
+using NHibernate.Linq;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +33,13 @@ namespace OrkadWeb.Infrastructure.Persistence
 
         /// <inheritdoc/>
         public IQueryable<T> Query<T>() => session.Query<T>();
+
+        /// <inheritdoc/>
+        public T Find<T>(Expression<Func<T, bool>> predicate) => session.Query<T>().SingleOrDefault(predicate);
+
+        /// <inheritdoc/>
+        public async Task<T> FindAsync<T>(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+            => await session.Query<T>().SingleOrDefaultAsync(predicate, cancellationToken);
 
         /// <inheritdoc/>
         public void Insert<T>(T obj) => session.Save(obj);
