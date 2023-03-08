@@ -40,19 +40,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Features\InscriptionEmail.feature.cs">
-			<DependentUpon>InscriptionEmail.feature</DependentUpon>
-		</Compile>
 		<Compile Update="Features\inscription.feature.cs">
 			<DependentUpon>Inscription.feature</DependentUpon>
 		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<SpecFlowFeatureFiles Update="Features\InscriptionEmail.feature">
-			<Visible>$(UsingMicrosoftNETSdk)</Visible>
-			<CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-		</SpecFlowFeatureFiles>
 	</ItemGroup>
 
 </Project>

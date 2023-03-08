@@ -81,11 +81,12 @@ namespace OrkadWeb.Application.Users.Commands
                     Password = Hash.Create(request.Password),
                     Creation = DateTime.Now,
                 });
-                var hash = 1234;
+                var hash = Hash.Create(request.Email);
                 var message = $@"Hello {request.UserName},
 
 You just register using this email adress.
-Please follow the link to validate your inscription : {hash}
+Please follow the link to validate your email : 
+<a href=""http://orkad.fr/auth/confirm?email={request.Email}&hash={hash}"">confirm your email</a>
 ";
                 jobClient.Run(() => emailService.Send(request.Email, "Confirm your email adress", message));
                 return Unit.Value;

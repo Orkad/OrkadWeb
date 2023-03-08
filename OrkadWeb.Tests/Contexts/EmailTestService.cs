@@ -1,26 +1,28 @@
 ﻿using OrkadWeb.Application.Common.Interfaces;
+using OrkadWeb.Tests.Models;
 using System.Collections.Generic;
 
 namespace OrkadWeb.Tests.Contexts
 {
-    public class EmailContext : IEmailService
+    public class EmailTestService : IEmailService
     {
+        private readonly LastContext lastContext;
+
+        public EmailTestService(LastContext lastContext)
+        {
+            this.lastContext = lastContext;
+        }
         public List<SendedEmail> SendedEmails { get; set; } = new List<SendedEmail>();
         public void Send(string to, string subject, string html)
         {
-            SendedEmails.Add(new SendedEmail
+            var email = new SendedEmail
             {
                 To = to,
                 Subject = subject,
                 Html = html,
-            });
-        }
-
-        public class SendedEmail
-        {
-            public string To { get; init; }
-            public string Subject { get; init; }
-            public string Html { get; init; }
+            };
+            lastContext.Mention(email);
+            SendedEmails.Add(email);
         }
     }
 }

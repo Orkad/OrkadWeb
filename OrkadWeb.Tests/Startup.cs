@@ -24,9 +24,7 @@ namespace OrkadWeb.Tests
             var services = new ServiceCollection();
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             services.AddTestInfrastructureServices(configuration);
-            var emailContext = new EmailContext();
-            services.AddSingleton(emailContext);
-            services.AddSingleton<IEmailService>(emailContext);
+            services.AddScoped<IEmailService, EmailTestService>();
 
             services.AddApplicationServices();
             var timeContext = new TimeContext();

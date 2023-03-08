@@ -54,8 +54,7 @@ namespace OrkadWeb.Application.Users.Commands
                 {
                     throw new EmailConfirmationException("user already confirmed email");
                 }
-                var expectedHash = Hash.Create(user.Email)[..GlobalConfiguration.EMAIL_CONFIRMATION_HASH_LENGHT];
-                if (expectedHash != command.ConfirmationHash)
+                if (!Hash.Validate(user.Email, command.ConfirmationHash))
                 {
                     throw new EmailConfirmationException("wrong confirmation hash");
                 }
