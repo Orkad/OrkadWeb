@@ -13,12 +13,7 @@
       utilisateurs
     </button>
     <span class="menu-spacer"></span>
-    <button
-      mat-button
-      [routerLink]="['/authentication']"
-      class="big"
-      *ngIf="connected"
-    >
+    <button mat-button [routerLink]="['/auth']" class="big" *ngIf="connected">
       <mat-icon>account_circle</mat-icon>
       {{ username }}
     </button>
