@@ -120,7 +120,7 @@ export class RegistrationComponent implements OnInit {
       .register(this.username.value, this.email.value, this.password.value)
       .subscribe({
         next: () => {
-          this.router.navigate(['/authentication']);
+          this.router.navigate(['/auth']);
           this.notificationService.success('enregistrement effectué');
         },
         error: (err) => {

@@ -26,7 +26,7 @@ export class AuthenticationGuard implements CanActivate {
       return true;
     }
     this.authenticationService.logout();
-    this.router.navigate(['authentication']);
+    this.router.navigate(['auth']);
     this.notificationService.error(
       'la session a expirée, veuillez vous reconnecter'
     );

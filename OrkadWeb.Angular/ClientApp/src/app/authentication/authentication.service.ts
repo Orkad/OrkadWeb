@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, interval, Observable, Subject, timer } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../../shared/models/User';
 import { LoginResponse } from '../../shared/models/LoginResponse';
 import { RegisterCommand } from 'src/api/commands/RegisterCommand';
-import { Router } from '@angular/router';
-import { NotificationService } from 'src/services/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -46,7 +44,7 @@ export class AuthenticationService {
 
   login(username: string, password: string): Observable<LoginResponse> {
     return this.httpClient
-      .post<LoginResponse>('api/authentication/login', {
+      .post<LoginResponse>('api/auth/login', {
         username: username,
         password: password,
       })
@@ -71,9 +69,7 @@ export class AuthenticationService {
     email: string,
     password: string
   ): Observable<void> {
-    return this.httpClient.post<void>('api/authentication/register', <
-      RegisterCommand
-    >{
+    return this.httpClient.post<void>('api/auth/register', <RegisterCommand>{
       userName: username,
       email: email,
       password: password,

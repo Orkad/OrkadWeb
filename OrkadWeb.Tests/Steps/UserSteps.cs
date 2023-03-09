@@ -124,7 +124,7 @@ Please follow the link to validate your email :
             await executionDriver.Send(new EmailConfirmCommand
             {
                 Email = email,
-                ConfirmationHash = hash,
+                Hash = hash,
             });
         }
 

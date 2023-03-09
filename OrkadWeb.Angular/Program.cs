@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MySql.Data.MySqlClient;
 using OrkadWeb.Angular.Config;
 using OrkadWeb.Angular.Hubs;
 using OrkadWeb.Angular.Models;
@@ -58,13 +59,15 @@ AuthenticatedUser ResolveAuthenticatedUser(IServiceProvider serviceProvider)
 services.AddApplicationServices();
 services.AddInfrastructureServices(configuration);
 
+var mysql = new MySqlConnectionStringBuilder(configuration.GetRequiredValue("ConnectionStrings:OrkadWeb"));
+mysql.AllowUserVariables = true;
 // HANGFIRE
 services.AddHangfire(h => h
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
     .UseStorage(new MySqlStorage(
-        configuration.GetRequiredValue("ConnectionStrings:OrkadWeb"),
+        mysql.ToString(),
         new MySqlStorageOptions
         {
             TransactionIsolationLevel = IsolationLevel.ReadCommitted,

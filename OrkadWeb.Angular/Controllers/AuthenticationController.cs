@@ -23,7 +23,8 @@ using OrkadWeb.Application.Users.Notifications;
 
 namespace OrkadWeb.Angular.Controllers
 {
-    public class AuthenticationController : ApiController
+
+    public class AuthController : ApiController
     {
         [HttpPost]
         [AllowAnonymous]
@@ -50,7 +51,7 @@ namespace OrkadWeb.Angular.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task EmailConfirm(EmailConfirmCommand command)
+        public async Task Confirm(EmailConfirmCommand command)
         {
             await Command(command);
         }

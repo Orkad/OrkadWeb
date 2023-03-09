@@ -69,12 +69,8 @@ namespace OrkadWeb.Infrastructure
         private static IServiceCollection AddSmtpEmailService(this IServiceCollection services, IConfiguration configuration)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            var smtpEmailService = new SmtpEmailService(
-                configuration.GetRequiredValue("Smtp:Host"),
-                configuration.GetRequiredIntValue("Smtp:Port"),
-                configuration.GetRequiredValue("Smtp:Username"),
-                configuration.GetRequiredValue("Smtp:Password"));
-            return services.AddSingleton<IEmailService>(smtpEmailService);
+            services.AddSingleton<SmtpConfig>();
+            return services.AddSingleton<IEmailService, SmtpEmailService>();
         }
     }
 }

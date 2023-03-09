@@ -1,30 +1,23 @@
-﻿using Microsoft.Extensions.Configuration;
-using OrkadWeb.Application.Common.Interfaces;
-using OrkadWeb.Domain.Extensions;
-using System.Net;
+﻿using OrkadWeb.Application.Common.Interfaces;
 using System.Net.Mail;
 
 namespace OrkadWeb.Infrastructure.Services
 {
     public class SmtpEmailService : IEmailService
     {
-        private readonly string host;
-        private readonly int port;
-        private readonly NetworkCredential credentials;
+        private readonly SmtpConfig smtpConfig;
 
-        public SmtpEmailService(string host, int port, string username, string password)
+        public SmtpEmailService(SmtpConfig smtpConfig)
         {
-            this.host = host;
-            this.port = port;
-            this.credentials = new NetworkCredential(username, password);
+            this.smtpConfig = smtpConfig;
         }
 
         public void Send(string to, string subject, string html)
         {
-            using var client = new SmtpClient(host, port);
+            using var client = new SmtpClient(smtpConfig.Host, smtpConfig.Port);
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
-            client.Credentials = credentials;
+            client.Credentials = smtpConfig.Credentials;
             client.Send("noreply@orkad.fr", to, subject, html);
         }
     }

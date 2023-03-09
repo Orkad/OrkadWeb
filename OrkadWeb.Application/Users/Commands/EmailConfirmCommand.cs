@@ -21,16 +21,7 @@ namespace OrkadWeb.Application.Users.Commands
         /// <summary>
         /// Confirmation hash
         /// </summary>
-        public string ConfirmationHash { get; set; }
-
-        class Validator : AbstractValidator<EmailConfirmCommand>
-        {
-            public Validator()
-            {
-                RuleFor(command => command.Email).NotEmpty().Matches(GlobalConfiguration.EMAIL_REGEX);
-                RuleFor(command => command.ConfirmationHash).NotEmpty().Length(GlobalConfiguration.EMAIL_CONFIRMATION_HASH_LENGHT);
-            }
-        }
+        public string Hash { get; set; }
 
         class Handler : ICommandHandler<EmailConfirmCommand>
         {
@@ -54,7 +45,7 @@ namespace OrkadWeb.Application.Users.Commands
                 {
                     throw new EmailConfirmationException("user already confirmed email");
                 }
-                if (!Hash.Validate(user.Email, command.ConfirmationHash))
+                if (!Domain.Utils.Hash.Validate(user.Email, command.Hash))
                 {
                     throw new EmailConfirmationException("wrong confirmation hash");
                 }

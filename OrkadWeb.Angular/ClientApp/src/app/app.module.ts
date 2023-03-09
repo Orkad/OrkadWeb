@@ -26,6 +26,7 @@ import { ExpenseFormDialogComponent } from './transaction/expense-form-dialog/ex
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { UserListComponent } from './user-list/user-list.component';
+import { EmailConfirmationComponent } from './authentication/email-confirmation/email-confirmation.component';
 
 registerLocaleData(fr);
 
@@ -41,15 +42,19 @@ const routes = [
     canActivate: [AuthenticationGuard],
   },
   {
-    path: 'authentication',
+    path: 'auth',
     component: AuthenticationComponent,
   },
   {
-    path: 'authentication/registration',
+    path: 'auth/register',
     component: RegistrationComponent,
     resolve: {
       config: ConfigurationResolver,
     },
+  },
+  {
+    path: 'auth/confirm',
+    component: EmailConfirmationComponent,
   },
   {
     path: 'users',
@@ -72,6 +77,7 @@ const routes = [
     MonthlyBudgetOverviewComponent,
     ExpenseFormDialogComponent,
     UserListComponent,
+    EmailConfirmationComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
