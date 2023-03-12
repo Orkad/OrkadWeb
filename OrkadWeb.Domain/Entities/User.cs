@@ -36,5 +36,10 @@ namespace OrkadWeb.Domain.Entities
         /// User confirmation date (email confirmation)
         /// </summary>
         public virtual DateTime? Confirmation { get; set; }
+
+        /// <summary>
+        /// Unique role of the user
+        /// </summary>
+        public virtual string Role { get; set; }
     }
 }

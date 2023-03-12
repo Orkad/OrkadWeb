@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable } from 'rxjs';
+import { AuthenticationService } from '../authentication/authentication.service';
 import { UserItem } from './user-item.model';
 
 @Component({
@@ -9,15 +10,33 @@ import { UserItem } from './user-item.model';
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthenticationService
+  ) {}
+  connectedUserId: number | undefined;
 
-  dataSource$ = this.httpClient.get<UserItem[]>('api/users').pipe(
-    map((u) => {
-      const dataSource = new MatTableDataSource<UserItem>();
-      dataSource.data = u;
-      return dataSource;
-    })
-  );
+  displayedColumns = ['id', 'name', 'email', 'role', 'actions'];
+  dataSource: MatTableDataSource<UserItem>;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.connectedUserId = this.authService.getConnectedUser()?.id;
+    this.httpClient.get<UserItem[]>('api/users').subscribe((u) => {
+      this.dataSource = new MatTableDataSource<UserItem>();
+      this.dataSource.data = u;
+    });
+  }
+
+  displayRole(role: string) {
+    if (role == 'Admin') {
+      return 'Administrateur';
+    }
+    return '';
+  }
+
+  deleteUserDisabled(user: UserItem) {
+    return this.connectedUserId === user.id;
+  }
+
+  deleteUser(user: UserItem) {}
 }

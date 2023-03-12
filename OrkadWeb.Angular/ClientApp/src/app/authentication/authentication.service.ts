@@ -31,6 +31,7 @@ export class AuthenticationService {
       id: decodedToken.sub,
       name: decodedToken.name,
       email: decodedToken.email,
+      role: decodedToken.role,
     };
   }
 
@@ -74,5 +75,9 @@ export class AuthenticationService {
       email: email,
       password: password,
     });
+  }
+
+  getConnectedUser() {
+    return this.userSubject.getValue();
   }
 }

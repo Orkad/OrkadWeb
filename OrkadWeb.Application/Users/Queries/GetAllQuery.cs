@@ -21,6 +21,7 @@ namespace OrkadWeb.Application.Users.Queries
             public int Id { get; set; }
             public string Name { get; set; }
             public string Email { get; set; }
+            public string Role { get; set; }
         }
 
         internal class Handler : IQueryHandler<GetAllUsersQuery, List<GetAllUsersQuery.Result>>
@@ -39,6 +40,7 @@ namespace OrkadWeb.Application.Users.Queries
                         Id = u.Id,
                         Name = u.Username,
                         Email = u.Email,
+                        Role = u.Role,
                     })
                     .ToListAsync(cancellationToken);
             }

@@ -31,7 +31,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\OrkadWeb.Infrastructure\OrkadWeb.Infrastructure.csproj" />
-		<ProjectReference Include="..\OrkadWeb.Domain\OrkadWeb.Domain.csproj" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

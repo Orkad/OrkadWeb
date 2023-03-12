@@ -19,6 +19,7 @@ using OrkadWeb.Application.Config;
 using System.Text.RegularExpressions;
 using System.Web;
 using OrkadWeb.Domain.Utils;
+using OrkadWeb.Domain.Consts;
 
 namespace OrkadWeb.Tests.Steps
 {
@@ -49,6 +50,7 @@ namespace OrkadWeb.Tests.Steps
                 Email = "test@test.test",
                 Username = name,
                 Password = "none",
+                Role = UserRoles.User,
             };
             service.Insert(user);
             lastContext.Mention(user);

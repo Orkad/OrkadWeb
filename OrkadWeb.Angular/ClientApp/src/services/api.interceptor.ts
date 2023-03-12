@@ -14,16 +14,16 @@ export class ApiInterceptor implements HttpInterceptor {
     httpRequest: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (httpRequest.url.startsWith('api/')) {
-      return next.handle(httpRequest).pipe(
-        map((event) => {
-          return event;
-        }),
-        catchError((err, caught) => {
-          return caught;
-        })
-      );
-    }
+    // if (httpRequest.url.startsWith('api/')) {
+    //   return next.handle(httpRequest).pipe(
+    //     map((event) => {
+    //       return event;
+    //     }),
+    //     catchError((err, caught) => {
+    //       return caught;
+    //     })
+    //   );
+    // }
     return next.handle(httpRequest);
   }
 }

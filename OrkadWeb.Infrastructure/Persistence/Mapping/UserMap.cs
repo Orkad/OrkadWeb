@@ -1,4 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
+using OrkadWeb.Domain.Consts;
 using OrkadWeb.Domain.Entities;
 
 namespace OrkadWeb.Infrastructure.Persistence.Mapping
@@ -14,6 +15,7 @@ namespace OrkadWeb.Infrastructure.Persistence.Mapping
             Map(x => x.Email).Column("email").Not.Nullable();
             Map(x => x.Creation).Column("creation").Not.Nullable();
             Map(x => x.Confirmation).Column("confirmation").Nullable();
+            Map(x => x.Role, "role").Not.Nullable().Default(UserRoles.User);
         }
     }
 }

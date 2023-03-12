@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Domain.Common;
+using OrkadWeb.Domain.Consts;
 using OrkadWeb.Domain.Entities;
 using OrkadWeb.Domain.Utils;
 using System;
@@ -80,6 +81,7 @@ namespace OrkadWeb.Application.Users.Commands
                     Username = request.UserName,
                     Password = Hash.Create(request.Password),
                     Creation = DateTime.Now,
+                    Role = UserRoles.User,
                 });
                 var hash = Hash.Create(request.Email);
                 var message = $@"Hello {request.UserName},
