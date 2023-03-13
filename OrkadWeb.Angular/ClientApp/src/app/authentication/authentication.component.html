@@ -28,9 +28,10 @@
     <a routerLink="register">Créer un compte</a>
   </mat-card-content>
 </mat-card>
-<mat-card *ngIf="loggedIn">
+<mat-card *ngIf="loggedIn && user">
   <mat-card-content>
-    <p>Vous êtes connecté en tant que {{ loggedUsername }}</p>
-    <button mat-flat-button color="warn" (click)="logout()">Déconnexion</button>
+    <app-display label="Nom d'utilisateur">{{ user.name }}</app-display>
+    <app-display label="Email">{{ user.email }}</app-display>
+    <app-display label="Rôle">{{ displayRole(user.role) }}</app-display>
   </mat-card-content>
 </mat-card>

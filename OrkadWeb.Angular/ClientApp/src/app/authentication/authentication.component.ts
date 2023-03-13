@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import {
+  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { AuthenticationService } from './authentication.service';
 import { User } from 'src/shared/models/User';
 import { Observable } from 'rxjs';
@@ -12,7 +16,7 @@ import { Observable } from 'rxjs';
 export class AuthenticationComponent implements OnInit {
   loading: boolean = false;
   loggedIn: boolean;
-  loggedUsername: string | undefined;
+  user: User | null;
   loginForm: UntypedFormGroup;
   error: string;
 
@@ -31,7 +35,7 @@ export class AuthenticationComponent implements OnInit {
 
   setUser(user: User | null): void {
     this.loggedIn = !!user;
-    this.loggedUsername = user?.name;
+    this.user = user;
   }
 
   login(): void {
@@ -47,7 +51,14 @@ export class AuthenticationComponent implements OnInit {
       });
   }
 
-  logout(): void {
-    this.authenticationService.logout();
+  displayRole(role: string) {
+    switch (role) {
+      case 'Admin':
+        return 'Administrateur';
+      case 'User':
+        return 'Utilisateur';
+      default:
+        return '';
+    }
   }
 }

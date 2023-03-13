@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ServerEventsService } from 'src/services/ServerEventsService';
 import { User } from 'src/shared/models/User';
@@ -12,10 +13,12 @@ import { AuthenticationService } from './authentication/authentication.service';
 export class AppComponent {
   constructor(
     private authenticationService: AuthenticationService,
-    private serverEventsService: ServerEventsService
+    private serverEventsService: ServerEventsService,
+    private router: Router
   ) {}
   connected = false;
   username: string | undefined;
+  isAdmin: boolean;
 
   ngOnInit() {
     this.authenticationService.user$.subscribe((user) => this.setUser(user));
@@ -25,5 +28,11 @@ export class AppComponent {
   setUser(user: User | null) {
     this.connected = user != null;
     this.username = user?.name;
+    this.isAdmin = user?.role === 'Admin';
+  }
+
+  disconnect() {
+    this.authenticationService.logout();
+    this.router.navigate(['auth']);
   }
 }

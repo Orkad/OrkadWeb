@@ -28,6 +28,7 @@ import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { UserListComponent } from './user-list/user-list.component';
 import { EmailConfirmationComponent } from './authentication/email-confirmation/email-confirmation.component';
 import { ApiInterceptor } from 'src/services/api.interceptor';
+import { DisplayComponent } from './shared/display/display.component';
 
 registerLocaleData(fr);
 
@@ -79,6 +80,7 @@ const routes = [
     ExpenseFormDialogComponent,
     UserListComponent,
     EmailConfirmationComponent,
+    DisplayComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -59,7 +59,7 @@ namespace OrkadWeb.Application.Users.Commands
                     Id = user.Id.ToString(),
                     Name = user.Username,
                     Email = user.Email,
-                    Role = "Admin",
+                    Role = user.Role,
                     Token = identityTokenGenerator.GenerateToken(GetClaims(user.Id.ToString(), user.Username, user.Email, user.Role)),
                 };
                 return result;
@@ -73,7 +73,7 @@ namespace OrkadWeb.Application.Users.Commands
                     new Claim(JwtRegisteredClaimNames.Sub, id),
                     new Claim(JwtRegisteredClaimNames.Email, email),
                     new Claim(JwtRegisteredClaimNames.Name, name),
-                    new Claim("role", "Admin"),
+                    new Claim("role", role),
                 };
             }
         }
