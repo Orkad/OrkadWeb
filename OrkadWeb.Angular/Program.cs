@@ -28,7 +28,7 @@ services.AddControllersWithViews();
 // ANGULAR SPA
 services.AddSpaStaticFiles(configuration =>
 {
-    configuration.RootPath = "ClientApp/dist/client-app";
+    configuration.RootPath = "ClientApp/dist";
 });
 
 // AUTHENTICATION
