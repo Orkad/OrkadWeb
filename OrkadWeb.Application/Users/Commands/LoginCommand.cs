@@ -60,21 +60,9 @@ namespace OrkadWeb.Application.Users.Commands
                     Name = user.Username,
                     Email = user.Email,
                     Role = user.Role,
-                    Token = identityTokenGenerator.GenerateToken(GetClaims(user.Id.ToString(), user.Username, user.Email, user.Role)),
+                    Token = identityTokenGenerator.GenerateToken(user),
                 };
                 return result;
-            }
-
-            private Claim[] GetClaims(string id, string name, string email, string role)
-            {
-                return new[] {
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
-                    new Claim(JwtRegisteredClaimNames.Sub, id),
-                    new Claim(JwtRegisteredClaimNames.Email, email),
-                    new Claim(JwtRegisteredClaimNames.Name, name),
-                    new Claim("role", role),
-                };
             }
         }
 

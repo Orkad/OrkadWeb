@@ -31,7 +31,16 @@
 <mat-card *ngIf="loggedIn && user">
   <mat-card-content>
     <app-display label="Nom d'utilisateur">{{ user.name }}</app-display>
-    <app-display label="Email">{{ user.email }}</app-display>
+    <app-display label="Email"
+      >{{ user.email }}
+      <mat-icon
+        *ngIf="!user.confirmed"
+        color="warn"
+        class="inline-icon"
+        matTooltip="l'adresse email n'est pas confirmée"
+        >warning</mat-icon
+      ></app-display
+    >
     <app-display label="Rôle">{{ displayRole(user.role) }}</app-display>
   </mat-card-content>
 </mat-card>

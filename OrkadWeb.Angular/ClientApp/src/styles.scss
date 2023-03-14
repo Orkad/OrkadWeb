@@ -48,3 +48,12 @@ body {
 .mat-form-field {
   width: 100%;
 }
+
+.mat-icon.inline-icon {
+  width: 14px;
+  height: 14px;
+  font-size: 18px;
+  margin: -2px;
+  vertical-align: sub;
+  overflow: visible;
+}

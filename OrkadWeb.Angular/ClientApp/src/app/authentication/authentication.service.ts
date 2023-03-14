@@ -32,6 +32,7 @@ export class AuthenticationService {
       name: decodedToken.name,
       email: decodedToken.email,
       role: decodedToken.role,
+      confirmed: decodedToken.confirmed,
     };
   }
 
