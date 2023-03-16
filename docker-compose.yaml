@@ -6,14 +6,20 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - 8000:80
+      - 44300:443
     depends_on:
       - db
     env_file:
       - ../orkadweb.production.env
     environment:
       ASPNETCORE_ENVIRONMENT: production
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ASPNETCORE_HTTPS_PORT: 443
       ConnectionStrings:OrkadWeb: Server=db;Database=orkadweb;Uid=root;Pwd=production
+      Kestrel:Certificates:Default:Path: /ssl/orkad.fr.pfx
+    volumes:
+      - "C:/Certbot/live/orkad.fr/pfx:/ssl"
 
   db:
     image: mysql:latest

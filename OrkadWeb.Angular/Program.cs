@@ -16,13 +16,17 @@ using OrkadWeb.Application.Users;
 using OrkadWeb.Domain.Extensions;
 using OrkadWeb.Infrastructure;
 using System;
+using System.Net;
 using System.Reflection;
 using System.Security.Claims;
 using System.Transactions;
 
 var builder = WebApplication.CreateBuilder(args);
+
 var services = builder.Services;
 var configuration = builder.Configuration;
+var dev = builder.Environment.IsDevelopment();
+var prod = !dev;
 // MVC
 services.AddControllersWithViews();
 // ANGULAR SPA
@@ -86,8 +90,6 @@ services.AddSignalR();
 services.AddMediatR(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
-var dev = app.Environment.IsDevelopment();
-var prod = !dev;
 if (dev)
 {
     app.UseDeveloperExceptionPage();
