@@ -32,16 +32,18 @@ namespace OrkadWeb.Tests.Steps
         private readonly LastContext lastContext;
         private readonly IEmailService emailService;
         private readonly IMediator mediator;
+        private readonly ITimeProvider timeProvider;
 
         public IAuthenticatedUser? AuthenticatedUser { get; private set; }
 
         public UserSteps(IDataService service, LastContext lastContext, IEmailService emailService,
-            IMediator mediator)
+            IMediator mediator, ITimeProvider timeProvider)
         {
             this.service = service;
             this.lastContext = lastContext;
             this.emailService = emailService;
             this.mediator = mediator;
+            this.timeProvider = timeProvider;
         }
 
         [Given(@"l'utilisateur (.*) existe")]
@@ -100,6 +102,15 @@ Please follow the link to validate your email :
             };
             service.Insert(user);
             lastContext.Mention(user);
+        }
+
+        [Given(@"son adresse email (.*) est déjà confirmée")]
+        public void GivenEmailAlreadyConfirmed(string email)
+        {
+            var user = lastContext.Last<User>();
+            user.Email = email;
+            user.Confirmation = timeProvider.Now;
+            service.Update(user);
         }
 
 

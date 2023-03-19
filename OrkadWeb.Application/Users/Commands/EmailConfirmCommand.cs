@@ -1,15 +1,4 @@
-﻿using FluentValidation;
-using NHibernate.Linq;
-using OrkadWeb.Application.Common.Interfaces;
-using OrkadWeb.Domain.Common;
-using OrkadWeb.Domain.Entities;
-using OrkadWeb.Domain.Utils;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using GlobalConfiguration = OrkadWeb.Application.Config.GlobalConfiguration;
-
-namespace OrkadWeb.Application.Users.Commands
+﻿namespace OrkadWeb.Application.Users.Commands
 {
     public class EmailConfirmCommand : ICommand
     {

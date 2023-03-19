@@ -48,3 +48,13 @@ Scénario: confirmation email
 	Et que l'email de confirmation a déjà été envoyé
 	Quand j'utilise le lien de confirmation dans l'email envoyé
 	Alors mon email est validé
+
+Scénario: email dejà confirmé
+	Etant donné que l'utilisateur Orkad existe
+	Et que son adresse email orkad@orkad.fr est déjà confirmée
+	Et que l'email de confirmation a déjà été envoyé
+	Quand j'utilise le lien de confirmation dans l'email envoyé
+	Alors il y a une erreur
+
+
+

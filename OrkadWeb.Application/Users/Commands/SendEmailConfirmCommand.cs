@@ -4,7 +4,7 @@ public class SendEmailConfirmCommand : ICommand
 {
     public string Username { get; set; }
 
-    class Validator : AbstractValidator<SendEmailConfirmCommand>
+    public class Validator : AbstractValidator<SendEmailConfirmCommand>
     {
         public Validator()
         {
