@@ -2,16 +2,21 @@
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Hangfire;
+using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Cfg;
+using OrkadWeb.Angular.Config;
 using OrkadWeb.Application;
 using OrkadWeb.Application.Common.Interfaces;
+using OrkadWeb.Application.Users;
 using OrkadWeb.Infrastructure;
 using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Infrastructure.Persistence.Conventions;
 using OrkadWeb.Tests.Contexts;
+using OrkadWeb.Tests.Drivers;
 using SolidToken.SpecFlow.DependencyInjection;
 
 namespace OrkadWeb.Tests
@@ -21,20 +26,19 @@ namespace OrkadWeb.Tests
         [ScenarioDependencies]
         public static IServiceCollection BuildServiceCollection()
         {
-            var services = new ServiceCollection();
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            services.AddTestInfrastructureServices(configuration);
+            var builder = WebApplication.CreateBuilder();
+            var services = builder.Services;
+            services.AddTestInfrastructureServices();
             services.AddScoped<IEmailService, EmailTestService>();
 
             services.AddApplicationServices();
             var timeContext = new TimeContext();
             services.AddSingleton(timeContext);
             services.AddSingleton<ITimeProvider>(timeContext);
-
             return services;
         }
 
-        public static IServiceCollection AddTestInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddTestInfrastructureServices(this IServiceCollection services)
         {
             var connectionString = "FullUri=file:memorydb.db?mode=memory&cache=shared";
 
@@ -56,8 +60,11 @@ namespace OrkadWeb.Tests
                 .AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenStatelessSession())
                 .AddScoped<IDataService, DataService>()
                 .AddScoped<IUnitOfWork, UnitOfWork>();
-
             services.AddScoped<IJobRunner>((sp) => sp.GetRequiredService<JobRunnerContext>());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionCatchPipeline<,>));
+
+            services.AddSingleton<JwtConfig>();
+            services.AddScoped<IIdentityTokenGenerator, JwtTokenGenerator>();
 
             return services;
         }

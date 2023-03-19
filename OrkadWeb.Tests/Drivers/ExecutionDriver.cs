@@ -1,34 +1,48 @@
 ﻿using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
 namespace OrkadWeb.Tests.Drivers
 {
     [Binding]
-    public class ExecutionDriver
+    public class ExceptionContext
     {
-        private readonly IMediator mediator;
+        private Exception? exception;
 
-        public ExecutionDriver(IMediator mediator)
+        public Exception? HandleException()
         {
-            this.mediator = mediator;
+            var exception = this.exception;
+            this.exception = null;
+            return exception;
         }
 
-        public Exception? Exception { get; set; }
+        public void SetException(Exception exception)
+        {
+            this.exception = exception;
+        }
+    }
 
-        public async Task Send(IRequest<Unit> request)
+    public sealed class ExceptionCatchPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : class, IRequest<TResponse>
+    {
+        private readonly ExceptionContext exceptionContext;
+
+        public ExceptionCatchPipeline(ExceptionContext exceptionContext)
+        {
+            this.exceptionContext = exceptionContext;
+        }
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             try
             {
-                await mediator.Send(request);
+                return await next();
             }
             catch (Exception ex)
             {
-                Exception = ex;
+                exceptionContext.SetException(ex);
             }
+            return default;
         }
     }
 }

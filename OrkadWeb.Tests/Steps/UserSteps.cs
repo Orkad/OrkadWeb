@@ -20,6 +20,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using OrkadWeb.Domain.Utils;
 using OrkadWeb.Domain.Consts;
+using MediatR;
 
 namespace OrkadWeb.Tests.Steps
 {
@@ -28,18 +29,19 @@ namespace OrkadWeb.Tests.Steps
     {
         private static readonly Regex URL_REGEX = new(@"(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])");
         private readonly IDataService service;
-        private readonly ExecutionDriver executionDriver;
         private readonly LastContext lastContext;
         private readonly IEmailService emailService;
+        private readonly IMediator mediator;
 
         public IAuthenticatedUser? AuthenticatedUser { get; private set; }
 
-        public UserSteps(IDataService service, ExecutionDriver executionDriver, LastContext lastContext, IEmailService emailService)
+        public UserSteps(IDataService service, LastContext lastContext, IEmailService emailService,
+            IMediator mediator)
         {
             this.service = service;
-            this.executionDriver = executionDriver;
             this.lastContext = lastContext;
             this.emailService = emailService;
+            this.mediator = mediator;
         }
 
         [Given(@"l'utilisateur (.*) existe")]
@@ -55,6 +57,7 @@ namespace OrkadWeb.Tests.Steps
             service.Insert(user);
             lastContext.Mention(user);
         }
+
 
         [Given(@"son adresse email est (.*)")]
         public void GivenSonAdresseEmailEst(string email)
@@ -85,18 +88,32 @@ Please follow the link to validate your email :
             emailService.Send(user.Email, "Confirm your email adress", html);
         }
 
+        [Given(@"l'utilisateur (.*) existe avec le mot de passe (.*)")]
+        public void GivenLutilisateurTestExisteAvecLeMotDePasse(string username, string password)
+        {
+            var user = new User
+            {
+                Email = "test@test.test",
+                Username = username,
+                Password = Hash.Create(password),
+                Role = UserRoles.User,
+            };
+            service.Insert(user);
+            lastContext.Mention(user);
+        }
+
 
         [When(@"je tente de m'inscrire avec les informations suivantes")]
         public async Task WhenJeTenteDeMenregistrerAvecLesInformationsSuivantes(Table table)
         {
             var command = table.CreateInstance<RegisterCommand>();
-            await executionDriver.Send(command);
+            await mediator.Send(command);
         }
 
         [When(@"je tente de m'inscrire avec le nom d'utilisateur (.*)")]
         public async Task WhenJeTenteDeMenregistrerAvecLeNomDutilisateur(string name)
         {
-            await executionDriver.Send(new RegisterCommand
+            await mediator.Send(new RegisterCommand
             {
                 UserName = name,
                 Password = "Default@123",
@@ -107,7 +124,7 @@ Please follow the link to validate your email :
         [When(@"je tente de m'inscrire avec le mot de passe (.*)")]
         public async Task WhenJeTenteDeMenregistrerAvecLeMotDePasse(string password)
         {
-            await executionDriver.Send(new RegisterCommand
+            await mediator.Send(new RegisterCommand
             {
                 UserName = "Orkad",
                 Password = password,
@@ -123,7 +140,7 @@ Please follow the link to validate your email :
             var parameters = HttpUtility.ParseQueryString(uri.Query);
             var email = parameters["email"] ?? throw new AssertFailedException();
             var hash = parameters["hash"] ?? throw new AssertFailedException();
-            await executionDriver.Send(new EmailConfirmCommand
+            await mediator.Send(new EmailConfirmCommand
             {
                 Email = email,
                 Hash = hash,
