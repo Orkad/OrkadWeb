@@ -22,6 +22,11 @@ namespace OrkadWeb.Application.Users
         /// Adresse email de contact associé à l'utilisateur
         /// </summary>
         string Email { get; }
+
+        /// <summary>
+        /// Role de l'utilisateur connecté
+        /// </summary>
+        string Role { get; }
     }
 
     /// <summary>

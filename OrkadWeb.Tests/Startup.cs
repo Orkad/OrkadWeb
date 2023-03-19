@@ -17,6 +17,7 @@ using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Infrastructure.Persistence.Conventions;
 using OrkadWeb.Tests.Contexts;
 using OrkadWeb.Tests.Drivers;
+using OrkadWeb.Tests.Hooks;
 using SolidToken.SpecFlow.DependencyInjection;
 
 namespace OrkadWeb.Tests
@@ -35,6 +36,7 @@ namespace OrkadWeb.Tests
             var timeContext = new TimeContext();
             services.AddSingleton(timeContext);
             services.AddSingleton<ITimeProvider>(timeContext);
+            services.AddScoped<IAuthenticatedUser>(sp => sp.GetRequiredService<UserContext>().AuthenticatedUser);
             return services;
         }
 
@@ -42,12 +44,7 @@ namespace OrkadWeb.Tests
         {
             var connectionString = "FullUri=file:memorydb.db?mode=memory&cache=shared";
 
-            services.AddFluentMigratorCore()
-                .ConfigureRunner(b => b
-                    .AddSQLite()
-                    .WithGlobalConnectionString(connectionString)
-                    .ScanIn(OrkadWebInfrastructure.Assembly))
-                .AddLogging(lb => lb.AddFluentMigratorConsole());
+            services.AddTestMigrations(connectionString);
 
             services.AddSingleton(Fluently.Configure()
                     .Database(SQLiteConfiguration.Standard.ConnectionString(connectionString))

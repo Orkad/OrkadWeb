@@ -1,0 +1,11 @@
+﻿global using MediatR;
+global using Microsoft.VisualStudio.TestTools.UnitTesting;
+global using NFluent;
+global using OrkadWeb.Application.Common.Interfaces;
+global using OrkadWeb.Domain.Consts;
+global using OrkadWeb.Domain.Entities;
+global using OrkadWeb.Tests.Contexts;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using TechTalk.SpecFlow;
+global using TechTalk.SpecFlow.Assist;

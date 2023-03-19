@@ -33,17 +33,17 @@ namespace OrkadWeb.Tests.Steps
         private readonly IEmailService emailService;
         private readonly IMediator mediator;
         private readonly ITimeProvider timeProvider;
-
-        public IAuthenticatedUser? AuthenticatedUser { get; private set; }
+        private readonly UserContext userContext;
 
         public UserSteps(IDataService service, LastContext lastContext, IEmailService emailService,
-            IMediator mediator, ITimeProvider timeProvider)
+            IMediator mediator, ITimeProvider timeProvider, UserContext userContext)
         {
             this.service = service;
             this.lastContext = lastContext;
             this.emailService = emailService;
             this.mediator = mediator;
             this.timeProvider = timeProvider;
+            this.userContext = userContext;
         }
 
         [Given(@"l'utilisateur (.*) existe")]
@@ -74,7 +74,7 @@ namespace OrkadWeb.Tests.Steps
         {
             var user = service.Query<User>().Where(u => u.Username == name).Single();
             lastContext.Mention(user);
-            AuthenticatedUser = new TestUser(user.Id, user.Username, user.Email);
+            userContext.AuthenticatedUser = new TestUser(user);
         }
 
         [Given(@"l'email de confirmation a déjà été envoyé")]

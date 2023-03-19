@@ -54,6 +54,7 @@ AuthenticatedUser ResolveAuthenticatedUser(IServiceProvider serviceProvider)
             Id = int.Parse(user.FindFirst(ClaimTypes.NameIdentifier).Value),
             Name = user.FindFirst(ClaimTypes.Name).Value,
             Email = user.FindFirst(ClaimTypes.Email).Value,
+            Role = user.FindFirst("role").Value,
         };
     }
     return null;

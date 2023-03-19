@@ -1,7 +1,11 @@
-﻿using FluentMigrator.Runner;
+﻿using FluentMigrator;
+using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
+using OrkadWeb.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
@@ -16,5 +20,29 @@ namespace OrkadWeb.Tests.Hooks
         {
             migrationRunner.MigrateUp();
         }
+    }
+
+    [Migration(long.MaxValue, "test initialize")]
+    public class TestInitializeMigration : Migration
+    {
+        public override void Up()
+        {
+            Delete.FromTable("user").AllRows();
+        }
+
+        public override void Down()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public static class IMigrationHookExtensions
+    {
+        public static IServiceCollection AddTestMigrations(this IServiceCollection services, string connectionString)
+            => services.AddFluentMigratorCore()
+                .ConfigureRunner(b => b
+                    .AddSQLite()
+                    .WithGlobalConnectionString(connectionString)
+                    .ScanIn(OrkadWebInfrastructure.Assembly, Assembly.GetExecutingAssembly()));
     }
 }

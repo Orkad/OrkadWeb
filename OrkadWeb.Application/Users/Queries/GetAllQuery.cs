@@ -1,10 +1,12 @@
 ﻿using NHibernate.Linq;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Domain.Common;
+using OrkadWeb.Domain.Consts;
 using OrkadWeb.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,16 +26,23 @@ namespace OrkadWeb.Application.Users.Queries
             public string Role { get; set; }
         }
 
-        internal class Handler : IQueryHandler<GetAllUsersQuery, List<GetAllUsersQuery.Result>>
+        internal class Handler : IQueryHandler<GetAllUsersQuery, List<Result>>
         {
             private readonly IDataService dataService;
+            private readonly IAuthenticatedUser authenticatedUser;
 
-            public Handler(IDataService dataService)
+
+            public Handler(IDataService dataService, IAuthenticatedUser authenticatedUser)
             {
                 this.dataService = dataService;
+                this.authenticatedUser = authenticatedUser;
             }
             public async Task<List<Result>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
             {
+                if (authenticatedUser.Role != UserRoles.Admin)
+                {
+                    throw new SecurityException();
+                }
                 return await dataService.Query<User>()
                     .Select(u => new Result
                     {

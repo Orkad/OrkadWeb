@@ -7,19 +7,19 @@ namespace OrkadWeb.Tests.Models
 {
     class TestUser : IAuthenticatedUser
     {
-        public TestUser(int id, string name, string email)
+        private readonly User user;
+
+        public TestUser(User user)
         {
-            Id = id;
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            Email = email ?? throw new ArgumentNullException(nameof(email));
+            this.user = user;
         }
 
-        public int Id { get; set; }
+        public int Id => user.Id;
 
-        public string Name { get; set; }
+        public string Name => user.Username;
 
-        public string Email { get; set; }
+        public string Email => user.Email;
 
-
+        public string Role => user.Role;
     }
 }
