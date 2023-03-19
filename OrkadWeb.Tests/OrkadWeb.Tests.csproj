@@ -12,10 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<SpecFlowObsoleteCodeBehindFiles Remove="Features\inscription - Copier.feature.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Include="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -37,12 +33,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\OrkadWeb.Angular\OrkadWeb.Angular.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Features\inscription.feature.cs">
-			<DependentUpon>Inscription.feature</DependentUpon>
-		</Compile>
 	</ItemGroup>
 
 </Project>

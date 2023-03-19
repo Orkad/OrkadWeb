@@ -33,14 +33,16 @@
     <app-display label="Nom d'utilisateur">{{ user.name }}</app-display>
     <app-display label="Email"
       >{{ user.email }}
-      <mat-icon
-        *ngIf="!user.confirmed"
-        color="warn"
-        class="inline-icon"
-        matTooltip="l'adresse email n'est pas confirmée"
-        >warning</mat-icon
-      ></app-display
-    >
+      <button mat-icon-button class="inline-button" (click)="resend()">
+        <mat-icon
+          *ngIf="!user.confirmed"
+          color="warn"
+          class="inline-icon"
+          matTooltip="l'adresse email n'est pas confirmée"
+          >warning</mat-icon
+        >
+      </button>
+    </app-display>
     <app-display label="Rôle">{{ displayRole(user.role) }}</app-display>
   </mat-card-content>
 </mat-card>

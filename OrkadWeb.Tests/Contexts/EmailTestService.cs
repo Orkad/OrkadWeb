@@ -1,6 +1,8 @@
 ﻿using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Tests.Models;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace OrkadWeb.Tests.Contexts
 {
@@ -23,6 +25,19 @@ namespace OrkadWeb.Tests.Contexts
             };
             lastContext.Mention(email);
             SendedEmails.Add(email);
+        }
+
+        public Task SendAsync(string to, string subject, string html, CancellationToken cancellationToken = default)
+        {
+            var email = new SendedEmail
+            {
+                To = to,
+                Subject = subject,
+                Html = html,
+            };
+            lastContext.Mention(email);
+            SendedEmails.Add(email);
+            return Task.CompletedTask;
         }
     }
 }

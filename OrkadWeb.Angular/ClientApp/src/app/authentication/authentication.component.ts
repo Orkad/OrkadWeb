@@ -61,4 +61,6 @@ export class AuthenticationComponent implements OnInit {
         return '';
     }
   }
+
+  resend() {}
 }

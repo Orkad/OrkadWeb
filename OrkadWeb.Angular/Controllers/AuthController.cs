@@ -23,9 +23,15 @@ using OrkadWeb.Application.Users.Notifications;
 
 namespace OrkadWeb.Angular.Controllers
 {
-
     public class AuthController : ApiController
     {
+        private readonly IAuthenticatedUser authenticatedUser;
+
+        public AuthController(IAuthenticatedUser authenticatedUser)
+        {
+            this.authenticatedUser = authenticatedUser;
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<LoginCommand.Result> Login(LoginCommand command)
@@ -43,10 +49,6 @@ namespace OrkadWeb.Angular.Controllers
         public async Task Register(RegisterCommand command)
         {
             await Command(command);
-            await Publish(new UserRegisteredNotification
-            {
-                UserName = command.UserName,
-            });
         }
 
         [HttpPost]
@@ -54,6 +56,15 @@ namespace OrkadWeb.Angular.Controllers
         public async Task Confirm(EmailConfirmCommand command)
         {
             await Command(command);
+        }
+
+        [HttpPost]
+        public async Task ResendConfirm()
+        {
+            await Command(new SendEmailConfirmCommand
+            {
+                Username = authenticatedUser.Name
+            });
         }
     }
 }

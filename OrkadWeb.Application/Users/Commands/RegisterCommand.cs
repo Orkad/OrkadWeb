@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using OrkadWeb.Application.Common.Interfaces;
+using OrkadWeb.Application.Users.Notifications;
 using OrkadWeb.Domain.Common;
 using OrkadWeb.Domain.Consts;
 using OrkadWeb.Domain.Entities;
@@ -64,14 +65,12 @@ namespace OrkadWeb.Application.Users.Commands
         public class Handler : ICommandHandler<RegisterCommand>
         {
             private readonly IDataService dataService;
-            private readonly IEmailService emailService;
-            private readonly IJobRunner jobClient;
+            private readonly IPublisher publisher;
 
-            public Handler(IDataService dataService, IEmailService emailService, IJobRunner jobClient)
+            public Handler(IDataService dataService, IPublisher publisher)
             {
                 this.dataService = dataService;
-                this.emailService = emailService;
-                this.jobClient = jobClient;
+                this.publisher = publisher;
             }
             public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
@@ -82,15 +81,11 @@ namespace OrkadWeb.Application.Users.Commands
                     Password = Hash.Create(request.Password),
                     Creation = DateTime.Now,
                     Role = UserRoles.User,
-                });
-                var hash = Hash.Create(request.Email);
-                var message = $@"Hello {request.UserName},
-
-You just register using this email adress.
-Please follow the link to validate your email : 
-<a href=""http://orkad.fr/auth/confirm?email={request.Email}&hash={hash}"">confirm your email</a>
-";
-                jobClient.Run(() => emailService.Send(request.Email, "Confirm your email adress", message));
+                }, cancellationToken);
+                await publisher.Publish(new UserRegisteredNotification
+                {
+                    UserName = request.UserName,
+                }, cancellationToken);
                 return Unit.Value;
             }
         }
