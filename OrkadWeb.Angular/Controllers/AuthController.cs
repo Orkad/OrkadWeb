@@ -25,9 +25,9 @@ namespace OrkadWeb.Angular.Controllers
 {
     public class AuthController : ApiController
     {
-        private readonly IAuthenticatedUser authenticatedUser;
+        private readonly IAppUser authenticatedUser;
 
-        public AuthController(IAuthenticatedUser authenticatedUser)
+        public AuthController(IAppUser authenticatedUser)
         {
             this.authenticatedUser = authenticatedUser;
         }

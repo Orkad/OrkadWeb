@@ -43,22 +43,7 @@ services.ConfigureOptions<JwtConfig>();
 services.AddSingleton<IIdentityTokenGenerator, JwtTokenGenerator>();
 services.AddSession();
 services.AddHttpContextAccessor();
-services.AddScoped<IAuthenticatedUser>(ResolveAuthenticatedUser);
-AuthenticatedUser ResolveAuthenticatedUser(IServiceProvider serviceProvider)
-{
-    var user = serviceProvider.GetService<IHttpContextAccessor>().HttpContext.User;
-    if (user.Identity.IsAuthenticated)
-    {
-        return new AuthenticatedUser
-        {
-            Id = int.Parse(user.FindFirst(ClaimTypes.NameIdentifier).Value),
-            Name = user.FindFirst(ClaimTypes.Name).Value,
-            Email = user.FindFirst(ClaimTypes.Email).Value,
-            Role = user.FindFirst("role").Value,
-        };
-    }
-    return null;
-}
+services.AddScoped<IAppUser, HttpAppUser>();
 
 // APPLICATION + INFRASTRUCTURE
 services.AddApplicationServices();

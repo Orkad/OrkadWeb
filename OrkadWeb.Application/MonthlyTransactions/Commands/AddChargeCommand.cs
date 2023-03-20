@@ -26,9 +26,9 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
         public class Handler : ICommandHandler<AddChargeCommand, int>
         {
             private readonly IDataService dataService;
-            private readonly IAuthenticatedUser authenticatedUser;
+            private readonly IAppUser authenticatedUser;
 
-            public Handler(IDataService dataService, IAuthenticatedUser authenticatedUser)
+            public Handler(IDataService dataService, IAppUser authenticatedUser)
             {
                 this.dataService = dataService;
                 this.authenticatedUser = authenticatedUser;

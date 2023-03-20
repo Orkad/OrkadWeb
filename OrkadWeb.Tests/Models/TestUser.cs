@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OrkadWeb.Tests.Models
 {
-    class TestUser : IAuthenticatedUser
+    class TestUser : IAppUser
     {
         private readonly User user;
 

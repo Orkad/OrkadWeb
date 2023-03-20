@@ -20,9 +20,9 @@ namespace OrkadWeb.Application.MonthlyTransactions.Queries
         public class Handler : IQueryHandler<GetChargesQuery, IEnumerable<MonthlyChargeVM>>
         {
             private readonly IDataService dataService;
-            private readonly IAuthenticatedUser authenticatedUser;
+            private readonly IAppUser authenticatedUser;
 
-            public Handler(IDataService dataService, IAuthenticatedUser authenticatedUser)
+            public Handler(IDataService dataService, IAppUser authenticatedUser)
             {
                 this.dataService = dataService;
                 this.authenticatedUser = authenticatedUser;

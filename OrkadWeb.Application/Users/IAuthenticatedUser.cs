@@ -6,7 +6,7 @@ namespace OrkadWeb.Application.Users
     /// <summary>
     /// Représente un utilisateur connecté sur notre application
     /// </summary>
-    public interface IAuthenticatedUser
+    public interface IAppUser
     {
         /// <summary>
         /// L'identifiant unique de l'utilisateur
@@ -30,21 +30,21 @@ namespace OrkadWeb.Application.Users
     }
 
     /// <summary>
-    /// Defines extension method for <see cref="IAuthenticatedUser"/>
+    /// Defines extension method for <see cref="IAppUser"/>
     /// </summary>
     public static class IAuthenticatedUserExtensions
     {
         /// <summary>
         /// Check if the authenticated user owns the given entity.
         /// </summary>
-        public static bool Owns(this IAuthenticatedUser user, IOwnable ownable) => ownable.IsOwnedBy(user.Id);
+        public static bool Owns(this IAppUser user, IOwnable ownable) => ownable.IsOwnedBy(user.Id);
 
         /// <summary>
         /// Check if the authenticated user owns this given entity.
         /// Otherwise, throws <see cref="NotOwnedException"/>.
         /// </summary>
         /// <exception cref="NotOwnedException"></exception>
-        public static void MustOwns(this IAuthenticatedUser user, IOwnable ownable)
+        public static void MustOwns(this IAppUser user, IOwnable ownable)
         {
             if (!user.Owns(ownable))
             {

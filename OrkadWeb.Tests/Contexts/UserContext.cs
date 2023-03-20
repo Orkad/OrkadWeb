@@ -11,6 +11,6 @@ namespace OrkadWeb.Tests.Contexts
     [Binding]
     public class UserContext
     {
-        public IAuthenticatedUser? AuthenticatedUser { get; set; }
+        public IAppUser? AuthenticatedUser { get; set; }
     }
 }

@@ -29,9 +29,9 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
         public class Handler : ICommandHandler<EditIncomeCommand>
         {
             private IDataService dataService;
-            private IAuthenticatedUser authenticatedUser;
+            private IAppUser authenticatedUser;
 
-            public Handler(IDataService dataService, IAuthenticatedUser authenticatedUser)
+            public Handler(IDataService dataService, IAppUser authenticatedUser)
             {
                 this.dataService = dataService;
                 this.authenticatedUser = authenticatedUser;

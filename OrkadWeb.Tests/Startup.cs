@@ -36,7 +36,7 @@ namespace OrkadWeb.Tests
             var timeContext = new TimeContext();
             services.AddSingleton(timeContext);
             services.AddSingleton<ITimeProvider>(timeContext);
-            services.AddScoped<IAuthenticatedUser>(sp => sp.GetRequiredService<UserContext>().AuthenticatedUser);
+            services.AddScoped<IAppUser>(sp => sp.GetRequiredService<UserContext>().AuthenticatedUser);
             return services;
         }
 
