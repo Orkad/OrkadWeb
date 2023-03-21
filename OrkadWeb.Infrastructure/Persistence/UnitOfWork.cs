@@ -24,15 +24,19 @@ namespace OrkadWeb.Infrastructure.Persistence
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
-            await session.FlushAsync(cancellationToken);
             if (transaction != null)
             {
                 await transaction.CommitAsync(cancellationToken);
+            }
+            else
+            {
+                await session.FlushAsync(cancellationToken);
             }
         }
 
         public async Task CancelChangesAsync(CancellationToken cancellationToken)
         {
+            session.Clear();
             if (transaction != null)
             {
                 await transaction.RollbackAsync(cancellationToken);
