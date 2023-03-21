@@ -29,10 +29,10 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
 
         public class Handler : ICommandHandler<EditChargeCommand>
         {
-            private IDataService dataService;
+            private IRepository dataService;
             private IAppUser authenticatedUser;
 
-            public Handler(IDataService dataService, IAppUser authenticatedUser)
+            public Handler(IRepository dataService, IAppUser authenticatedUser)
             {
                 this.dataService = dataService;
                 this.authenticatedUser = authenticatedUser;

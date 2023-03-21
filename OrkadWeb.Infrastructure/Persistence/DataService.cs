@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Infrastructure.Persistence
 {
-    /// <inheritdoc cref="IDataService"/>
-    internal class DataService : IDisposable, IDataService
+    /// <inheritdoc cref="IRepository"/>
+    internal class NHibernateRepository : IDisposable, IRepository
     {
         private readonly ISession session;
 
-        public DataService(ISession session)
+        public NHibernateRepository(ISession session)
         {
             this.session = session;
         }

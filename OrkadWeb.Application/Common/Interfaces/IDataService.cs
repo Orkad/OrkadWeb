@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace OrkadWeb.Application.Common.Interfaces
 {
     /// <summary>
     /// Service for manipulating persistent database data
     /// </summary>
-    public interface IDataService
+    public interface IRepository
     {
         /// <summary>
         /// Get one entity based on id.
@@ -65,26 +61,26 @@ namespace OrkadWeb.Application.Common.Interfaces
     }
 
     /// <summary>
-    /// Défini des méthodes d'extension pour un <see cref="IDataService"/>
+    /// Défini des méthodes d'extension pour un <see cref="IRepository"/>
     /// </summary>
     public static class IDataServiceExtensions
     {
         /// <summary>
         /// Détermine si au moins une entité correspond à la condition passée en paramètre
         /// </summary>
-        public static bool Exists<T>(this IDataService dataService, Expression<Func<T, bool>> condition)
+        public static bool Exists<T>(this IRepository dataService, Expression<Func<T, bool>> condition)
             => dataService.Query<T>().Any(condition);
 
         /// <summary>
         /// Détermine si aucune entité ne correspond à la condition passée en paramètre
         /// </summary>
-        public static bool NotExists<T>(this IDataService dataService, Expression<Func<T, bool>> condition)
+        public static bool NotExists<T>(this IRepository dataService, Expression<Func<T, bool>> condition)
             => !dataService.Exists(condition);
 
         /// <summary>
         /// Delete an entity without retrieving it before
         /// </summary>
-        public static void DeleteById<T>(this IDataService dataService, object id)
+        public static void DeleteById<T>(this IRepository dataService, object id)
             => dataService.Delete(dataService.Load<T>(id));
     }
 }

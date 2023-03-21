@@ -31,10 +31,10 @@ namespace OrkadWeb.Application.Users.Commands
 
         public class Handler : ICommandHandler<LoginCommand, Result>
         {
-            private readonly IDataService dataService;
+            private readonly IRepository dataService;
             private readonly IIdentityTokenGenerator identityTokenGenerator;
 
-            public Handler(IDataService dataService, IIdentityTokenGenerator identityTokenGenerator)
+            public Handler(IRepository dataService, IIdentityTokenGenerator identityTokenGenerator)
             {
                 this.dataService = dataService;
                 this.identityTokenGenerator = identityTokenGenerator;

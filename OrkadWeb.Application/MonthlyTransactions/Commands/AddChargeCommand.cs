@@ -25,10 +25,10 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
 
         public class Handler : ICommandHandler<AddChargeCommand, int>
         {
-            private readonly IDataService dataService;
+            private readonly IRepository dataService;
             private readonly IAppUser authenticatedUser;
 
-            public Handler(IDataService dataService, IAppUser authenticatedUser)
+            public Handler(IRepository dataService, IAppUser authenticatedUser)
             {
                 this.dataService = dataService;
                 this.authenticatedUser = authenticatedUser;
@@ -41,7 +41,7 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
                     Amount = -command.Amount, //negative
                     Owner = dataService.Load<User>(authenticatedUser.Id),
                 };
-                await dataService.InsertAsync(monthlyTransaction);
+                await dataService.InsertAsync(monthlyTransaction, cancellationToken);
                 return monthlyTransaction.Id;
             }
         }

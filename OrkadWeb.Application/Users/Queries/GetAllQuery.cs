@@ -28,11 +28,11 @@ namespace OrkadWeb.Application.Users.Queries
 
         internal class Handler : IQueryHandler<GetAllUsersQuery, List<Result>>
         {
-            private readonly IDataService dataService;
+            private readonly IRepository dataService;
             private readonly IAppUser authenticatedUser;
 
 
-            public Handler(IDataService dataService, IAppUser authenticatedUser)
+            public Handler(IRepository dataService, IAppUser authenticatedUser)
             {
                 this.dataService = dataService;
                 this.authenticatedUser = authenticatedUser;

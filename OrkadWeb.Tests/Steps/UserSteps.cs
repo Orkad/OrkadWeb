@@ -28,14 +28,14 @@ namespace OrkadWeb.Tests.Steps
     public class UserSteps
     {
         private static readonly Regex URL_REGEX = new(@"(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])");
-        private readonly IDataService service;
+        private readonly IRepository service;
         private readonly LastContext lastContext;
         private readonly IEmailService emailService;
         private readonly IMediator mediator;
         private readonly ITimeProvider timeProvider;
         private readonly UserContext userContext;
 
-        public UserSteps(IDataService service, LastContext lastContext, IEmailService emailService,
+        public UserSteps(IRepository service, LastContext lastContext, IEmailService emailService,
             IMediator mediator, ITimeProvider timeProvider, UserContext userContext)
         {
             this.service = service;

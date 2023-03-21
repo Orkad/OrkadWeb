@@ -7,9 +7,9 @@ namespace OrkadWeb.Application.Common.Behaviors
 {
     public sealed class UnitOfWorkBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : class, IRequest<TResponse>
     {
-        private readonly IDataService dataService;
+        private readonly IRepository dataService;
 
-        public UnitOfWorkBehavior(IDataService dataService)
+        public UnitOfWorkBehavior(IRepository dataService)
         {
             this.dataService = dataService;
         }
