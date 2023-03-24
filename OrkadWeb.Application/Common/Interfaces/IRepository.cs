@@ -53,11 +53,6 @@ namespace OrkadWeb.Application.Common.Interfaces
         void Delete<T>(T data);
         /// <inheritdoc cref="Delete{T}(T)"/>
         Task DeleteAsync<T>(T data, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Begin a unit of work
-        /// </summary>
-        IUnitOfWork BeginUnitOfWork();
     }
 
     /// <summary>

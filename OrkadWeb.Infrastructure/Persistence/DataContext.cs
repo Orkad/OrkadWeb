@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Infrastructure.Persistence
 {
-    internal class UnitOfWork : IUnitOfWork
+    internal class DataContext : IDataContext
     {
         private readonly ITransaction transaction;
-        private readonly ISession session;
 
-        public UnitOfWork(ISession session)
+        public DataContext(ISession session, IRepository repository)
         {
             var currentTransaction = session.GetCurrentTransaction();
             // in case of nested context, only the last one can commit
@@ -18,28 +17,16 @@ namespace OrkadWeb.Infrastructure.Persistence
             {
                 transaction = session.BeginTransaction();
             }
-
-            this.session = session;
+            Repository = repository;
         }
 
-        public async Task SaveChangesAsync(CancellationToken cancellationToken)
+        public IRepository Repository { get; }
+
+        public async Task Commit(CancellationToken cancellationToken)
         {
             if (transaction != null)
             {
                 await transaction.CommitAsync(cancellationToken);
-            }
-            else
-            {
-                await session.FlushAsync(cancellationToken);
-            }
-        }
-
-        public async Task CancelChangesAsync(CancellationToken cancellationToken)
-        {
-            session.Clear();
-            if (transaction != null)
-            {
-                await transaction.RollbackAsync(cancellationToken);
             }
         }
 

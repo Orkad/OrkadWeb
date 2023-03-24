@@ -61,7 +61,5 @@ namespace OrkadWeb.Infrastructure.Persistence
 
         /// <inheritdoc/>
         public void Dispose() => session.Dispose();
-
-        public IUnitOfWork BeginUnitOfWork() => new UnitOfWork(session);
     }
 }

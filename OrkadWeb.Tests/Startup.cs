@@ -56,7 +56,7 @@ namespace OrkadWeb.Tests
                 .AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenSession())
                 .AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenStatelessSession())
                 .AddScoped<IRepository, NHibernateRepository>()
-                .AddScoped<IUnitOfWork, UnitOfWork>();
+                .AddScoped<IDataContext, DataContext>();
             services.AddScoped<IJobRunner>((sp) => sp.GetRequiredService<JobRunnerContext>());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionCatchPipeline<,>));
 

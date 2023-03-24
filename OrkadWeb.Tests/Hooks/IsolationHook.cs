@@ -8,16 +8,22 @@ namespace OrkadWeb.Tests.Hooks
     [Binding]
     public class IsolationHook
     {
+        private ITransaction? transaction;
+
         [BeforeScenario]
         public void BeforeScenario(ISession session)
         {
-            session.BeginTransaction();
+            transaction = session.BeginTransaction();
         }
 
         [AfterScenario]
-        public async Task AfterScenario(ISession session, IUnitOfWork unitOfWork)
+        public async Task AfterScenario()
         {
-            await unitOfWork.CancelChangesAsync(default);
+            if (transaction == null)
+            {
+                return;
+            }
+            await transaction.RollbackAsync();
         }
     }
 }
