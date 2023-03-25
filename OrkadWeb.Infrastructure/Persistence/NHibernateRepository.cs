@@ -73,22 +73,23 @@ namespace OrkadWeb.Infrastructure.Persistence
         public async Task TransactAsync(Func<Task> asyncOperation, CancellationToken cancellationToken = default)
         {
             var currentTransaction = session.GetCurrentTransaction();
-            if (currentTransaction == null || !currentTransaction.IsActive || !currentTransaction.WasCommitted || !currentTransaction.WasRolledBack)
+            if (currentTransaction != null && currentTransaction.IsActive)
             {
-                using var tx = session.BeginTransaction();
-                try
-                {
-                    await asyncOperation();
-                    await tx.CommitAsync(cancellationToken);
-                }
-                catch
-                {
-                    await tx.RollbackAsync(cancellationToken);
-                    session.Clear();
-                    throw;
-                }
+                await asyncOperation();
+                return;
             }
-            await asyncOperation();
+            using var tx = session.BeginTransaction();
+            try
+            {
+                await asyncOperation();
+                await tx.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await tx.RollbackAsync(cancellationToken);
+                session.Clear();
+                throw;
+            }
         }
     }
 }

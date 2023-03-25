@@ -12,6 +12,8 @@ namespace OrkadWeb.Tests.UnitTests.Persistence
     [TestClass]
     public class NHibernateDataServiceTest
     {
+        private NHibernate.ISession session;
+
         private class TestEntity
         {
             public virtual int Id { get; init; }
@@ -27,19 +29,37 @@ namespace OrkadWeb.Tests.UnitTests.Persistence
             }
         }
 
-        [TestMethod]
-        public async Task TransactTest()
+        [TestInitialize]
+        public void Init()
         {
             var configuration = Fluently.Configure()
                 .Database(SQLiteConfiguration.Standard.InMemory())
                 .Mappings(mapping => mapping.FluentMappings.Add<TestEntityMap>())
                 .BuildConfiguration();
             var sessionFactory = configuration.BuildSessionFactory();
-            var session = sessionFactory.OpenSession();
-            new SchemaExport(configuration)
-                .Execute(false, true, false, session.Connection, null);
+            session = sessionFactory.OpenSession();
+            new SchemaExport(configuration).Execute(false, true, false, session.Connection, null);
+        }
+
+        [TestMethod]
+        public async Task TransactTest()
+        {
             var service = new NHibernateDataService(session);
-            try
+            await service.TransactAsync(async () =>
+            {
+                await service.InsertAsync(new TestEntity
+                {
+                    Name = "Test",
+                });
+                Check.That(service.Exists<TestEntity>(e => e.Name == "Test")).IsTrue();
+            });
+        }
+
+        [TestMethod]
+        public void TransactionFailTest()
+        {
+            var service = new NHibernateDataService(session);
+            Check.ThatCode(async () =>
             {
                 await service.TransactAsync(async () =>
                 {
@@ -47,19 +67,37 @@ namespace OrkadWeb.Tests.UnitTests.Persistence
                     {
                         Name = "Test",
                     });
-                    var entity = service.Get<TestEntity>(1);
-                    Check.That(entity.Name).IsEqualTo("Test");
-                    throw new System.Exception("FAIL");
+                    throw new System.Exception("Fail");
                 });
-            }
-            catch
-            {
+            }).ThrowsAny();
+            Check.That(service.Exists<TestEntity>(e => e.Name == "Test")).IsFalse();
+        }
 
-            }
+        [TestMethod]
+        public void NestedTransactionFailTest()
+        {
+            var service = new NHibernateDataService(session);
             Check.ThatCode(async () =>
             {
-                await service.GetAsync<TestEntity>(1);
-            }).Throws<DataNotFoundException<TestEntity>>();
+                await service.TransactAsync(async () =>
+                {
+                    await service.InsertAsync(new TestEntity
+                    {
+                        Name = "Test",
+                    });
+                    await service.TransactAsync(async () =>
+                    {
+                        await service.InsertAsync(new TestEntity
+                        {
+                            Name = "Test",
+                        });
+                    });
+
+                    throw new System.Exception("Fail");
+                });
+            }).ThrowsAny();
+            Check.That(service.Exists<TestEntity>(e => e.Name == "Test")).IsFalse();
+
         }
     }
 }
