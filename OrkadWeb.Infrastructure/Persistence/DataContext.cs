@@ -11,9 +11,9 @@ namespace OrkadWeb.Infrastructure.Persistence
         private ITransaction transaction;
         private readonly ISession session;
 
-        public IRepository Repository { get; }
+        public IDataService Repository { get; }
 
-        public DataContext(ISession session, IRepository repository)
+        public DataContext(ISession session, IDataService repository)
         {
             this.session = session;
             Repository = repository;

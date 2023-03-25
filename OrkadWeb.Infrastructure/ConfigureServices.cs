@@ -60,7 +60,7 @@ namespace OrkadWeb.Infrastructure
             .AddSingleton(sp => sp.GetService<Configuration>().BuildSessionFactory())
             .AddScoped(sp => sp.GetService<ISessionFactory>().OpenSession())
             .AddScoped(sp => sp.GetService<ISessionFactory>().OpenStatelessSession())
-            .AddScoped<IRepository, NHibernateRepository>()
+            .AddScoped<IDataService, NHibernateDataService>()
             .AddScoped<IDataContext, DataContext>()
             .AddSmtpEmailService(configuration)
             .AddScoped<IJobRunner, JobRunner>();

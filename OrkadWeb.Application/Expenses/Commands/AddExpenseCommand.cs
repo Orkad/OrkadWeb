@@ -58,10 +58,10 @@ namespace OrkadWeb.Application.Expenses.Commands
 
         public class Handler : ICommandHandler<AddExpenseCommand, Result>
         {
-            private readonly IRepository repository;
+            private readonly IDataService repository;
             private readonly IAppUser authenticatedUser;
 
-            public Handler(IRepository repository, IAppUser authenticatedUser)
+            public Handler(IDataService repository, IAppUser authenticatedUser)
             {
                 this.repository = repository;
                 this.authenticatedUser = authenticatedUser;

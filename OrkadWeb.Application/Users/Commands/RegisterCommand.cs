@@ -31,9 +31,9 @@ namespace OrkadWeb.Application.Users.Commands
 
         public class Validator : AbstractValidator<RegisterCommand>
         {
-            private readonly IRepository dataService;
+            private readonly IDataService dataService;
 
-            public Validator(IRepository dataService)
+            public Validator(IDataService dataService)
             {
                 this.dataService = dataService;
                 ClassLevelCascadeMode = CascadeMode.Stop;
@@ -64,10 +64,10 @@ namespace OrkadWeb.Application.Users.Commands
 
         public class Handler : ICommandHandler<RegisterCommand>
         {
-            private readonly IRepository dataService;
+            private readonly IDataService dataService;
             private readonly IPublisher publisher;
 
-            public Handler(IRepository dataService, IPublisher publisher)
+            public Handler(IDataService dataService, IPublisher publisher)
             {
                 this.dataService = dataService;
                 this.publisher = publisher;

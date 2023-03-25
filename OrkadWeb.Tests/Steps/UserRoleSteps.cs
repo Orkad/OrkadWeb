@@ -4,10 +4,10 @@ namespace OrkadWeb.Tests.Steps
     [Binding]
     public class UserRoleSteps
     {
-        private readonly IRepository dataService;
+        private readonly IDataService dataService;
         private readonly LastContext lastContext;
 
-        public UserRoleSteps(IRepository dataService, LastContext lastContext)
+        public UserRoleSteps(IDataService dataService, LastContext lastContext)
         {
             this.dataService = dataService;
             this.lastContext = lastContext;

@@ -21,10 +21,10 @@ namespace OrkadWeb.Application.MonthlyTransactions.Queries
     {
         public class Handler : IQueryHandler<GetIncomesQuery, IEnumerable<MonthlyIncomeVM>>
         {
-            private readonly IRepository dataService;
+            private readonly IDataService dataService;
             private readonly IAppUser authenticatedUser;
 
-            public Handler(IRepository dataService, IAppUser authenticatedUser)
+            public Handler(IDataService dataService, IAppUser authenticatedUser)
             {
                 this.dataService = dataService;
                 this.authenticatedUser = authenticatedUser;

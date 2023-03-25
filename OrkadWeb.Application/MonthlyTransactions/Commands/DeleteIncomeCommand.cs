@@ -16,10 +16,10 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
 
         public class Handler : ICommandHandler<DeleteIncomeCommand>
         {
-            private readonly IRepository dataService;
+            private readonly IDataService dataService;
             private readonly IAppUser authenticatedUser;
 
-            public Handler(IRepository dataService, IAppUser authenticatedUser)
+            public Handler(IDataService dataService, IAppUser authenticatedUser)
             {
                 this.dataService = dataService;
                 this.authenticatedUser = authenticatedUser;

@@ -14,10 +14,10 @@
 
         class Handler : ICommandHandler<EmailConfirmCommand>
         {
-            private readonly IRepository dataService;
+            private readonly IDataService dataService;
             private readonly ITimeProvider timeProvider;
 
-            public Handler(IRepository dataService, ITimeProvider timeProvider)
+            public Handler(IDataService dataService, ITimeProvider timeProvider)
             {
                 this.dataService = dataService;
                 this.timeProvider = timeProvider;

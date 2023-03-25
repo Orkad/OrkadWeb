@@ -14,10 +14,10 @@ public class SendEmailConfirmCommand : ICommand
 
     class Handler : ICommandHandler<SendEmailConfirmCommand>
     {
-        private readonly IRepository dataService;
+        private readonly IDataService dataService;
         private readonly IEmailService emailService;
 
-        public Handler(IRepository dataService, IEmailService emailService)
+        public Handler(IDataService dataService, IEmailService emailService)
         {
             this.dataService = dataService;
             this.emailService = emailService;
