@@ -26,7 +26,15 @@ namespace OrkadWeb.Infrastructure.Persistence
         public T Get<T>(object id) => session.Get<T>(id) ?? throw new DataNotFoundException<T>(id);
 
         /// <inheritdoc/>
-        public async Task<T> GetAsync<T>(object id, CancellationToken cancellationToken = default) => await session.GetAsync<T>(id, cancellationToken) ?? throw new DataNotFoundException<T>(id);
+        public async Task<T> GetAsync<T>(object id, CancellationToken cancellationToken = default)
+        {
+            var entity = await session.GetAsync<T>(id, cancellationToken);
+            if (entity == null)
+            {
+                throw new DataNotFoundException<T>(id);
+            }
+            return entity;
+        }
 
         /// <inheritdoc/>
         public T Load<T>(object id) => session.Load<T>(id);
@@ -76,6 +84,7 @@ namespace OrkadWeb.Infrastructure.Persistence
                 catch
                 {
                     await tx.RollbackAsync(cancellationToken);
+                    session.Clear();
                     throw;
                 }
             }
