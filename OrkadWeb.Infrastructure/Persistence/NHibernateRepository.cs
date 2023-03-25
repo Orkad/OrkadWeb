@@ -16,6 +16,7 @@ namespace OrkadWeb.Infrastructure.Persistence
     internal class NHibernateRepository : IDisposable, IRepository
     {
         private readonly ISession session;
+        private ITransaction transaction;
 
         public NHibernateRepository(ISession session)
         {
@@ -61,5 +62,25 @@ namespace OrkadWeb.Infrastructure.Persistence
 
         /// <inheritdoc/>
         public void Dispose() => session.Dispose();
+
+        public async Task TransactAsync(Func<Task> asyncOperation, CancellationToken cancellationToken = default)
+        {
+            var currentTransaction = session.GetCurrentTransaction();
+            if (currentTransaction == null || !currentTransaction.IsActive || !currentTransaction.WasCommitted || !currentTransaction.WasRolledBack)
+            {
+                using var tx = session.BeginTransaction();
+                try
+                {
+                    await asyncOperation();
+                    await tx.CommitAsync(cancellationToken);
+                }
+                catch
+                {
+                    await tx.RollbackAsync(cancellationToken);
+                    throw;
+                }
+            }
+            await asyncOperation();
+        }
     }
 }

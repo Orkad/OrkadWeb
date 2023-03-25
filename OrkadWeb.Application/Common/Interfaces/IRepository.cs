@@ -53,6 +53,12 @@ namespace OrkadWeb.Application.Common.Interfaces
         void Delete<T>(T data);
         /// <inheritdoc cref="Delete{T}(T)"/>
         Task DeleteAsync<T>(T data, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Execute the operation inside a transaction.
+        /// If an exception is thrown during the operation nothing is commit.
+        /// </summary>
+        Task TransactAsync(Func<Task> asyncOperation, CancellationToken cancellationToken = default);
     }
 
     /// <summary>

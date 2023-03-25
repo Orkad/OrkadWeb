@@ -1,26 +1,29 @@
 ﻿using NHibernate;
 using OrkadWeb.Application.Common.Interfaces;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrkadWeb.Infrastructure.Persistence
 {
-    internal class DataContext : IDataContext
+    internal class DataContext : IDataContext, IDisposable
     {
-        private readonly ITransaction transaction;
+        private ITransaction transaction;
+        private readonly ISession session;
+
+        public IRepository Repository { get; }
 
         public DataContext(ISession session, IRepository repository)
         {
-            var currentTransaction = session.GetCurrentTransaction();
-            // in case of nested context, only the last one can commit
-            if (currentTransaction?.IsActive != true)
-            {
-                transaction = session.BeginTransaction();
-            }
+            this.session = session;
             Repository = repository;
         }
 
-        public IRepository Repository { get; }
+        public Task BeginTransaction(CancellationToken cancellationToken)
+        {
+            transaction = session.BeginTransaction();
+            return Task.CompletedTask;
+        }
 
         public async Task Commit(CancellationToken cancellationToken)
         {

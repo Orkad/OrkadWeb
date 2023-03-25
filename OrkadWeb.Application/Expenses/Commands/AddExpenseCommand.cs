@@ -7,6 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using OrkadWeb.Domain.Common;
+using NHibernate;
 
 namespace OrkadWeb.Application.Expenses.Commands
 {
@@ -57,12 +58,12 @@ namespace OrkadWeb.Application.Expenses.Commands
 
         public class Handler : ICommandHandler<AddExpenseCommand, Result>
         {
-            private readonly IRepository dataService;
+            private readonly IRepository repository;
             private readonly IAppUser authenticatedUser;
 
-            public Handler(IRepository dataService, IAppUser authenticatedUser)
+            public Handler(IRepository repository, IAppUser authenticatedUser)
             {
-                this.dataService = dataService;
+                this.repository = repository;
                 this.authenticatedUser = authenticatedUser;
             }
 
@@ -73,9 +74,12 @@ namespace OrkadWeb.Application.Expenses.Commands
                     Amount = command.Amount,
                     Date = command.Date ?? DateTime.Now,
                     Name = command.Name,
-                    Owner = dataService.Load<User>(authenticatedUser.Id),
+                    Owner = repository.Load<User>(authenticatedUser.Id),
                 };
-                await dataService.InsertAsync(transaction);
+                await repository.TransactAsync(async () =>
+                {
+                    await repository.InsertAsync(transaction, cancellationToken);
+                }, cancellationToken);
                 return new Result
                 {
                     Id = transaction.Id,

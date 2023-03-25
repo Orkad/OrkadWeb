@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Application.Common.Interfaces
 {
-    public interface IDataContext : IDisposable
+    public interface IDataContext
     {
+        public Task BeginTransaction(CancellationToken cancellationToken);
         public Task Commit(CancellationToken cancellationToken);
     }
 }
