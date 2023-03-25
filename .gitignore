@@ -345,3 +345,4 @@ nh.cfg
 # custom exclusion
 *.feature.cs
 *.db
+.NCrunch*
