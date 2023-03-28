@@ -39,6 +39,7 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
 
             public async Task<Unit> Handle(EditIncomeCommand command, CancellationToken cancellationToken)
             {
+                using var context = dataService.Context();
                 var monthlyTransaction = await dataService.GetAsync<MonthlyTransaction>(command.Id, cancellationToken);
                 authenticatedUser.MustOwns(monthlyTransaction);
                 if (!monthlyTransaction.IsIncome())
@@ -47,7 +48,7 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
                 }
                 monthlyTransaction.Name = command.Name;
                 monthlyTransaction.Amount = command.Amount;
-                await dataService.UpdateAsync(monthlyTransaction, cancellationToken);
+                await context.SaveChanges(cancellationToken);
                 return Unit.Value;
             }
         }

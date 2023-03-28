@@ -56,12 +56,6 @@ namespace OrkadWeb.Infrastructure.Persistence
         public async Task InsertAsync<T>(T obj, CancellationToken cancellationToken = default) => await session.SaveAsync(obj, cancellationToken);
 
         /// <inheritdoc/>
-        public void Update<T>(T obj) => session.Update(obj);
-
-        /// <inheritdoc/>
-        public async Task UpdateAsync<T>(T obj, CancellationToken cancellationToken = default) => await session.UpdateAsync(obj, cancellationToken);
-
-        /// <inheritdoc/>
         public void Delete<T>(T obj) => session.Delete(obj);
 
         /// <inheritdoc/>

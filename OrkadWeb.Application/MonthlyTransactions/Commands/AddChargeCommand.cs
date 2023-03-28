@@ -1,13 +1,4 @@
-﻿using FluentValidation;
-using OrkadWeb.Domain;
-using OrkadWeb.Domain.Entities;
-using OrkadWeb.Application.Users;
-using System.Threading;
-using System.Threading.Tasks;
-using OrkadWeb.Application.Common.Interfaces;
-using OrkadWeb.Domain.Common;
-
-namespace OrkadWeb.Application.MonthlyTransactions.Commands
+﻿namespace OrkadWeb.Application.MonthlyTransactions.Commands
 {
     public class AddChargeCommand : ICommand<int>
     {
@@ -35,6 +26,7 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
             }
             public async Task<int> Handle(AddChargeCommand command, CancellationToken cancellationToken)
             {
+                using var context = dataService.Context();
                 var monthlyTransaction = new MonthlyTransaction
                 {
                     Name = command.Name,
@@ -42,6 +34,7 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
                     Owner = dataService.Load<User>(authenticatedUser.Id),
                 };
                 await dataService.InsertAsync(monthlyTransaction, cancellationToken);
+                await context.SaveChanges(cancellationToken);
                 return monthlyTransaction.Id;
             }
         }

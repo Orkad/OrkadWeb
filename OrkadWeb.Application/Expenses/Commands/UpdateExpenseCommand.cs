@@ -30,12 +30,13 @@ namespace OrkadWeb.Application.Expenses.Commands
 
             public async Task<Unit> Handle(UpdateExpenseCommand request, CancellationToken cancellationToken)
             {
-                var transaction = await dataService.GetAsync<Transaction>(request.Id);
+                using var context = dataService.Context();
+                var transaction = await dataService.GetAsync<Transaction>(request.Id, cancellationToken);
                 authenticatedUser.MustOwns(transaction);
                 transaction.Date = request.Date;
                 transaction.Name = request.Name;
                 transaction.Amount = request.Amount;
-                await dataService.UpdateAsync(transaction);
+                await context.SaveChanges(cancellationToken);
                 return Unit.Value;
             }
         }

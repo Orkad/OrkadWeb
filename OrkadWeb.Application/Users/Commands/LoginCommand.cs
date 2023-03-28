@@ -42,9 +42,7 @@ namespace OrkadWeb.Application.Users.Commands
 
             public async Task<Result> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
-                var user = await dataService.Query<User>()
-                    .Where(u => u.Username == request.Username || u.Email == request.Username)
-                    .SingleOrDefaultAsync(cancellationToken);
+                var user = await dataService.FindAsync<User>(u => u.Username == request.Username || u.Email == request.Username, cancellationToken);
                 if (user == null || !Hash.Validate(request.Password, user.Password))
                 {
                     return new Result

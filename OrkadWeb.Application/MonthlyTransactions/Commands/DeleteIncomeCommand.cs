@@ -27,13 +27,15 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
 
             public async Task<Unit> Handle(DeleteIncomeCommand command, CancellationToken cancellationToken)
             {
-                var transaction = await dataService.GetAsync<MonthlyTransaction>(command.Id);
+                using var context = dataService.Context();
+                var transaction = await dataService.GetAsync<MonthlyTransaction>(command.Id, cancellationToken);
                 authenticatedUser.MustOwns(transaction);
                 if (!transaction.IsIncome())
                 {
                     throw new InvalidDataException();
                 }
-                await dataService.DeleteAsync(transaction);
+                await dataService.DeleteAsync(transaction, cancellationToken);
+                await context.SaveChanges(cancellationToken);
                 return Unit.Value;
             }
         }

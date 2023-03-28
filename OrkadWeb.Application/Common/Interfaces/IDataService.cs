@@ -41,13 +41,6 @@ namespace OrkadWeb.Application.Common.Interfaces
         Task InsertAsync<T>(T data, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Update a existing entity.
-        /// </summary>
-        void Update<T>(T data);
-        /// <inheritdoc cref="Insert{T}(T)"/>
-        Task UpdateAsync<T>(T data, CancellationToken cancellationToken = default);
-
-        /// <summary>
         /// Delete a existing entity.
         /// </summary>
         void Delete<T>(T data);

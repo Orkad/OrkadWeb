@@ -115,7 +115,6 @@ Please follow the link to validate your email :
             var user = lastContext.Last<User>();
             user.Email = email;
             user.Confirmation = timeProvider.Now;
-            service.Update(user);
         }
 
 

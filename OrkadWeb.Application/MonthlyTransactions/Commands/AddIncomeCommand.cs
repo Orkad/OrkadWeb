@@ -33,13 +33,15 @@ namespace OrkadWeb.Application.MonthlyTransactions.Commands
             }
             public async Task<int> Handle(AddIncomeCommand command, CancellationToken cancellationToken)
             {
+                using var context = dataService.Context();
                 var monthlyTransaction = new MonthlyTransaction
                 {
                     Name = command.Name,
                     Amount = command.Amount,
                     Owner = dataService.Load<User>(authenticatedUser.Id),
                 };
-                await dataService.InsertAsync(monthlyTransaction);
+                await dataService.InsertAsync(monthlyTransaction, cancellationToken);
+                await context.SaveChanges(cancellationToken);
                 return monthlyTransaction.Id;
             }
         }
