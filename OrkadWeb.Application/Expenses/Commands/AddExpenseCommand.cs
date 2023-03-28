@@ -69,6 +69,7 @@ namespace OrkadWeb.Application.Expenses.Commands
 
             public async Task<Result> Handle(AddExpenseCommand command, CancellationToken cancellationToken)
             {
+                using var context = dataService.Context();
                 var transaction = new Transaction
                 {
                     Amount = command.Amount,
@@ -76,7 +77,6 @@ namespace OrkadWeb.Application.Expenses.Commands
                     Name = command.Name,
                     Owner = dataService.Load<User>(authenticatedUser.Id),
                 };
-                using var context = dataService.Context();
                 await dataService.InsertAsync(transaction, cancellationToken);
                 await context.SaveChanges(cancellationToken);
                 return new Result
