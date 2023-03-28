@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace OrkadWeb.Infrastructure.Persistence
 {
     /// <inheritdoc cref="IDataService"/>
-    internal class NHibernateDataService : IDisposable, IDataService
+    internal class NHibernateDataService : IDataService
     {
         private readonly ISession session;
 
@@ -67,9 +67,6 @@ namespace OrkadWeb.Infrastructure.Persistence
         /// <inheritdoc/>
         public async Task DeleteAsync<T>(T obj, CancellationToken cancellationToken = default) => await session.DeleteAsync(obj, cancellationToken);
 
-        /// <inheritdoc/>
-        public void Dispose() => session.Dispose();
-
         public async Task TransactAsync(Func<Task> asyncOperation, CancellationToken cancellationToken = default)
         {
             var currentTransaction = session.GetCurrentTransaction();
@@ -90,6 +87,19 @@ namespace OrkadWeb.Infrastructure.Persistence
                 session.Clear();
                 throw;
             }
+        }
+
+        /// <inheritdoc/>
+
+        public IDataContext Context()
+        {
+            // if there is any current transaction
+            // data context will commit nothing
+            if (session.GetCurrentTransaction() != null)
+            {
+                return new DataContext(null);
+            }
+            return new DataContext(session.BeginTransaction());
         }
     }
 }

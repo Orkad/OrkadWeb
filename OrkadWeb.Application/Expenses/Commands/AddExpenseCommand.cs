@@ -58,12 +58,12 @@ namespace OrkadWeb.Application.Expenses.Commands
 
         public class Handler : ICommandHandler<AddExpenseCommand, Result>
         {
-            private readonly IDataService repository;
+            private readonly IDataService dataService;
             private readonly IAppUser authenticatedUser;
 
             public Handler(IDataService repository, IAppUser authenticatedUser)
             {
-                this.repository = repository;
+                this.dataService = repository;
                 this.authenticatedUser = authenticatedUser;
             }
 
@@ -74,12 +74,11 @@ namespace OrkadWeb.Application.Expenses.Commands
                     Amount = command.Amount,
                     Date = command.Date ?? DateTime.Now,
                     Name = command.Name,
-                    Owner = repository.Load<User>(authenticatedUser.Id),
+                    Owner = dataService.Load<User>(authenticatedUser.Id),
                 };
-                await repository.TransactAsync(async () =>
-                {
-                    await repository.InsertAsync(transaction, cancellationToken);
-                }, cancellationToken);
+                using var context = dataService.Context();
+                await dataService.InsertAsync(transaction, cancellationToken);
+                await context.SaveChanges(cancellationToken);
                 return new Result
                 {
                     Id = transaction.Id,

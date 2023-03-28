@@ -1,36 +1,26 @@
 ﻿using NHibernate;
 using OrkadWeb.Application.Common.Interfaces;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrkadWeb.Infrastructure.Persistence
 {
-    internal class DataContext : IDataContext, IDisposable
+    internal class DataContext : IDataContext
     {
-        private ITransaction transaction;
-        private readonly ISession session;
+        private readonly ITransaction transaction;
 
-        public IDataService Repository { get; }
-
-        public DataContext(ISession session, IDataService repository)
+        public DataContext(ITransaction transaction)
         {
-            this.session = session;
-            Repository = repository;
+            this.transaction = transaction;
         }
 
-        public Task BeginTransaction(CancellationToken cancellationToken)
-        {
-            transaction = session.BeginTransaction();
-            return Task.CompletedTask;
-        }
-
-        public async Task Commit(CancellationToken cancellationToken)
+        public async Task SaveChanges(CancellationToken cancellationToken)
         {
             if (transaction != null)
             {
                 await transaction.CommitAsync(cancellationToken);
             }
+
         }
 
         public void Dispose()

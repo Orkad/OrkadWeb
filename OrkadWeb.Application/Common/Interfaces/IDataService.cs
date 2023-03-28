@@ -59,6 +59,13 @@ namespace OrkadWeb.Application.Common.Interfaces
         /// If an exception is thrown during the operation nothing is commit.
         /// </summary>
         Task TransactAsync(Func<Task> asyncOperation, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get a new transactionnal data context.
+        /// Remember to always use <see cref="IDataContext"/> with using.
+        /// If you change something in the context don't forget to call <see cref="IDataContext.SaveChanges(CancellationToken)"/>
+        /// </summary>
+        IDataContext Context();
     }
 
     /// <summary>

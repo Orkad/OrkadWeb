@@ -17,12 +17,11 @@
 
             public async Task<Unit> Handle(DeleteExpenseCommand request, CancellationToken cancellationToken)
             {
-                await dataService.TransactAsync(async () =>
-                {
-                    var transaction = await dataService.GetAsync<Transaction>(request.Id);
-                    authenticatedUser.MustOwns(transaction);
-                    await dataService.DeleteAsync(transaction);
-                }, cancellationToken);
+                using var context = dataService.Context();
+                var transaction = await dataService.GetAsync<Transaction>(request.Id, cancellationToken);
+                authenticatedUser.MustOwns(transaction);
+                await dataService.DeleteAsync(transaction, cancellationToken);
+                await context.SaveChanges(cancellationToken);
                 return Unit.Value;
             }
         }
