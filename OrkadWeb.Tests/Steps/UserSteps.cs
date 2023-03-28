@@ -60,13 +60,18 @@ namespace OrkadWeb.Tests.Steps
             lastContext.Mention(user);
         }
 
+        [Given(@"l'utilisateur a été supprimé")]
+        public void GivenDeletedUser()
+        {
+            var user = lastContext.Last<User>();
+            service.Delete(user);
+        }
 
         [Given(@"son adresse email est (.*)")]
         public void GivenSonAdresseEmailEst(string email)
         {
             var user = lastContext.Last<User>();
             user.Email = email;
-            service.Update(user);
         }
 
         [Given(@"je suis connecté en tant que (.*)")]

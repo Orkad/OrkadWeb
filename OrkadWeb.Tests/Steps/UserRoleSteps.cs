@@ -18,7 +18,6 @@ namespace OrkadWeb.Tests.Steps
         {
             var user = lastContext.Last<User>();
             user.Role = UserRoles.Admin;
-            dataService.Update(user);
         }
     }
 }

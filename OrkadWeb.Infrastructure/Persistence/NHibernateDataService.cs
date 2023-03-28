@@ -47,7 +47,7 @@ namespace OrkadWeb.Infrastructure.Persistence
 
         /// <inheritdoc/>
         public async Task<T> FindAsync<T>(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
-            => await session.Query<T>().SingleOrDefaultAsync(predicate, cancellationToken);
+            => await Query<T>().SingleOrDefaultAsync(predicate, cancellationToken);
 
         /// <inheritdoc/>
         public void Insert<T>(T obj) => session.Save(obj);

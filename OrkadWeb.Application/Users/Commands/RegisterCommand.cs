@@ -74,16 +74,18 @@ namespace OrkadWeb.Application.Users.Commands
             }
             public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
-                using var context = dataService.Context();
-                await dataService.InsertAsync(new User
+                using (var context = dataService.Context())
                 {
-                    Email = request.Email,
-                    Username = request.UserName,
-                    Password = Hash.Create(request.Password),
-                    Creation = DateTime.Now,
-                    Role = UserRoles.User,
-                }, cancellationToken);
-                await context.SaveChanges(cancellationToken);
+                    await dataService.InsertAsync(new User
+                    {
+                        Email = request.Email,
+                        Username = request.UserName,
+                        Password = Hash.Create(request.Password),
+                        Creation = DateTime.Now,
+                        Role = UserRoles.User,
+                    }, cancellationToken);
+                    await context.SaveChanges(cancellationToken);
+                }
                 await publisher.Publish(new UserRegisteredNotification
                 {
                     UserName = request.UserName,

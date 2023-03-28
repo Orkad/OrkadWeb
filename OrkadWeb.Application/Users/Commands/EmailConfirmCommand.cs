@@ -25,20 +25,24 @@
 
             public async Task<Unit> Handle(EmailConfirmCommand command, CancellationToken cancellationToken)
             {
-                var user = await dataService.FindAsync<User>(u => u.Email == command.Email, cancellationToken);
-                if (user == null)
+                using (var context = dataService.Context())
                 {
-                    throw new EmailConfirmationException("user was not found");
+                    var user = await dataService.FindAsync<User>(u => u.Email == command.Email, cancellationToken);
+                    if (user == null)
+                    {
+                        throw new EmailConfirmationException("user was not found");
+                    }
+                    if (user.Confirmation != null)
+                    {
+                        throw new EmailConfirmationException("user already confirmed email");
+                    }
+                    if (!Domain.Utils.Hash.Validate(user.Email, command.Hash))
+                    {
+                        throw new EmailConfirmationException("wrong confirmation hash");
+                    }
+                    user.Confirmation = timeProvider.Now;
+                    await context.SaveChanges(cancellationToken);
                 }
-                if (user.Confirmation != null)
-                {
-                    throw new EmailConfirmationException("user already confirmed email");
-                }
-                if (!Domain.Utils.Hash.Validate(user.Email, command.Hash))
-                {
-                    throw new EmailConfirmationException("wrong confirmation hash");
-                }
-                user.Confirmation = timeProvider.Now;
                 return Unit.Value;
             }
         }

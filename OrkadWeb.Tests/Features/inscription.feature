@@ -56,5 +56,10 @@ Scénario: email dejà confirmé
 	Quand j'utilise le lien de confirmation dans l'email envoyé
 	Alors il y a une erreur
 
-
-
+Scénario: utilisateur supprimé
+	Etant donné que l'utilisateur Orkad existe
+	Et que son adresse email est orkad@orkad.fr
+	Et que l'email de confirmation a déjà été envoyé
+	Et que l'utilisateur a été supprimé
+	Quand j'utilise le lien de confirmation dans l'email envoyé
+	Alors il y a une erreur
