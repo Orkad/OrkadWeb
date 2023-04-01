@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using OrkadWeb.Angular.Controllers;
 using TechTalk.SpecFlow;
 
 namespace OrkadWeb.Tests.Steps
@@ -13,23 +15,22 @@ namespace OrkadWeb.Tests.Steps
     [Binding]
     public class LoginSteps
     {
-        private readonly IMediator mediator;
+        private readonly AuthController authController;
         private LoginCommand.Result response;
 
-        public LoginSteps(IMediator mediator)
+        public LoginSteps(AuthController authController)
         {
-            this.mediator = mediator;
+            this.authController = authController;
         }
 
         [When(@"je me connecte avec la combinaison (.*) / (.*)")]
         public async Task WhenJeMeConnecteAvecLaCombinaisonTestOkpassword(string username, string password)
         {
-            var command = new LoginCommand
+            response = await authController.Login(new LoginCommand
             {
                 Username = username,
                 Password = password
-            };
-            response = await mediator.Send(command);
+            }, CancellationToken.None);
         }
 
         [Then(@"la connexion a réussie")]

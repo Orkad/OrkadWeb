@@ -1,35 +1,54 @@
-﻿using MediatR;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OrkadWeb.Angular.Controllers.Core;
 using OrkadWeb.Application.Expenses.Commands;
 using OrkadWeb.Application.Expenses.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace OrkadWeb.Angular.Controllers
+namespace OrkadWeb.Angular.Controllers;
+
+[ApiController]
+[Authorize]
+[Route("api/expense/[action]")]
+public class ExpenseController : ControllerBase
 {
-    public class ExpenseController : ApiController
+    private readonly ISender sender;
+
+    public ExpenseController(ISender sender)
     {
-        public ExpenseController(IApiControllerDependencies deps) : base(deps)
-        {
-        }
+        this.sender = sender;
+    }
 
-        [HttpGet]
-        public async Task<GetExpensesQuery.Result> GetAll() => await Query(new GetExpensesQuery());
+    [HttpGet]
+    public async Task<GetExpensesQuery.Result> GetAll(CancellationToken cancellationToken)
+    {
+        return await sender.Send(new GetExpensesQuery(), cancellationToken);
+    }
 
-        [HttpGet]
-        public async Task<GetMonthlyExpensesQuery.Result> GetMonthly([FromQuery] DateTime month) => await Query(new GetMonthlyExpensesQuery() { Month = month });
+    [HttpGet]
+    public async Task<GetMonthlyExpensesQuery.Result> GetMonthly([FromQuery] DateTime month,
+        CancellationToken cancellationToken)
+    {
+        return await sender.Send(new GetMonthlyExpensesQuery { Month = month }, cancellationToken);
+    }
 
-        [HttpPost]
-        public async Task<AddExpenseCommand.Result> Add(AddExpenseCommand command) => await Command(command);
+    [HttpPost]
+    public async Task<AddExpenseCommand.Result> Add(AddExpenseCommand command, CancellationToken cancellationToken)
+    {
+        return await sender.Send(command, cancellationToken);
+    }
 
-        [HttpPost]
-        public async Task Update(UpdateExpenseCommand command) => await Command(command);
+    [HttpPost]
+    public async Task Update(UpdateExpenseCommand command, CancellationToken cancellationToken)
+    {
+        await sender.Send(command, cancellationToken);
+    }
 
-        [HttpPost]
-        public async Task Delete([FromBody] int id) => await Command(new DeleteExpenseCommand { Id = id });
+    [HttpPost]
+    public async Task Delete([FromBody] int id, CancellationToken cancellationToken)
+    {
+        await sender.Send(new DeleteExpenseCommand { Id = id }, cancellationToken);
     }
 }

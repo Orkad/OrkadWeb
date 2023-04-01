@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Cfg;
 using OrkadWeb.Angular.Config;
+using OrkadWeb.Angular.Controllers;
 using OrkadWeb.Application;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Application.Users;
@@ -36,6 +37,7 @@ namespace OrkadWeb.Tests
             var timeContext = new TimeContext();
             services.AddSingleton(timeContext);
             services.AddSingleton<ITimeProvider>(timeContext);
+            services.AddScoped<AuthController>();
             services.AddScoped<IAppUser>(sp => sp.GetRequiredService<UserContext>().AuthenticatedUser);
             return services;
         }

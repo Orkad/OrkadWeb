@@ -21,6 +21,7 @@ using System.Web;
 using OrkadWeb.Domain.Utils;
 using OrkadWeb.Domain.Consts;
 using MediatR;
+using OrkadWeb.Angular.Controllers;
 
 namespace OrkadWeb.Tests.Steps
 {
@@ -77,7 +78,7 @@ namespace OrkadWeb.Tests.Steps
         [Given(@"je suis connecté en tant que (.*)")]
         public void GivenJeSuisConnecteEnTantQue(string name)
         {
-            var user = service.Query<User>().Where(u => u.Username == name).Single();
+            var user = service.Find<User>(u => u.Username == name);
             lastContext.Mention(user);
             userContext.AuthenticatedUser = new TestUser(user);
         }
