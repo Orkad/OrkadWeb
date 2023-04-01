@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OrkadWeb.Angular.Config;
+using OrkadWeb.Angular.Controllers.Core;
 using OrkadWeb.Application.Abstractions;
 using OrkadWeb.Application.Users;
 using OrkadWeb.Application.Users.Commands;
@@ -23,48 +24,55 @@ using OrkadWeb.Application.Users.Notifications;
 
 namespace OrkadWeb.Angular.Controllers
 {
-    public class AuthController : ApiController
+    [ApiController]
+    [Authorize]
+    [Route("api/auth/[action]")]
+    public class AuthController : ControllerBase
     {
-        private readonly IAppUser authenticatedUser;
+        private readonly IAppUser appUser;
+        private readonly ISender sender;
+        private readonly IPublisher publisher;
 
-        public AuthController(IAppUser authenticatedUser)
+        public AuthController(IAppUser appUser, ISender sender, IPublisher publisher)
         {
-            this.authenticatedUser = authenticatedUser;
+            this.appUser = appUser;
+            this.sender = sender;
+            this.publisher = publisher;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<LoginCommand.Result> Login(LoginCommand command)
+        public async Task<LoginCommand.Result> Login(LoginCommand command, CancellationToken cancellationToken)
         {
-            var result = await Command(command);
-            await Publish(new UserLoggedInNotification
+            var result = await sender.Send(command, cancellationToken);
+            await publisher.Publish(new UserLoggedInNotification
             {
                 UserName = command.Username,
-            });
+            }, cancellationToken);
             return result;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task Register(RegisterCommand command)
+        public async Task Register(RegisterCommand command, CancellationToken cancellationToken)
         {
-            await Command(command);
+            await sender.Send(command, cancellationToken);
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task Confirm(EmailConfirmCommand command)
+        public async Task Confirm(EmailConfirmCommand command, CancellationToken cancellationToken)
         {
-            await Command(command);
+            await sender.Send(command, cancellationToken);
         }
 
         [HttpPost]
-        public async Task ResendConfirm()
+        public async Task ResendConfirm(CancellationToken cancellationToken)
         {
-            await Command(new SendEmailConfirmCommand
+            await sender.Send(new SendEmailConfirmCommand()
             {
-                Username = authenticatedUser.Name
-            });
+                Username = appUser.Name
+            }, cancellationToken);
         }
     }
 }

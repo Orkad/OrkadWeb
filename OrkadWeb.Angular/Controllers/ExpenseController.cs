@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OrkadWeb.Angular.Controllers.Core;
 using OrkadWeb.Application.Expenses.Commands;
 using OrkadWeb.Application.Expenses.Queries;
 using System;
@@ -12,6 +13,10 @@ namespace OrkadWeb.Angular.Controllers
 {
     public class ExpenseController : ApiController
     {
+        public ExpenseController(IApiControllerDependencies deps) : base(deps)
+        {
+        }
+
         [HttpGet]
         public async Task<GetExpensesQuery.Result> GetAll() => await Query(new GetExpensesQuery());
 

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OrkadWeb.Angular.Controllers.Core;
 using OrkadWeb.Application.MonthlyTransactions.Commands;
 using OrkadWeb.Application.MonthlyTransactions.Models;
 using OrkadWeb.Application.MonthlyTransactions.Queries;
@@ -12,6 +13,10 @@ namespace OrkadWeb.Angular.Controllers
     [Route("api/monthly")]
     public class MonthlyTransactionController : ApiController
     {
+        public MonthlyTransactionController(IApiControllerDependencies deps) : base(deps)
+        {
+        }
+
         [HttpGet]
         [Route("charges")]
         public async Task<IEnumerable<MonthlyChargeVM>> GetCharges() => await Query(new GetChargesQuery());
