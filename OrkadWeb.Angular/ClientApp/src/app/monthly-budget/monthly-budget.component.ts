@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { MonthlyIncome } from 'src/shared/models/MonthlyIncome';
 import { MonthlyCharge } from 'src/shared/models/MonthlyCharge';
 import { ConfirmDialogData } from '../shared/dialog/confirm-dialog/confirm-dialog.data';
 import { DialogService } from '../shared/dialog/dialog.service';
 import { MonthlyTransactionService } from 'src/services/monthly-transaction.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MonthlyChargeFormDialogComponent } from './monthly-charge-form-dialog/monthly-charge-form-dialog.component';
 import { MonthlyIncomeFormDialogComponent } from './monthly-income-form-dialog/monthly-income-form-dialog.component';
 

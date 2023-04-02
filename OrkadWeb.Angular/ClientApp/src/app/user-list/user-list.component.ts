@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { map, Observable } from 'rxjs';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { UserItem } from './user-item.model';
