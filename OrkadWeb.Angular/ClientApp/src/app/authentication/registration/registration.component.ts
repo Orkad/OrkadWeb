@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  UntypedFormBuilder,
-  UntypedFormControl,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
@@ -10,7 +8,7 @@ import {
   FormBuilder,
   FormControl,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { GlobalConfigurationResult } from 'src/api/results/GlobalConfigurationResult';
 import { NotificationService } from 'src/services/notification.service';
 import { AuthenticationService } from '../authentication.service';
@@ -26,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
-    private route: ActivatedRoute,
+    private routeSnapshot: ActivatedRouteSnapshot,
     private router: Router
   ) {}
 
@@ -45,7 +43,7 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm(
-      this.route.snapshot.data['config'] as GlobalConfigurationResult
+      this.routeSnapshot.data['config'] as GlobalConfigurationResult
     );
   }
 
@@ -75,7 +73,7 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  displayErrorMessage(control: UntypedFormControl): string {
+  displayErrorMessage(control: FormControl): string {
     if (control.hasError('required')) {
       return 'obligatoire';
     }
