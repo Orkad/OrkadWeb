@@ -7,9 +7,10 @@ import {
   ValidationErrors,
   ValidatorFn,
   Validators,
+  FormBuilder,
+  FormControl,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IFormBuilder, IFormGroup } from '@rxweb/types';
 import { GlobalConfigurationResult } from 'src/api/results/GlobalConfigurationResult';
 import { NotificationService } from 'src/services/notification.service';
 import { AuthenticationService } from '../authentication.service';
@@ -21,29 +22,25 @@ import { RegistrationForm } from './registration.form';
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent implements OnInit {
-  formGroup: IFormGroup<RegistrationForm>;
-  formBuilder: IFormBuilder;
+  formGroup: FormGroup<RegistrationForm>;
   constructor(
-    formBuilder: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-    this.formBuilder = formBuilder;
-  }
+  ) {}
 
-  get username(): UntypedFormControl {
-    return this.formGroup.controls.username as UntypedFormControl;
+  get username(): FormControl {
+    return this.formGroup.controls.username as FormControl;
   }
-  get email(): UntypedFormControl {
-    return this.formGroup.controls.email as UntypedFormControl;
+  get email(): FormControl {
+    return this.formGroup.controls.email as FormControl;
   }
-  get password(): UntypedFormControl {
-    return this.formGroup.controls.password as UntypedFormControl;
+  get password(): FormControl {
+    return this.formGroup.controls.password as FormControl;
   }
-  get passwordConfirm(): UntypedFormControl {
-    return this.formGroup.controls.passwordConfirm as UntypedFormControl;
+  get passwordConfirm(): FormControl {
+    return this.formGroup.controls.passwordConfirm as FormControl;
   }
 
   ngOnInit(): void {
@@ -53,7 +50,8 @@ export class RegistrationComponent implements OnInit {
   }
 
   initForm(config: GlobalConfigurationResult): void {
-    this.formGroup = this.formBuilder.group<RegistrationForm>({
+    const formBuilder = new FormBuilder();
+    this.formGroup = formBuilder.nonNullable.group({
       email: ['', [Validators.required, Validators.pattern(config.emailRegex)]],
       username: [
         '',
