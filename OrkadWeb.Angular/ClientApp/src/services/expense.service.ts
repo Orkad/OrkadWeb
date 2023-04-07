@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AddExpenseCommand } from 'src/shared/models/expenses/AddExpenseCommand';
 import { AddExpenseResult } from 'src/shared/models/expenses/AddExpenseResult';
-import { ExpenseRow, ExpenseRows } from 'src/shared/models/expenses/ExpenseRow';
+import { ExpenseRows } from 'src/shared/models/expenses/ExpenseRow';
 import { UpdateExpenseCommand } from 'src/api/commands/UpdateExpenseCommand';
 import { Moment } from 'moment';
 

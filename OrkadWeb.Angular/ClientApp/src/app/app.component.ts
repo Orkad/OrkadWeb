@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { ServerEventsService } from 'src/services/ServerEventsService';
 import { User } from 'src/shared/models/User';
 import { AuthenticationService } from './authentication/authentication.service';
@@ -10,7 +9,7 @@ import { AuthenticationService } from './authentication/authentication.service';
   styleUrls: ['./app.component.css'],
   templateUrl: './app.component.html',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private serverEventsService: ServerEventsService,

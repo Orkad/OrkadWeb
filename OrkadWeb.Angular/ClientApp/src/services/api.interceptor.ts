@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpInterceptor,
   HttpEvent,
-  HttpResponse,
-  HttpRequest,
   HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
 } from '@angular/common/http';
-import { catchError, map, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {

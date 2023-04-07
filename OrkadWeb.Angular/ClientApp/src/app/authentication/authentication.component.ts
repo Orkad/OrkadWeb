@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-} from '@angular/forms';
-import { AuthenticationService } from './authentication.service';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { User } from 'src/shared/models/User';
-import { Observable } from 'rxjs';
+import { AuthenticationService } from './authentication.service';
 
 @Component({
   selector: 'app-authentication',
