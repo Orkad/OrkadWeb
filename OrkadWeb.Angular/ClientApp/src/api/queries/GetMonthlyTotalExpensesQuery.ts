@@ -1,5 +1,5 @@
 ﻿/** Auto generated file (do not modify) */
-module app {
+namespace app {
   export class GetMonthlyTotalExpensesQuery { 
     /**  */
     public month: Date;

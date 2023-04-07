@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./authentication.component.css'],
 })
 export class AuthenticationComponent implements OnInit {
-  loading: boolean = false;
+  loading = false;
   loggedIn: boolean;
   user: User | null;
   loginForm: UntypedFormGroup;

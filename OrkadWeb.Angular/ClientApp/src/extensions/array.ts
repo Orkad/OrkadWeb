@@ -15,7 +15,7 @@ Array.prototype.remove = function <T>(this: T[], item: T): void {
   }
 };
 Array.prototype.replace = function <T>(this: T[], item: T, newValue: T): void {
-  let index = this.indexOf(item);
+  const index = this.indexOf(item);
   if (index !== -1) {
     this.splice(index, 1, newValue);
   }
