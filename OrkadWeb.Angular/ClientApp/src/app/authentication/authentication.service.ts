@@ -38,9 +38,10 @@ export class AuthenticationService {
   saveToken(token: string | null) {
     if (token == null) {
       localStorage.removeItem('jwt');
-      return;
+    } else {
+      localStorage.setItem('jwt', token);
     }
-    localStorage.setItem('jwt', token);
+    this.userSubject.next(this.readToken());
   }
 
   login(username: string, password: string): Observable<LoginResponse> {
@@ -53,7 +54,6 @@ export class AuthenticationService {
         map((data) => {
           if (data && data.success && !data.error) {
             this.saveToken(data.token);
-            this.userSubject.next(this.readToken());
           }
           return data;
         })
@@ -62,7 +62,6 @@ export class AuthenticationService {
 
   logout(): void {
     this.saveToken(null);
-    this.userSubject.next(null);
   }
 
   register(
