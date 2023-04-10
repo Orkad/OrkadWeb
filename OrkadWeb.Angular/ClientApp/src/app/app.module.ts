@@ -16,7 +16,7 @@ import { ApiInterceptor } from 'src/services/api.interceptor';
 import { MaterialModule } from '../shared/modules/material.module';
 import { AppComponent } from './app.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
-import { AuthenticationGuard } from './authentication/authentication.guard';
+import { authenticationGuard } from './authentication/authentication.guard';
 import { EmailConfirmationComponent } from './authentication/email-confirmation/email-confirmation.component';
 import { RegistrationComponent } from './authentication/registration/registration.component';
 import { MonthlyBudgetOverviewComponent } from './monthly-budget/monthly-budget-overview/monthly-budget-overview.component';
@@ -36,12 +36,12 @@ const routes = [
   {
     path: '',
     component: TransactionComponent,
-    canActivate: [AuthenticationGuard],
+    canActivate: [authenticationGuard],
   },
   {
     path: 'budget',
     component: MonthlyBudgetComponent,
-    canActivate: [AuthenticationGuard],
+    canActivate: [authenticationGuard],
   },
   {
     path: 'auth',
@@ -61,7 +61,7 @@ const routes = [
   {
     path: 'users',
     component: UserListComponent,
-    canActivate: [AuthenticationGuard],
+    canActivate: [authenticationGuard],
   },
 ] as Routes;
 
@@ -100,7 +100,6 @@ const routes = [
     NgChartsModule,
   ],
   providers: [
-    AuthenticationGuard,
     {
       provide: LOCALE_ID,
       useValue: 'fr-FR',
