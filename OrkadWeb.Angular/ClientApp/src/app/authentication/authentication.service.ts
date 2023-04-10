@@ -22,11 +22,10 @@ export class AuthenticationService {
 
   /** retrieve the unexpired user based on the local token */
   readToken(): User | null {
-    const token = localStorage.getItem('jwt');
-    if (!token || this.jwtHelper.isTokenExpired(token)) {
+    if (this.jwtHelper.isTokenExpired()) {
       return null;
     }
-    const decodedToken = this.jwtHelper.decodeToken(token);
+    const decodedToken = this.jwtHelper.decodeToken();
     return <User>{
       id: decodedToken.sub,
       name: decodedToken.name,
