@@ -16,7 +16,7 @@ namespace OrkadWeb.Angular.Config
         public const int CONFIG_KEY_MIN_LENGTH = 16;
         public const string CONFIG_ISSUER = "Jwt:Issuer";
         public const string CONFIG_AUDIENCE = "Jwt:Audience";
-        public const int DEFAULT_EXPIRATION = 15;
+        public const int DEFAULT_EXPIRATION = 720; //12h
 
         private readonly IConfiguration configuration;
 

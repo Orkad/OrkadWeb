@@ -6,22 +6,16 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../../shared/models/User';
 import { LoginResponse } from '../../shared/models/LoginResponse';
 import { RegisterCommand } from 'src/api/commands/RegisterCommand';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private userSubject: BehaviorSubject<User | null>;
   user$: Observable<User | null>;
-
-  constructor(
-    private httpClient: HttpClient,
-    private jwtHelper: JwtHelperService
-  ) {
-    this.userSubject = new BehaviorSubject<User | null>(this.readToken());
-    this.user$ = this.userSubject.asObservable().pipe(shareReplay());
+  get isConnected(): boolean {
+    return !this.jwtHelper.isTokenExpired();
   }
-
-  /** retrieve the unexpired user based on the local token */
-  readToken(): User | null {
+  get connectedUser(): User | null {
     if (this.jwtHelper.isTokenExpired()) {
       return null;
     }
@@ -35,13 +29,13 @@ export class AuthenticationService {
     };
   }
 
-  saveToken(token: string | null) {
-    if (token == null) {
-      localStorage.removeItem('jwt');
-    } else {
-      localStorage.setItem('jwt', token);
-    }
-    this.userSubject.next(this.readToken());
+  constructor(
+    private httpClient: HttpClient,
+    private jwtHelper: JwtHelperService,
+    private router: Router
+  ) {
+    this.userSubject = new BehaviorSubject<User | null>(this.connectedUser);
+    this.user$ = this.userSubject.asObservable().pipe(shareReplay());
   }
 
   login(username: string, password: string): Observable<LoginResponse> {
@@ -53,7 +47,8 @@ export class AuthenticationService {
       .pipe(
         map((data) => {
           if (data && data.success && !data.error) {
-            this.saveToken(data.token);
+            localStorage.setItem('jwt', data.token);
+            this.userSubject.next(this.connectedUser);
           }
           return data;
         })
@@ -61,7 +56,9 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    this.saveToken(null);
+    localStorage.removeItem('jwt');
+    this.userSubject.next(null);
+    this.router.navigate(['auth']);
   }
 
   register(
@@ -74,9 +71,5 @@ export class AuthenticationService {
       email: email,
       password: password,
     });
-  }
-
-  getConnectedUser() {
-    return this.userSubject.getValue();
   }
 }

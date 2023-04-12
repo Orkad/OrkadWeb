@@ -1,19 +1,15 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { CanActivateFn } from '@angular/router';
 import { NotificationService } from 'src/services/notification.service';
 import { AuthenticationService } from './authentication.service';
 
 export const authenticationGuard: CanActivateFn = () => {
-  const jwtHelper = inject(JwtHelperService);
   const authenticationService = inject(AuthenticationService);
-  const router = inject(Router);
   const notificationService = inject(NotificationService);
-  if (!jwtHelper.isTokenExpired()) {
+  if (authenticationService.isConnected) {
     return true;
   }
   authenticationService.logout();
-  router.navigate(['auth']);
   notificationService.error('la session a expirée, veuillez vous reconnecter');
   return false;
 };

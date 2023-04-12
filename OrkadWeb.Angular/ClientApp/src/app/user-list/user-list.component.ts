@@ -19,7 +19,7 @@ export class UserListComponent implements OnInit {
   dataSource: MatTableDataSource<UserItem>;
 
   ngOnInit(): void {
-    this.connectedUserId = this.authService.getConnectedUser()?.id;
+    this.connectedUserId = this.authService.connectedUser?.id;
     this.httpClient.get<UserItem[]>('api/users').subscribe((u) => {
       this.dataSource = new MatTableDataSource<UserItem>();
       this.dataSource.data = u;
