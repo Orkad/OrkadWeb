@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace OrkadWeb.Application.MonthlyTransactions.Models
+﻿namespace OrkadWeb.Application.MonthlyTransactions.Models
 {
-    public class MonthlyChargeVM
+    public record MonthlyChargeVM
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public decimal Amount { get; set; }
+        public int Id { get; init; }
+        public string Name { get; init; }
+        public decimal Amount { get; init; }
     }
 }

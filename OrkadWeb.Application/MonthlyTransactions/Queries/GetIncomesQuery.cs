@@ -1,16 +1,7 @@
 ﻿using NHibernate.Linq;
-using OrkadWeb.Domain;
-using OrkadWeb.Domain.Entities;
 using OrkadWeb.Application.MonthlyTransactions.Models;
-using OrkadWeb.Application.Users;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using OrkadWeb.Domain.Common;
-using OrkadWeb.Application.Common.Interfaces;
 
 namespace OrkadWeb.Application.MonthlyTransactions.Queries
 {
