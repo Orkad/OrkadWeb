@@ -17,13 +17,13 @@ export class MonthNavigatorComponent {
     if (!this.min) {
       return false;
     }
-    return moment(this.control.value).isBefore(this.min);
+    return moment(this.control.value).isSameOrAfter(this.min);
   }
 
   isNextDisabled() {
     if (!this.max) {
       return false;
     }
-    return moment(this.control.value).isAfter(this.max);
+    return moment(this.control.value).isSameOrAfter(this.max);
   }
 }
