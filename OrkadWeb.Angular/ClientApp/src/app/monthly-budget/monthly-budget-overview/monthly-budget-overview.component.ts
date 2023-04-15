@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import Enumerable from 'linq';
 import { MonthlyCharge } from 'src/shared/models/MonthlyCharge';
 import { MonthlyIncome } from 'src/shared/models/MonthlyIncome';
@@ -8,13 +8,9 @@ import { MonthlyIncome } from 'src/shared/models/MonthlyIncome';
   templateUrl: './monthly-budget-overview.component.html',
   styleUrls: ['./monthly-budget-overview.component.scss'],
 })
-export class MonthlyBudgetOverviewComponent implements OnInit {
+export class MonthlyBudgetOverviewComponent {
   @Input() charges: MonthlyCharge[];
   @Input() incomes: MonthlyIncome[];
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   totalCharges() {
     return Enumerable.from(this.charges).sum((c) => c.amount);
