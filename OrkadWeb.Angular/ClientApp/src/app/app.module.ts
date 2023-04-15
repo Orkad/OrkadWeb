@@ -29,6 +29,7 @@ import { MonthPickerComponent } from './shared/month-picker/month-picker.compone
 import { ExpenseFormDialogComponent } from './transaction/expense-form-dialog/expense-form-dialog.component';
 import { TransactionComponent } from './transaction/transaction.component';
 import { UserListComponent } from './user-list/user-list.component';
+import { MonthNavigatorComponent } from './shared/month-navigator/month-navigator.component';
 
 registerLocaleData(fr);
 
@@ -81,6 +82,7 @@ const routes = [
     UserListComponent,
     EmailConfirmationComponent,
     DisplayComponent,
+    MonthNavigatorComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

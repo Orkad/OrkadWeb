@@ -1,21 +1,9 @@
 <div class="flex-container" *ngIf="loaded">
   <div class="center">
-    <button type="button" mat-icon-button (click)="monthPicker.previousMonth()">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
-    <app-month-picker
-      #monthPicker
+    <app-month-navigator
       [control]="month"
       [max]="currentMonth"
-    ></app-month-picker>
-    <button
-      type="button"
-      mat-icon-button
-      (click)="monthPicker.nextMonth()"
-      [disabled]="!canNextMonth()"
-    >
-      <mat-icon>chevron_right</mat-icon>
-    </button>
+    ></app-month-navigator>
   </div>
 
   <table id="expense-table" mat-table [dataSource]="dataSource">

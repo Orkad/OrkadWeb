@@ -1,0 +1,22 @@
+<button
+  type="button"
+  mat-icon-button
+  (click)="monthPicker.previousMonth()"
+  [disabled]="isPreviousDisabled()"
+>
+  <mat-icon>chevron_left</mat-icon>
+</button>
+<app-month-picker
+  #monthPicker
+  [control]="control"
+  [min]="min"
+  [max]="max"
+></app-month-picker>
+<button
+  type="button"
+  mat-icon-button
+  (click)="monthPicker.nextMonth()"
+  [disabled]="isNextDisabled()"
+>
+  <mat-icon>chevron_right</mat-icon>
+</button>

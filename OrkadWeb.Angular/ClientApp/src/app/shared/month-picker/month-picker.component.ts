@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl, UntypedFormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import * as moment from 'moment';
@@ -24,7 +24,7 @@ export const MONTH_FORMATS = {
   providers: [{ provide: MAT_DATE_FORMATS, useValue: MONTH_FORMATS }],
 })
 export class MonthPickerComponent {
-  @Input() control: UntypedFormControl = new UntypedFormControl(moment());
+  @Input() control = new FormControl<Moment>(moment());
   @Input() min: Moment | null = null;
   @Input() max: Moment | null = null;
 
@@ -43,13 +43,11 @@ export class MonthPickerComponent {
 
   @ViewChild(MatDatepicker) datepicker: MatDatepicker<Moment>;
 
-  constructor() {}
-
   pickMonth(picked: Moment) {
     const m = moment(this.control.value);
     m.year(picked.year());
     m.month(picked.month());
-    this.control.setValue(m.toDate());
+    this.control.setValue(m);
     this.datepicker.close();
   }
 
@@ -59,7 +57,7 @@ export class MonthPickerComponent {
     }
     const m = moment(this.control.value);
     m.add(1, 'month');
-    this.control.setValue(m.toDate());
+    this.control.setValue(m);
   }
 
   public previousMonth() {
@@ -68,6 +66,6 @@ export class MonthPickerComponent {
     }
     const m = moment(this.control.value);
     m.subtract(1, 'month');
-    this.control.setValue(m.toDate());
+    this.control.setValue(m);
   }
 }
