@@ -1,14 +1,4 @@
-﻿using NHibernate.Linq;
-using OrkadWeb.Application.Common.Interfaces;
-using OrkadWeb.Domain.Common;
-using OrkadWeb.Domain.Entities;
-using OrkadWeb.Domain.Utils;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Logging;
 using static OrkadWeb.Application.Users.Commands.LoginCommand;
 
 namespace OrkadWeb.Application.Users.Commands
@@ -33,18 +23,21 @@ namespace OrkadWeb.Application.Users.Commands
         {
             private readonly IDataService dataService;
             private readonly IIdentityTokenGenerator identityTokenGenerator;
+            private readonly ILogger<Handler> logger;
 
-            public Handler(IDataService dataService, IIdentityTokenGenerator identityTokenGenerator)
+            public Handler(IDataService dataService, IIdentityTokenGenerator identityTokenGenerator, ILogger<Handler> logger)
             {
                 this.dataService = dataService;
                 this.identityTokenGenerator = identityTokenGenerator;
+                this.logger = logger;
             }
 
-            public async Task<Result> Handle(LoginCommand request, CancellationToken cancellationToken)
+            public async Task<Result> Handle(LoginCommand command, CancellationToken cancellationToken)
             {
-                var user = await dataService.FindAsync<User>(u => u.Username == request.Username || u.Email == request.Username, cancellationToken);
-                if (user == null || !Hash.Validate(request.Password, user.Password))
+                var user = await dataService.FindAsync<User>(u => u.Username == command.Username || u.Email == command.Username, cancellationToken);
+                if (user == null || !Hash.Validate(command.Password, user.Password))
                 {
+                    logger.LogAuthenticationFailed(command.Username);
                     return new Result
                     {
                         Success = false,
@@ -60,9 +53,20 @@ namespace OrkadWeb.Application.Users.Commands
                     Role = user.Role,
                     Token = identityTokenGenerator.GenerateToken(user),
                 };
+                logger.LogAuthenticationSuccess(user.Username);
                 return result;
             }
         }
 
+
+    }
+
+    public static partial class LoggerMessageDefinitions
+    {
+        [LoggerMessage(Level = LogLevel.Information, Message = "user {username} successfully authenticated")]
+        public static partial void LogAuthenticationSuccess(this ILogger logger, string username);
+
+        [LoggerMessage(Level = LogLevel.Information, Message = "user {username} failed to authenticate")]
+        public static partial void LogAuthenticationFailed(this ILogger logger, string username);
     }
 }

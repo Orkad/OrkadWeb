@@ -1,4 +1,7 @@
-﻿namespace OrkadWeb.Application.Users.Commands
+﻿using Microsoft.Extensions.Logging;
+using System;
+
+namespace OrkadWeb.Application.Users.Commands
 {
     public class EmailConfirmCommand : ICommand
     {
@@ -16,11 +19,13 @@
         {
             private readonly IDataService dataService;
             private readonly ITimeProvider timeProvider;
+            private readonly ILogger<Handler> logger;
 
-            public Handler(IDataService dataService, ITimeProvider timeProvider)
+            public Handler(IDataService dataService, ITimeProvider timeProvider, ILogger<Handler> logger)
             {
                 this.dataService = dataService;
                 this.timeProvider = timeProvider;
+                this.logger = logger;
             }
 
             public async Task<Unit> Handle(EmailConfirmCommand command, CancellationToken cancellationToken)
@@ -34,14 +39,20 @@
                     }
                     if (user.Confirmation != null)
                     {
-                        throw new EmailConfirmationException("user already confirmed email");
+                        var reason = "user already confirmed email";
+                        logger.LogEmailValidationFail(user.Email, user.Username, reason);
+                        throw new EmailConfirmationException(reason);
                     }
                     if (!Domain.Utils.Hash.Validate(user.Email, command.Hash))
                     {
-                        throw new EmailConfirmationException("wrong confirmation hash");
+                        var reason = "wrong confirmation hash";
+                        logger.LogEmailValidationFail(user.Email, user.Username, reason);
+                        throw new EmailConfirmationException(reason);
                     }
+
                     user.Confirmation = timeProvider.Now;
                     await context.SaveChanges(cancellationToken);
+                    logger.LogEmailValidationSucess(user.Email, user.Username);
                 }
                 return Unit.Value;
             }
@@ -58,5 +69,14 @@
               System.Runtime.Serialization.SerializationInfo info,
               System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         }
+    }
+
+    public static partial class LoggerMessageDefinitions
+    {
+        [LoggerMessage(Level = LogLevel.Information, Message = "email {email} of user {username} is validated")]
+        public static partial void LogEmailValidationSucess(this ILogger logger, string email, string username);
+
+        [LoggerMessage(Level = LogLevel.Warning, Message = "email {email} of user {username} failed: {reason}")]
+        public static partial void LogEmailValidationFail(this ILogger logger, string email, string username, string reason);
     }
 }

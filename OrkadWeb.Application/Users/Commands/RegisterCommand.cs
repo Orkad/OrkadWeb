@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Logging;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Application.Users.Notifications;
 using OrkadWeb.Domain.Common;
@@ -66,11 +67,13 @@ namespace OrkadWeb.Application.Users.Commands
         {
             private readonly IDataService dataService;
             private readonly IPublisher publisher;
+            private readonly ILogger<Handler> logger;
 
-            public Handler(IDataService dataService, IPublisher publisher)
+            public Handler(IDataService dataService, IPublisher publisher, ILogger<Handler> logger)
             {
                 this.dataService = dataService;
                 this.publisher = publisher;
+                this.logger = logger;
             }
             public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
@@ -90,8 +93,15 @@ namespace OrkadWeb.Application.Users.Commands
                 {
                     UserName = request.UserName,
                 }, cancellationToken);
+                logger.LogRegistration(request.UserName);
                 return Unit.Value;
             }
         }
+    }
+
+    public static partial class LoggerMessageDefinitions
+    {
+        [LoggerMessage(Level = LogLevel.Information, Message = "user {username} successfully registered")]
+        public static partial void LogRegistration(this ILogger logger, string username);
     }
 }
