@@ -1,12 +1,14 @@
 ﻿using FluentMigrator.Runner;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Cfg;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Domain.Extensions;
+using OrkadWeb.Infrastructure.Behaviors;
 using OrkadWeb.Infrastructure.Jobs;
 using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Infrastructure.Persistence.Conventions;
@@ -21,6 +23,7 @@ namespace OrkadWeb.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            var asm = Assembly.GetExecutingAssembly();
             var connectionString = configuration.GetRequiredValue("ConnectionStrings:OrkadWeb");
             var databaseType = configuration.GetRequiredValue("OrkadWeb:DatabaseType");
             var fluentConfig = Fluently.Configure();
@@ -47,13 +50,13 @@ namespace OrkadWeb.Infrastructure
                     }
                     builder
                     .WithGlobalConnectionString(connectionString)
-                    .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations();
+                    .ScanIn(asm).For.Migrations();
                 })
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
 
             .AddSingleton(sp => fluentConfig
                 .Mappings(m => m
-                    .FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly())
+                    .FluentMappings.AddFromAssembly(asm)
                     .Conventions.Add<EnumConvention>())
                 .BuildConfiguration())
 
@@ -62,7 +65,8 @@ namespace OrkadWeb.Infrastructure
             .AddScoped(sp => sp.GetService<ISessionFactory>().OpenStatelessSession())
             .AddScoped<IDataService, NHibernateDataService>()
             .AddSmtpEmailService(configuration)
-            .AddScoped<IJobRunner, JobRunner>();
+            .AddScoped<IJobRunner, JobRunner>()
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         }
 
         private static IServiceCollection AddSmtpEmailService(this IServiceCollection services, IConfiguration configuration)

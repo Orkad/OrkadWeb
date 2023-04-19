@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Text.Json.Serialization;
 using static OrkadWeb.Application.Users.Commands.LoginCommand;
 
 namespace OrkadWeb.Application.Users.Commands
@@ -6,7 +7,7 @@ namespace OrkadWeb.Application.Users.Commands
     public class LoginCommand : ICommand<Result>
     {
         public string Username { get; set; }
-        public string Password { get; set; }
+        public string Password { internal get; set; } // internal for not exposing password
 
         public class Result
         {
@@ -57,8 +58,6 @@ namespace OrkadWeb.Application.Users.Commands
                 return result;
             }
         }
-
-
     }
 
     public static partial class LoggerMessageDefinitions
