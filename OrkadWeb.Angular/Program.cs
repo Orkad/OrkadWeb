@@ -122,4 +122,6 @@ using (var scope = app.Services.CreateScope())
     scope.ServiceProvider.GetService<IMigrationRunner>().MigrateUp();
 }
 
+app.MapFallbackToFile("index.html");
+
 app.Run();
