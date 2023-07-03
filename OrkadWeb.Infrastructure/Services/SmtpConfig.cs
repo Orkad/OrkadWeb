@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OrkadWeb.Domain.Extensions;
+using OrkadWeb.Infrastructure.Extensions;
 using System.Net;
 
 namespace OrkadWeb.Infrastructure.Services
