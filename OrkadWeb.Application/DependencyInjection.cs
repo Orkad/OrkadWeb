@@ -1,14 +1,10 @@
-﻿using MediatR;
-using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
-using OrkadWeb.Application.Abstractions;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Application.Common.Behaviors;
 
 namespace OrkadWeb.Application
 {
-    public static class ConfigureServices
+    public static class DependencyInjection
     {
         /// <summary>
         /// Ajoute le pattern CQRS du projet (Mediator / Fluent Validation)
