@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NFluent;
-using OrkadWeb.Domain.Utils;
+using OrkadWeb.Application.Security;
 using System;
 using System.Linq;
 

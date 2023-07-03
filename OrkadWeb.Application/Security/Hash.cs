@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace OrkadWeb.Domain.Utils
+namespace OrkadWeb.Application.Security
 {
     /// <summary>
     /// Secured Hash function for the whole app

@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
 using OrkadWeb.Application.Common.Interfaces;
+using OrkadWeb.Application.Security;
 using OrkadWeb.Application.Users.Notifications;
 using OrkadWeb.Domain.Common;
 using OrkadWeb.Domain.Consts;
 using OrkadWeb.Domain.Entities;
-using OrkadWeb.Domain.Utils;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

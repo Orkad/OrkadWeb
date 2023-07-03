@@ -18,10 +18,10 @@ using OrkadWeb.Tests.Contexts;
 using OrkadWeb.Application.Config;
 using System.Text.RegularExpressions;
 using System.Web;
-using OrkadWeb.Domain.Utils;
 using OrkadWeb.Domain.Consts;
 using MediatR;
 using OrkadWeb.Angular.Controllers;
+using OrkadWeb.Application.Security;
 
 namespace OrkadWeb.Tests.Steps
 {

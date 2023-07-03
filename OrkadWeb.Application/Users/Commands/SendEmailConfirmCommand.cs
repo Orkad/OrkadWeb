@@ -1,4 +1,6 @@
-﻿namespace OrkadWeb.Application.Users.Commands;
+﻿using OrkadWeb.Application.Security;
+
+namespace OrkadWeb.Application.Users.Commands;
 
 public class SendEmailConfirmCommand : ICommand
 {

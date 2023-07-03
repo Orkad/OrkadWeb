@@ -5,7 +5,6 @@ global using OrkadWeb.Application.Expenses;
 global using OrkadWeb.Application.MonthlyTransactions;
 global using OrkadWeb.Application.Users;
 global using OrkadWeb.Domain.Common;
-global using OrkadWeb.Domain.Utils;
 global using OrkadWeb.Application.Common.Interfaces;
 global using OrkadWeb.Domain.Entities;
 global using MediatR;

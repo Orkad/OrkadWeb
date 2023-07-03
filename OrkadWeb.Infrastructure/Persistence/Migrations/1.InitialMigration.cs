@@ -1,5 +1,5 @@
 ﻿using FluentMigrator;
-using OrkadWeb.Domain.Utils;
+using OrkadWeb.Application.Security;
 
 namespace OrkadWeb.Infrastructure.Persistence.Migrations
 {

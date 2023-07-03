@@ -43,7 +43,7 @@ namespace OrkadWeb.Application.Users.Commands
                         logger.LogEmailValidationFail(user.Email, user.Username, reason);
                         throw new EmailConfirmationException(reason);
                     }
-                    if (!Domain.Utils.Hash.Validate(user.Email, command.Hash))
+                    if (!Security.Hash.Validate(user.Email, command.Hash))
                     {
                         var reason = "wrong confirmation hash";
                         logger.LogEmailValidationFail(user.Email, user.Username, reason);
