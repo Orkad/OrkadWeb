@@ -29,7 +29,7 @@ public class EditIncomeCommand : ICommand
             this.authenticatedUser = authenticatedUser;
         }
 
-        public async Task<Unit> Handle(EditIncomeCommand command, CancellationToken cancellationToken)
+        public async Task Handle(EditIncomeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
             var monthlyTransaction = await dataService.GetAsync<MonthlyTransaction>(command.Id, cancellationToken);
@@ -38,7 +38,6 @@ public class EditIncomeCommand : ICommand
             monthlyTransaction.Name = command.Name;
             monthlyTransaction.Amount = command.Amount;
             await context.SaveChanges(cancellationToken);
-            return Unit.Value;
         }
     }
 }

@@ -25,7 +25,7 @@ public class SendEmailConfirmCommand : ICommand
             this.emailService = emailService;
         }
 
-        public async Task<Unit> Handle(SendEmailConfirmCommand command, CancellationToken cancellationToken)
+        public async Task Handle(SendEmailConfirmCommand command, CancellationToken cancellationToken)
         {
             var user = await dataService.FindAsync<User>(u => u.Username == command.Username, cancellationToken);
             var hash = Hash.Create(user.Email);
@@ -36,7 +36,6 @@ Please follow the link to validate your email :
 <a href=""http://orkad.fr/auth/confirm?email={user.Email}&hash={hash}"">confirm your email</a>
 ";
             await emailService.SendAsync(user.Email, "Confirm your email adress", message, cancellationToken);
-            return Unit.Value;
         }
     }
 }

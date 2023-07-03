@@ -14,7 +14,7 @@ namespace OrkadWeb.Application
         {
             var asm = Assembly.GetExecutingAssembly();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddMediatR(asm);
+            services.AddMediatR(config => config.RegisterServicesFromAssembly(asm));
             services.AddValidatorsFromAssembly(asm);
             services.AddAutoMapper(asm);
             services.AddSingleton<ITimeProvider, RealTimeProvider>();

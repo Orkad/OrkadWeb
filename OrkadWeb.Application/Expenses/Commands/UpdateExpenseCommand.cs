@@ -28,7 +28,7 @@ namespace OrkadWeb.Application.Expenses.Commands
                 this.authenticatedUser = authenticatedUser;
             }
 
-            public async Task<Unit> Handle(UpdateExpenseCommand request, CancellationToken cancellationToken)
+            public async Task Handle(UpdateExpenseCommand request, CancellationToken cancellationToken)
             {
                 using var context = dataService.Context();
                 var transaction = await dataService.GetAsync<Transaction>(request.Id, cancellationToken);
@@ -37,7 +37,6 @@ namespace OrkadWeb.Application.Expenses.Commands
                 transaction.Name = request.Name;
                 transaction.Amount = request.Amount;
                 await context.SaveChanges(cancellationToken);
-                return Unit.Value;
             }
         }
     }

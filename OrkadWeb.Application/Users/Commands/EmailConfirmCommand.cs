@@ -28,7 +28,7 @@ namespace OrkadWeb.Application.Users.Commands
                 this.logger = logger;
             }
 
-            public async Task<Unit> Handle(EmailConfirmCommand command, CancellationToken cancellationToken)
+            public async Task Handle(EmailConfirmCommand command, CancellationToken cancellationToken)
             {
                 using (var context = dataService.Context())
                 {
@@ -54,7 +54,6 @@ namespace OrkadWeb.Application.Users.Commands
                     await context.SaveChanges(cancellationToken);
                     logger.LogEmailValidationSucess(user.Email, user.Username);
                 }
-                return Unit.Value;
             }
         }
 

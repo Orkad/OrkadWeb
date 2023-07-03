@@ -11,5 +11,5 @@ namespace OrkadWeb.Domain.Common
     /// <summary>
     /// Représente une commande ne fournissant pas de réponse selon une architecture CQRS
     /// </summary>
-    public interface ICommand : ICommand<Unit> { }
+    public interface ICommand : IRequest { }
 }

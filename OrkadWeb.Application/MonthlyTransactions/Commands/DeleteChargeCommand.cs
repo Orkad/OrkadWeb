@@ -17,7 +17,7 @@ public class DeleteChargeCommand : ICommand
             this.authenticatedUser = authenticatedUser;
         }
 
-        public async Task<Unit> Handle(DeleteChargeCommand command, CancellationToken cancellationToken)
+        public async Task Handle(DeleteChargeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
             var transaction = await dataService.GetAsync<MonthlyTransaction>(command.Id, cancellationToken);
@@ -25,7 +25,6 @@ public class DeleteChargeCommand : ICommand
             if (!transaction.IsCharge()) throw new InvalidDataException();
             await dataService.DeleteAsync(transaction, cancellationToken);
             await context.SaveChanges(cancellationToken);
-            return Unit.Value;
         }
     }
 }

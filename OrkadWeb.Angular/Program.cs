@@ -73,7 +73,6 @@ services.AddHangfireServer();
 
 // SIGNALR
 services.AddSignalR();
-services.AddMediatR(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 if (dev)

@@ -15,14 +15,13 @@
                 this.authenticatedUser = authenticatedUser;
             }
 
-            public async Task<Unit> Handle(DeleteExpenseCommand request, CancellationToken cancellationToken)
+            public async Task Handle(DeleteExpenseCommand request, CancellationToken cancellationToken)
             {
                 using var context = dataService.Context();
                 var transaction = await dataService.GetAsync<Transaction>(request.Id, cancellationToken);
                 authenticatedUser.MustOwns(transaction);
                 await dataService.DeleteAsync(transaction, cancellationToken);
                 await context.SaveChanges(cancellationToken);
-                return Unit.Value;
             }
         }
     }

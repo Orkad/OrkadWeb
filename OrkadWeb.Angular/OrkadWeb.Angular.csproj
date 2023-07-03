@@ -7,6 +7,8 @@
 		<IsPackable>false</IsPackable>
 		<SpaRoot>ClientApp\</SpaRoot>
 		<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+		<SpaProxyServerUrl>https://localhost:44365</SpaProxyServerUrl>
+		<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 
 		<!-- Set this to true if you enable server-side prerendering -->
 		<BuildServerSideRenderer>false</BuildServerSideRenderer>
@@ -20,6 +22,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.13" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.13" />
+		<PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="7.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

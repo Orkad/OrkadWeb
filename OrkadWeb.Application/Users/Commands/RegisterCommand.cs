@@ -75,7 +75,7 @@ namespace OrkadWeb.Application.Users.Commands
                 this.publisher = publisher;
                 this.logger = logger;
             }
-            public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
+            public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
                 using (var context = dataService.Context())
                 {
@@ -94,7 +94,6 @@ namespace OrkadWeb.Application.Users.Commands
                     UserName = request.UserName,
                 }, cancellationToken);
                 logger.LogRegistration(request.UserName);
-                return Unit.Value;
             }
         }
     }
