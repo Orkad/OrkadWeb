@@ -14,6 +14,7 @@ using OrkadWeb.Application;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Application.Users;
 using OrkadWeb.Infrastructure;
+using OrkadWeb.Infrastructure.Injection;
 using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Infrastructure.Persistence.Conventions;
 using OrkadWeb.Tests.Contexts;
@@ -39,6 +40,8 @@ namespace OrkadWeb.Tests
             services.AddSingleton<ITimeProvider>(timeContext);
             services.AddScoped<AuthController>();
             services.AddScoped<IAppUser>(sp => sp.GetRequiredService<UserContext>().AuthenticatedUser);
+            services.AddHttpContextAccessor();
+            ServiceLocator.Initialize(new HttpContextServiceProviderProxy());
             return services;
         }
 

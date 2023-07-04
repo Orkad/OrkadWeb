@@ -15,6 +15,7 @@ using OrkadWeb.Application;
 using OrkadWeb.Application.Users;
 using OrkadWeb.Infrastructure;
 using OrkadWeb.Infrastructure.Extensions;
+using OrkadWeb.Infrastructure.Injection;
 using System;
 using System.Net;
 using System.Reflection;
@@ -44,6 +45,7 @@ services.AddSingleton<IIdentityTokenGenerator, JwtTokenGenerator>();
 services.AddSession();
 services.AddHttpContextAccessor();
 services.AddScoped<IAppUser, HttpAppUser>();
+services.AddSingleton<IServiceProviderProxy, HttpContextServiceProviderProxy>();
 
 // APPLICATION + INFRASTRUCTURE
 services.AddApplicationServices();
@@ -75,6 +77,7 @@ services.AddHangfireServer();
 services.AddSignalR();
 
 var app = builder.Build();
+ServiceLocator.Initialize(app.Services.GetService<IServiceProviderProxy>());
 if (dev)
 {
     app.UseDeveloperExceptionPage();

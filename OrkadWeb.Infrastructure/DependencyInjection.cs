@@ -12,6 +12,7 @@ using OrkadWeb.Infrastructure.Extensions;
 using OrkadWeb.Infrastructure.Jobs;
 using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Infrastructure.Persistence.Conventions;
+using OrkadWeb.Infrastructure.Persistence.Listeners;
 using OrkadWeb.Infrastructure.Services;
 using System;
 using System.Net;
@@ -23,17 +24,11 @@ namespace OrkadWeb.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddNHibernate(configuration);
             var asm = Assembly.GetExecutingAssembly();
             var connectionString = configuration.GetRequiredValue("ConnectionStrings:OrkadWeb");
             var databaseType = configuration.GetRequiredValue("OrkadWeb:DatabaseType");
-            var fluentConfig = Fluently.Configure();
-            fluentConfig = databaseType switch
-            {
-                "mysql" or "mariadb" => fluentConfig.Database(MySQLConfiguration.Standard.ConnectionString(connectionString)),
-                "sqlite" => fluentConfig.Database(SQLiteConfiguration.Standard.ConnectionString(connectionString)),
-                _ => throw new NotImplementedException(),
-            };
-            return services.AddFluentMigratorCore()
+            services.AddFluentMigratorCore()
                 .ConfigureRunner(builder =>
                 {
                     switch (databaseType)
@@ -52,21 +47,14 @@ namespace OrkadWeb.Infrastructure
                     .WithGlobalConnectionString(connectionString)
                     .ScanIn(asm).For.Migrations();
                 })
-                .AddLogging(lb => lb.AddFluentMigratorConsole())
+                .AddLogging(lb => lb.AddFluentMigratorConsole());
 
-            .AddSingleton(sp => fluentConfig
-                .Mappings(m => m
-                    .FluentMappings.AddFromAssembly(asm)
-                    .Conventions.Add<EnumConvention>())
-                .BuildConfiguration())
 
-            .AddSingleton(sp => sp.GetService<Configuration>().BuildSessionFactory())
-            .AddScoped(sp => sp.GetService<ISessionFactory>().OpenSession())
-            .AddScoped(sp => sp.GetService<ISessionFactory>().OpenStatelessSession())
-            .AddScoped<IDataService, NHibernateDataService>()
-            .AddSmtpEmailService(configuration)
-            .AddScoped<IJobRunner, JobRunner>()
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddSmtpEmailService(configuration);
+            services.AddScoped<IJobRunner, JobRunner>();
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+
+            return services;
         }
 
         private static IServiceCollection AddSmtpEmailService(this IServiceCollection services, IConfiguration configuration)
@@ -74,6 +62,34 @@ namespace OrkadWeb.Infrastructure
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             services.AddSingleton<SmtpConfig>();
             return services.AddSingleton<IEmailService, SmtpEmailService>();
+        }
+
+        private static IServiceCollection AddNHibernate(this IServiceCollection services, IConfiguration configuration)
+        {
+            NHibernate.Cfg.Environment.ObjectsFactory = new DependencyInjectionObjectFactory(services.BuildServiceProvider());
+            var connectionString = configuration.GetRequiredValue("ConnectionStrings:OrkadWeb");
+            var databaseType = configuration.GetRequiredValue("OrkadWeb:DatabaseType");
+            var fluentConfig = Fluently.Configure();
+            fluentConfig = databaseType switch
+            {
+                "mysql" or "mariadb" => fluentConfig.Database(MySQLConfiguration.Standard.ConnectionString(connectionString)),
+                "sqlite" => fluentConfig.Database(SQLiteConfiguration.Standard.ConnectionString(connectionString)),
+                _ => throw new NotImplementedException(),
+            };
+            var nhConfig = fluentConfig
+                .Mappings(m => m
+                    .FluentMappings.AddFromAssemblyOf<OrkadWebInfrastructure>()
+                    .Conventions.Add<EnumConvention>())
+                .BuildConfiguration();
+            services.AddScoped<OwnableListener>();
+            nhConfig.AppendListeners(NHibernate.Event.ListenerType.PreUpdate, new[] { new OwnableListener() });
+            services.AddSingleton(nhConfig);
+            var sessionFactory = nhConfig.BuildSessionFactory();
+            services.AddSingleton(sessionFactory);
+            services.AddScoped(sp => sessionFactory.OpenSession());
+            services.AddScoped(sp => sessionFactory.OpenStatelessSession());
+            services.AddScoped<IDataService, NHibernateDataService>();
+            return services;
         }
     }
 }

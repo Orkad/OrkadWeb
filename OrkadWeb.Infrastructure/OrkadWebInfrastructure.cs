@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace OrkadWeb.Infrastructure
 {
-    public static class OrkadWebInfrastructure
+    public class OrkadWebInfrastructure
     {
         public static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
     }
