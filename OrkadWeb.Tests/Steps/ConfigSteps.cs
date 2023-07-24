@@ -1,6 +1,6 @@
 ﻿using OrkadWeb.Application.Config.Queries;
 
-namespace OrkadWeb.Tests.Steps.Config;
+namespace OrkadWeb.Tests.Steps;
 
 [Binding]
 public class ConfigSteps

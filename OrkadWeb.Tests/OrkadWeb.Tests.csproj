@@ -35,8 +35,4 @@
 		<ProjectReference Include="..\OrkadWeb.Angular\OrkadWeb.Angular.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Features\Configuration\" />
-	</ItemGroup>
-
 </Project>
