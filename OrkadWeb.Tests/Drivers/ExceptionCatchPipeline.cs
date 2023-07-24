@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OrkadWeb.Tests.Drivers
 {
-    public sealed class ExceptionCatchPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : class, IRequest<TResponse>
+    public sealed class ExceptionCatchPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : class, IBaseRequest
     {
         private readonly ExceptionContext exceptionContext;
 
