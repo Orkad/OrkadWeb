@@ -56,6 +56,8 @@ namespace OrkadWeb.Tests.UnitTests.Common
         {
             Check.That(Hash.Validate("test", Hash.Create("test"))).IsTrue();
             Check.That(Hash.Validate("TEST", Hash.Create("test"))).IsFalse();
+            Check.That(Hash.Validate("test", null)).IsFalse();
+            Check.That(Hash.Validate(null, "test")).IsFalse();
         }
     }
 }

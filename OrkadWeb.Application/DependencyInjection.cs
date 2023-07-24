@@ -19,7 +19,6 @@ namespace OrkadWeb.Application
             );
             services.AddValidatorsFromAssembly(asm);
             services.AddAutoMapper(asm);
-            services.AddSingleton<ITimeProvider, RealTimeProvider>();
         }
     }
 }

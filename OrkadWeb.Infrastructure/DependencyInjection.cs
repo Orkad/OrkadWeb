@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Cfg;
+using OrkadWeb.Application.Abstractions;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Infrastructure.Behaviors;
 using OrkadWeb.Infrastructure.Extensions;
@@ -87,6 +88,7 @@ namespace OrkadWeb.Infrastructure
             services.AddScoped(sp => sessionFactory.OpenSession());
             services.AddScoped(sp => sessionFactory.OpenStatelessSession());
             services.AddScoped<IDataService, NHibernateDataService>();
+            services.AddSingleton<ITimeProvider, RealTimeProvider>();
             return services;
         }
     }
