@@ -8,7 +8,7 @@ import {
   FormBuilder,
   FormControl,
 } from '@angular/forms';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalConfigurationResult } from 'src/api/results/GlobalConfigurationResult';
 import { NotificationService } from 'src/services/notification.service';
 import { AuthenticationService } from '../authentication.service';
@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
-    private routeSnapshot: ActivatedRouteSnapshot,
+    private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}
 
@@ -43,7 +43,7 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm(
-      this.routeSnapshot.data['config'] as GlobalConfigurationResult
+      this.activatedRoute.snapshot.data['config'] as GlobalConfigurationResult
     );
   }
 
