@@ -93,8 +93,7 @@ const routes = [
     RouterModule.forRoot(routes),
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => localStorage.getItem('jwt'),
-        allowedDomains: ['localhost:44465'],
+        tokenGetter: () => localStorage.getItem('jwt')
       },
     }),
     MaterialModule,

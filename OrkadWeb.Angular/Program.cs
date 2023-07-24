@@ -28,10 +28,15 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 var dev = builder.Environment.IsDevelopment();
 var prod = !dev;
+
 // MVC
 services.AddControllersWithViews();
 
 // AUTHENTICATION
+if (dev)
+{
+    services.AddOrkadWebCors();
+}
 services.AddSingleton<JwtConfig>();
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer();
@@ -81,6 +86,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+if (dev)
+{
+    app.UseCors(CorsConfiguration.DEFAULT_POLICY);
+}
 app.UseAuthentication();
 app.UseAuthorization();
 
