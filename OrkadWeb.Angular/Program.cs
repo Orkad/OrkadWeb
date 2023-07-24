@@ -30,11 +30,6 @@ var dev = builder.Environment.IsDevelopment();
 var prod = !dev;
 // MVC
 services.AddControllersWithViews();
-// ANGULAR SPA
-services.AddSpaStaticFiles(configuration =>
-{
-    configuration.RootPath = "ClientApp/dist";
-});
 
 // AUTHENTICATION
 services.AddSingleton<JwtConfig>();
@@ -78,24 +73,17 @@ services.AddSignalR();
 
 var app = builder.Build();
 ServiceLocator.Initialize(app.Services.GetService<IServiceProviderProxy>());
-if (dev)
-{
-    app.UseDeveloperExceptionPage();
-}
 if (prod)
 {
-    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-if (prod)
-{
-    app.UseSpaStaticFiles();
-}
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseSession();
 app.UseEndpoints(endpoints =>
 {
@@ -106,15 +94,9 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHangfireDashboard();
     // signalr
     endpoints.MapHub<NotificationHub>("/hub/notification");
+    endpoints.MapFallbackToFile("index.html");
 });
-app.UseSpa(spa =>
-{
-    spa.Options.SourcePath = "ClientApp";
-    if (dev)
-    {
-        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-    }
-});
+
 // HANGFIRE
 app.UseHangfireDashboard();
 
@@ -123,7 +105,5 @@ using (var scope = app.Services.CreateScope())
 {
     scope.ServiceProvider.GetService<IMigrationRunner>().MigrateUp();
 }
-
-app.MapFallbackToFile("index.html");
 
 app.Run();

@@ -41,7 +41,6 @@ namespace OrkadWeb.Tests
             services.AddScoped<AuthController>();
             services.AddScoped<IAppUser>(sp => sp.GetRequiredService<UserContext>().AuthenticatedUser);
             services.AddHttpContextAccessor();
-            ServiceLocator.Initialize(new HttpContextServiceProviderProxy());
             return services;
         }
 
