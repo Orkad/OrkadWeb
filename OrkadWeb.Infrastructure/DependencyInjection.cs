@@ -79,9 +79,12 @@ namespace OrkadWeb.Infrastructure
                 .Mappings(m => m
                     .FluentMappings.AddFromAssemblyOf<OrkadWebInfrastructure>()
                     .Conventions.Add<EnumConvention>())
+                .ExposeConfiguration(c =>
+                {
+                    c.AppendListeners(NHibernate.Event.ListenerType.PreUpdate, new[] { new OwnableListener() });
+                })
                 .BuildConfiguration();
             services.AddScoped<OwnableListener>();
-            nhConfig.AppendListeners(NHibernate.Event.ListenerType.PreUpdate, new[] { new OwnableListener() });
             services.AddSingleton(nhConfig);
             var sessionFactory = nhConfig.BuildSessionFactory();
             services.AddSingleton(sessionFactory);

@@ -48,6 +48,10 @@ namespace OrkadWeb.Tests
                     .Mappings(m => m
                     .FluentMappings.AddFromAssembly(OrkadWebInfrastructure.Assembly)
                     .Conventions.Add<EnumConvention>())
+                    .ExposeConfiguration(c =>
+                    {
+                        c.SetProperty("hbm2ddl.keywords", "auto-quote");
+                    })
                     .BuildConfiguration())
                 .AddSingleton(sp => sp.GetRequiredService<Configuration>().BuildSessionFactory())
                 .AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenSession())
