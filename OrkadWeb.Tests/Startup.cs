@@ -1,23 +1,16 @@
-﻿using FluentMigrator.Runner;
-using FluentNHibernate.Cfg;
+﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using Hangfire;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Cfg;
 using OrkadWeb.Angular.Config;
 using OrkadWeb.Angular.Controllers;
 using OrkadWeb.Application;
-using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Application.Users;
 using OrkadWeb.Infrastructure;
-using OrkadWeb.Infrastructure.Injection;
 using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Infrastructure.Persistence.Conventions;
-using OrkadWeb.Tests.Contexts;
 using OrkadWeb.Tests.Drivers;
 using OrkadWeb.Tests.Hooks;
 using SolidToken.SpecFlow.DependencyInjection;
@@ -61,7 +54,6 @@ namespace OrkadWeb.Tests
                 .AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenStatelessSession())
                 .AddScoped<IDataService, NHibernateDataService>()
                 .AddScoped<IDataContext, DataContext>();
-            services.AddScoped<IJobRunner>((sp) => sp.GetRequiredService<JobRunnerContext>());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionCatchPipeline<,>));
 
             services.AddSingleton<JwtConfig>();

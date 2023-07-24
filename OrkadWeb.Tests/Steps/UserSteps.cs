@@ -32,17 +32,17 @@ namespace OrkadWeb.Tests.Steps
         private readonly IDataService service;
         private readonly LastContext lastContext;
         private readonly IEmailService emailService;
-        private readonly IMediator mediator;
+        private readonly ISender sender;
         private readonly ITimeProvider timeProvider;
         private readonly UserContext userContext;
 
         public UserSteps(IDataService service, LastContext lastContext, IEmailService emailService,
-            IMediator mediator, ITimeProvider timeProvider, UserContext userContext)
+            ISender sender, ITimeProvider timeProvider, UserContext userContext)
         {
             this.service = service;
             this.lastContext = lastContext;
             this.emailService = emailService;
-            this.mediator = mediator;
+            this.sender = sender;
             this.timeProvider = timeProvider;
             this.userContext = userContext;
         }
@@ -123,13 +123,13 @@ Please follow the link to validate your email :
         public async Task WhenJeTenteDeMenregistrerAvecLesInformationsSuivantes(Table table)
         {
             var command = table.CreateInstance<RegisterCommand>();
-            await mediator.Send(command);
+            await sender.Send(command);
         }
 
         [When(@"je tente de m'inscrire avec le nom d'utilisateur (.*)")]
         public async Task WhenJeTenteDeMenregistrerAvecLeNomDutilisateur(string name)
         {
-            await mediator.Send(new RegisterCommand
+            await sender.Send(new RegisterCommand
             {
                 UserName = name,
                 Password = "Default@123",
@@ -140,7 +140,7 @@ Please follow the link to validate your email :
         [When(@"je tente de m'inscrire avec le mot de passe (.*)")]
         public async Task WhenJeTenteDeMenregistrerAvecLeMotDePasse(string password)
         {
-            await mediator.Send(new RegisterCommand
+            await sender.Send(new RegisterCommand
             {
                 UserName = "Orkad",
                 Password = password,
@@ -156,7 +156,7 @@ Please follow the link to validate your email :
             var parameters = HttpUtility.ParseQueryString(uri.Query);
             var email = parameters["email"] ?? throw new AssertFailedException();
             var hash = parameters["hash"] ?? throw new AssertFailedException();
-            await mediator.Send(new EmailConfirmCommand
+            await sender.Send(new EmailConfirmCommand
             {
                 Email = email,
                 Hash = hash,

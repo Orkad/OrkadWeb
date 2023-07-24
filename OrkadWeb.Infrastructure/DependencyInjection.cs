@@ -9,7 +9,6 @@ using NHibernate.Cfg;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Infrastructure.Behaviors;
 using OrkadWeb.Infrastructure.Extensions;
-using OrkadWeb.Infrastructure.Jobs;
 using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Infrastructure.Persistence.Conventions;
 using OrkadWeb.Infrastructure.Persistence.Listeners;
@@ -51,7 +50,6 @@ namespace OrkadWeb.Infrastructure
 
 
             services.AddSmtpEmailService(configuration);
-            services.AddScoped<IJobRunner, JobRunner>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             return services;

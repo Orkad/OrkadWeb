@@ -8,20 +8,19 @@ namespace OrkadWeb.Application.Users.Notifications
 
         public class Handler : INotificationHandler<UserRegisteredNotification>
         {
-            private readonly IJobRunner jobRunner;
             private readonly ISender sender;
 
-            public Handler(IJobRunner jobRunner, ISender sender)
+            public Handler(ISender sender)
             {
-                this.jobRunner = jobRunner;
                 this.sender = sender;
             }
             public async Task Handle(UserRegisteredNotification notification, CancellationToken cancellationToken)
             {
-                jobRunner.Run(() => sender.Send(new SendEmailConfirmCommand
+                var command = new SendEmailConfirmCommand
                 {
-                    Username = notification.UserName,
-                }, cancellationToken));
+                    Username = notification.UserName
+                };
+                await sender.Send(command, cancellationToken);
             }
         }
     }
