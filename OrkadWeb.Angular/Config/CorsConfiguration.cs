@@ -14,9 +14,10 @@ namespace OrkadWeb.Angular.Config
                     policy =>
                     {
                         policy
-                            .WithOrigins("https://localhost:44465")
+                            .AllowAnyMethod()
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
+                            .SetIsOriginAllowed(origin => true)
+                            .AllowCredentials();
                     });
             });
             return services;
