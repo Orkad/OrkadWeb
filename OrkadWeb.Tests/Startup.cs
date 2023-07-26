@@ -44,13 +44,13 @@ namespace OrkadWeb.Tests
             services.AddTestMigrations(connectionString);
 
             services.AddSingleton(Fluently.Configure()
-                    .Database(SQLiteConfiguration.Standard.ConnectionString(connectionString))
+                    .Database(SQLiteConfiguration.Standard.ConnectionString(connectionString).FormatSql())
                     .Mappings(m => m
                     .FluentMappings.AddFromAssembly(OrkadWebInfrastructure.Assembly)
                     .Conventions.Add<EnumConvention>())
                     .ExposeConfiguration(c =>
                     {
-                        c.SetProperty("hbm2ddl.keywords", "auto-quote");
+                        c.SessionFactory().Integrate.AutoQuoteKeywords();
                     })
                     .BuildConfiguration())
                 .AddSingleton(sp => sp.GetRequiredService<Configuration>().BuildSessionFactory())
