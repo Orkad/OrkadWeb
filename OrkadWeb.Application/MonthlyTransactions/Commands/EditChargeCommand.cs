@@ -32,11 +32,10 @@ public class EditChargeCommand : ICommand
         public async Task Handle(EditChargeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
-            var monthlyTransaction = await dataService.GetAsync<MonthlyTransaction>(command.Id, cancellationToken);
+            var monthlyTransaction = await dataService.GetAsync<Charge>(command.Id, cancellationToken);
             authenticatedUser.MustOwns(monthlyTransaction);
-            if (!monthlyTransaction.IsCharge()) throw new InvalidDataException();
             monthlyTransaction.Name = command.Name;
-            monthlyTransaction.Amount = -command.Amount;
+            monthlyTransaction.Amount = command.Amount;
             await context.SaveChanges(cancellationToken);
         }
     }

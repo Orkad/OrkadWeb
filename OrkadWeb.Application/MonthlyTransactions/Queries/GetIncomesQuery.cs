@@ -23,7 +23,7 @@ namespace OrkadWeb.Application.MonthlyTransactions.Queries
 
             public async Task<IEnumerable<MonthlyIncomeVM>> Handle(GetIncomesQuery request, CancellationToken cancellationToken)
             {
-                var query = dataService.Query<MonthlyTransaction>()
+                var query = dataService.Query<Income>()
                     .Where(mt => mt.Amount > 0) // Incomes
                     .Where(mt => mt.Owner.Id == authenticatedUser.Id);
                 return await query.Select(mt => new MonthlyIncomeVM

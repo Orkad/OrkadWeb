@@ -25,10 +25,10 @@ namespace OrkadWeb.Tests.Steps
         [Given(@"il existe une charge mensuelle (.*) d'un montant de (.*)€")]
         public void GivenIlExisteUneChargeMensuelleLoyerDunMontantDe(string name, int amount)
         {
-            var entity = new MonthlyTransaction
+            var entity = new Charge
             {
                 Name = name,
-                Amount = -amount,
+                Amount = amount,
                 Owner = dataService.Load<User>(user.Id),
             };
             dataService.Insert(entity);
@@ -37,7 +37,7 @@ namespace OrkadWeb.Tests.Steps
         [Given(@"il existe un revenu mensuel (.*) d'un montant de (.*)€")]
         public void GivenIlExisteUnRevenuMensuelDunMontantDe(string name, int amount)
         {
-            var entity = new MonthlyTransaction
+            var entity = new Income
             {
                 Name = name,
                 Amount = amount,

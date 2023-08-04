@@ -20,9 +20,8 @@ public class DeleteChargeCommand : ICommand
         public async Task Handle(DeleteChargeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
-            var transaction = await dataService.GetAsync<MonthlyTransaction>(command.Id, cancellationToken);
+            var transaction = await dataService.GetAsync<Charge>(command.Id, cancellationToken);
             authenticatedUser.MustOwns(transaction);
-            if (!transaction.IsCharge()) throw new InvalidDataException();
             await dataService.DeleteAsync(transaction, cancellationToken);
             await context.SaveChanges(cancellationToken);
         }

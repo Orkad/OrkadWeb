@@ -32,11 +32,10 @@ public class EditIncomeCommand : ICommand
         public async Task Handle(EditIncomeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
-            var monthlyTransaction = await dataService.GetAsync<MonthlyTransaction>(command.Id, cancellationToken);
-            authenticatedUser.MustOwns(monthlyTransaction);
-            if (!monthlyTransaction.IsIncome()) throw new InvalidDataException();
-            monthlyTransaction.Name = command.Name;
-            monthlyTransaction.Amount = command.Amount;
+            var income = await dataService.GetAsync<Income>(command.Id, cancellationToken);
+            authenticatedUser.MustOwns(income);
+            income.Name = command.Name;
+            income.Amount = command.Amount;
             await context.SaveChanges(cancellationToken);
         }
     }

@@ -20,10 +20,9 @@ public class DeleteIncomeCommand : ICommand
         public async Task Handle(DeleteIncomeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
-            var transaction = await dataService.GetAsync<MonthlyTransaction>(command.Id, cancellationToken);
-            authenticatedUser.MustOwns(transaction);
-            if (!transaction.IsIncome()) throw new InvalidDataException();
-            await dataService.DeleteAsync(transaction, cancellationToken);
+            var income = await dataService.GetAsync<Income>(command.Id, cancellationToken);
+            authenticatedUser.MustOwns(income);
+            await dataService.DeleteAsync(income, cancellationToken);
             await context.SaveChanges(cancellationToken);
         }
     }

@@ -28,10 +28,10 @@ public class AddChargeCommand : ICommand<int>
         public async Task<int> Handle(AddChargeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
-            var monthlyTransaction = new MonthlyTransaction
+            var monthlyTransaction = new Charge
             {
                 Name = command.Name,
-                Amount = -command.Amount, //negative
+                Amount = command.Amount,
                 Owner = dataService.Load<User>(authenticatedUser.Id)
             };
             await dataService.InsertAsync(monthlyTransaction, cancellationToken);

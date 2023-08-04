@@ -23,13 +23,12 @@ namespace OrkadWeb.Application.MonthlyTransactions.Queries
 
             public async Task<IEnumerable<MonthlyChargeVM>> Handle(GetChargesQuery request, CancellationToken cancellationToken)
             {
-                var query = dataService.Query<MonthlyTransaction>()
-                    .Where(mt => mt.Amount < 0) // Charges
+                var query = dataService.Query<Charge>()
                     .Where(mt => mt.Owner.Id == authenticatedUser.Id);
                 return await query.Select(mt => new MonthlyChargeVM
                 {
                     Id = mt.Id,
-                    Amount = -mt.Amount,
+                    Amount = mt.Amount,
                     Name = mt.Name,
                 }).ToListAsync(cancellationToken);
             }

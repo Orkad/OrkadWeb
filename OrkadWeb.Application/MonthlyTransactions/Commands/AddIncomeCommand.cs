@@ -28,15 +28,15 @@ public class AddIncomeCommand : ICommand<int>
         public async Task<int> Handle(AddIncomeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
-            var monthlyTransaction = new MonthlyTransaction
+            var income = new Income
             {
                 Name = command.Name,
                 Amount = command.Amount,
                 Owner = dataService.Load<User>(authenticatedUser.Id)
             };
-            await dataService.InsertAsync(monthlyTransaction, cancellationToken);
+            await dataService.InsertAsync(income, cancellationToken);
             await context.SaveChanges(cancellationToken);
-            return monthlyTransaction.Id;
+            return income.Id;
         }
     }
 }

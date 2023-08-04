@@ -1,31 +1,28 @@
 ﻿namespace OrkadWeb.Domain.Entities
 {
     /// <summary>
-    /// Monthly charge or income
+    /// Monthly charge
     /// </summary>
-    public class MonthlyTransaction : IOwnable
+    public class Charge : IOwnable
     {
         /// <summary>
-        /// Unique identifier of the monthly charge
+        /// Unique identifier of the charge
         /// </summary>
         public virtual int Id { get; set; }
 
         /// <summary>
-        /// Amount (positive for income, negative for charge)
+        /// Amount of the charge (always positive)
         /// </summary>
         public virtual decimal Amount { get; set; }
 
         /// <summary>
-        /// Given name of the monthly income
+        /// Name of the charge
         /// </summary>
         public virtual string Name { get; set; }
 
         /// <summary>
-        /// Owner of the monthly transaction
+        /// Owner of the charge
         /// </summary>
         public virtual User Owner { get; set; }
-
-        public virtual bool IsCharge() => Amount < 0;
-        public virtual bool IsIncome() => Amount > 0;
     }
 }

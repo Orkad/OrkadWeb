@@ -3,11 +3,11 @@ using OrkadWeb.Domain.Entities;
 
 namespace OrkadWeb.Infrastructure.Persistence.Mapping
 {
-    public class MonthlyTransactionMap : ClassMap<MonthlyTransaction>
+    public class IncomeMap : ClassMap<Income>
     {
-        public MonthlyTransactionMap()
+        public IncomeMap()
         {
-            Table("monthly_transaction");
+            Table("income");
             Id(x => x.Id, "id");
             Map(x => x.Amount, "amount").Not.Nullable();
             Map(x => x.Name, "name").Length(255).Not.Nullable();
