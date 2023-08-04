@@ -154,8 +154,8 @@ Please follow the link to validate your email :
             var html = lastContext.Last<SendedEmail>().Html;
             var uri = new Uri(URL_REGEX.Match(html).Value);
             var parameters = HttpUtility.ParseQueryString(uri.Query);
-            var email = parameters["email"] ?? throw new AssertFailedException();
-            var hash = parameters["hash"] ?? throw new AssertFailedException();
+            var email = parameters["email"];
+            var hash = parameters["hash"];
             await sender.Send(new EmailConfirmCommand
             {
                 Email = email,
