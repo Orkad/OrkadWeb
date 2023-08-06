@@ -46,9 +46,15 @@ namespace OrkadWeb.Tests.Steps
             var exception = executionDriver.HandleException();
             Check.WithCustomMessage("Aucune erreur n'a été déclenchée alors qu'il devrait y en avoir une")
                 .That(exception).IsNotNull();
-
-            Check.WithCustomMessage($"Le message d'erreur '{exception?.Message}' ne correspond pas avec le message attendu '{expectedMessage}'")
-                .That(exception?.Message).IsEqualTo(expectedMessage);
+            if (exception is ValidationException validationException)
+            {
+                Check.That(validationException.Errors.Select(e => e.ErrorMessage)).Contains(expectedMessage);
+            }
+            else
+            {
+                Check.WithCustomMessage($"Le message d'erreur '{exception?.Message}' ne correspond pas avec le message attendu '{expectedMessage}'")
+                    .That(exception?.Message).IsEqualTo(expectedMessage);
+            }
         }
 
         [Then(@"il y a les erreurs de validation suivantes")]

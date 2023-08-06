@@ -9,8 +9,12 @@ public class AddChargeCommand : ICommand<int>
     {
         public Validator()
         {
-            RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.Amount).GreaterThan(0);
+            RuleFor(x => x.Name)
+                .NotEmpty()
+                .WithMessage("Le nom de la charge ne doit pas être vide");
+            RuleFor(x => x.Amount)
+                .GreaterThan(0)
+                .WithMessage("Le montant de la charge doit être supérieur à 0");
         }
     }
 

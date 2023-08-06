@@ -14,7 +14,9 @@ public class EditChargeCommand : ICommand
         {
             RuleFor(x => x.Id).NotEmpty();
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
-            RuleFor(x => x.Amount).GreaterThan(0);
+            RuleFor(x => x.Amount)
+                .GreaterThan(0)
+                .WithMessage("Le montant de la charge doit être supérieur à 0");;
         }
     }
 
