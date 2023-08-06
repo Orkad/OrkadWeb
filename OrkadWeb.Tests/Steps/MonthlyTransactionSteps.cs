@@ -3,6 +3,7 @@ using OrkadWeb.Application.MonthlyTransactions.Queries;
 using OrkadWeb.Application.Users;
 using System.Collections.Generic;
 using System.Text;
+using OrkadWeb.Application.MonthlyTransactions.Commands;
 
 namespace OrkadWeb.Tests.Steps
 {
@@ -75,5 +76,35 @@ namespace OrkadWeb.Tests.Steps
             }
         }
 
+        [When(@"je modifie la charge ""(.*)"" par")]
+        public async Task WhenJeModifieLaChargePar(string name, Table table)
+        {
+            var row = table.Rows[0];
+            var newName = row.GetString("Libellé");
+            var newAmount = row.GetDecimal("Montant");
+            var charge = dataService.Query<Charge>().Single(c => c.Name == name);
+            await sender.Send(new EditChargeCommand()
+            {
+                Id = charge.Id,
+                Name = newName,
+                Amount = newAmount,
+            });
+        }
+
+        [When(@"je supprime la charge ""(.*)""")]
+        public async Task WhenJeSupprimeLaCharge(string name)
+        {
+            var charge = dataService.Query<Charge>().Single(c => c.Name == name);
+            await sender.Send(new DeleteChargeCommand
+            {
+                Id = charge.Id
+            });
+        }
+
+        [Then(@"il n'y a aucune charge mensuelle")]
+        public void ThenIlNyAAucuneChargeMensuelle()
+        {
+            Check.That(charges).IsEmpty();
+        }
     }
 }

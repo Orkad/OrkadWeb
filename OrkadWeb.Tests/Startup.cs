@@ -15,6 +15,7 @@ using OrkadWeb.Tests.Drivers;
 using OrkadWeb.Tests.Hooks;
 using SolidToken.SpecFlow.DependencyInjection;
 
+[assembly: Parallelize(Scope = ExecutionScope.ClassLevel)]
 namespace OrkadWeb.Tests
 {
     public static class Startup

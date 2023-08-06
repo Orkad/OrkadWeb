@@ -1,10 +1,12 @@
 ﻿{
-    "bindingCulture":
-    {
-        "name" :"fr-fr"
-    },
-    "language":
-    {
-        "feature": "fr-fr"
-    }
+  "$schema": "https://specflow.org/specflow-config.json",
+  "bindingCulture": {
+    "name": "fr-fr"
+  },
+  "language": {
+    "feature": "fr-FR"
+  },
+  "runtime": {
+    "missingOrPendingStepsOutcome": "Error"
+  }
 }

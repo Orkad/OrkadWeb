@@ -35,4 +35,10 @@
 		<ProjectReference Include="..\OrkadWeb.Angular\OrkadWeb.Angular.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="specflow.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>
