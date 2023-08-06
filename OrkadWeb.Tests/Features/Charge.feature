@@ -1,4 +1,4 @@
-﻿Fonctionnalité: Transaction mensuelle
+﻿Fonctionnalité: Charges
 
 Contexte:
 	Etant donné que l'utilisateur Orkad existe
@@ -10,13 +10,6 @@ Scénario: charge
 	Alors il y a les charges mensuelles suivantes
 		| Libellé | Montant |
 		| loyer   | 899€    |
-
-Scénario: revenu
-	Etant donné qu'il existe un revenu mensuel salaire d'un montant de 2000€
-	Lorsque j'affiche le budget mensuel
-	Alors il y a les revenus mensuels suivants
-		| Libellé | Montant |
-		| salaire | 2000€   |
 
 Scénario: ajout d'une charge
 	Lorsque j'ajoute une charge "loyer" d'un montant de 899€

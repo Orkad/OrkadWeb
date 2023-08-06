@@ -24,7 +24,7 @@ namespace OrkadWeb.Tests.Steps
         }
 
         [Given(@"il existe une charge mensuelle (.*) d'un montant de (.*)€")]
-        public void GivenIlExisteUneChargeMensuelleLoyerDunMontantDe(string name, int amount)
+        public void GivenIlExisteUneChargeMensuelleDunMontantDe(string name, int amount)
         {
             var entity = new Charge
             {
@@ -35,8 +35,8 @@ namespace OrkadWeb.Tests.Steps
             dataService.Insert(entity);
         }
 
-        [Given(@"il existe un revenu mensuel (.*) d'un montant de (.*)€")]
-        public void GivenIlExisteUnRevenuMensuelDunMontantDe(string name, int amount)
+        [Given(@"il existe un revenu (.*) d'un montant de (.*)€")]
+        public void GivenIlExisteUnRevenuDunMontantDe(string name, int amount)
         {
             var entity = new Income
             {
@@ -48,7 +48,7 @@ namespace OrkadWeb.Tests.Steps
         }
 
         [When(@"j'affiche le budget mensuel")]
-        public async Task WhenJafficheLaListeDesDepensesMensuelles()
+        public async Task WhenJafficheLeBudgetMensuel()
         {
             charges = await sender.Send(new GetChargesQuery());
             incomes = await sender.Send(new GetIncomesQuery());
@@ -65,8 +65,8 @@ namespace OrkadWeb.Tests.Steps
             }
         }
 
-        [Then(@"il y a les revenus mensuels suivants")]
-        public void ThenIlYALesRevenusMensuelsSuivants(Table table)
+        [Then(@"il y a les revenus suivants")]
+        public void ThenIlYaLesRevenusSuivants(Table table)
         {
             foreach (var row in table.Rows)
             {
@@ -105,6 +105,47 @@ namespace OrkadWeb.Tests.Steps
         public void ThenIlNyAAucuneChargeMensuelle()
         {
             Check.That(charges).IsEmpty();
+        }
+        
+        [Then(@"il n'y a aucun revenu")]
+        public void ThenIlNyAAucunRevenu()
+        {
+            Check.That(incomes).IsEmpty();
+        }
+
+        [When(@"j'ajoute un revenu ""(.*)"" d'un montant de (.*)€")]
+        public async Task WhenJAjouteUnRevenuDUnMontantDe(string name, int amount)
+        {
+            await sender.Send(new AddIncomeCommand
+            {
+                Name = name,
+                Amount = amount,
+            });
+        }
+        
+        [When(@"je modifie le revenu ""(.*)"" par")]
+        public async Task WhenJeModifieLeRevenuPar(string name, Table table)
+        {
+            var row = table.Rows[0];
+            var newName = row.GetString("Libellé");
+            var newAmount = row.GetDecimal("Montant");
+            var charge = dataService.Query<Income>().Single(c => c.Name == name);
+            await sender.Send(new EditIncomeCommand()
+            {
+                Id = charge.Id,
+                Name = newName,
+                Amount = newAmount,
+            });
+        }
+
+        [When(@"je supprime le revenu ""(.*)""")]
+        public async Task WhenJeSupprimeLeRevenu(string name)
+        {
+            var income = dataService.Query<Income>().Single(i => i.Name == name);
+            await sender.Send(new DeleteIncomeCommand
+            {
+                Id = income.Id,
+            });
         }
     }
 }
