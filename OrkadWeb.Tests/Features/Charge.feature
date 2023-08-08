@@ -10,6 +10,11 @@ Scénario: charge
 	Alors il y a les charges mensuelles suivantes
 		| Libellé | Montant |
 		| loyer   | 899€    |
+  
+Scénario: une charge n'est pas un revenu
+	Etant donné qu'il existe un revenu salaire d'un montant de 123€
+	Lorsque j'affiche le budget mensuel
+	Alors il n'y a aucune charge mensuelle
 
 Scénario: ajout d'une charge
 	Lorsque j'ajoute une charge "loyer" d'un montant de 899€
