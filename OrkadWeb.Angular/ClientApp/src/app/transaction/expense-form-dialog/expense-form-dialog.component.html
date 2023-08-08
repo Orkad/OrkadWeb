@@ -10,12 +10,17 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Libellé</mat-label>
-      <input matInput [formControl]="name" />
+      <input matInput [formControl]="name" name="expense-name" />
       <mat-error *ngIf="name.hasError('required')">Requis</mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Montant</mat-label>
-      <input matInput type="number" [formControl]="amount" />
+      <input
+        matInput
+        type="number"
+        [formControl]="amount"
+        name="expense-amount"
+      />
       <mat-error *ngIf="amount.hasError('required')">Requis</mat-error>
       <mat-error *ngIf="amount.hasError('min')">Au moins 1 centime</mat-error>
     </mat-form-field>
