@@ -19,7 +19,7 @@ services:
       ConnectionStrings:OrkadWeb: Server=db;Database=orkadweb;Uid=root;Pwd=production
       Kestrel:Certificates:Default:Path: /ssl/orkad.fr.pfx
     volumes:
-      - "C:/Certbot/live/orkad.fr/pfx:/ssl"
+      - "C:/Certbot/live/orkad.fr:/ssl"
 
   db:
     image: mysql:latest
