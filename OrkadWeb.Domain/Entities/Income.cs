@@ -1,4 +1,6 @@
-﻿namespace OrkadWeb.Domain.Entities
+﻿using OrkadWeb.Domain.Primitives;
+
+namespace OrkadWeb.Domain.Entities
 {
     /// <summary>
     /// Monthly income

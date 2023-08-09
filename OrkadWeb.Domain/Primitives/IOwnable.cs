@@ -1,4 +1,6 @@
-﻿namespace OrkadWeb.Domain.Entities
+﻿using OrkadWeb.Domain.Entities;
+
+namespace OrkadWeb.Domain.Primitives
 {
     /// <summary>
     /// Owned by a user.

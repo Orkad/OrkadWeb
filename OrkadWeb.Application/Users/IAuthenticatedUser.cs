@@ -1,5 +1,6 @@
 ﻿using OrkadWeb.Domain.Entities;
 using OrkadWeb.Application.Users.Exceptions;
+using OrkadWeb.Domain.Primitives;
 
 namespace OrkadWeb.Application.Users
 {

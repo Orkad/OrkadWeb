@@ -1,4 +1,5 @@
 ﻿using System;
+using OrkadWeb.Domain.Primitives;
 
 namespace OrkadWeb.Domain.Entities
 {
