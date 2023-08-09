@@ -1,6 +1,4 @@
-﻿using OrkadWeb.Application.Common.Exceptions;
-
-namespace OrkadWeb.Application.MonthlyTransactions.Commands;
+﻿namespace OrkadWeb.Application.Charges.Commands;
 
 public class DeleteChargeCommand : ICommand
 {

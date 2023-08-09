@@ -3,6 +3,7 @@ using OrkadWeb.Application.MonthlyTransactions.Queries;
 using OrkadWeb.Application.Users;
 using System.Collections.Generic;
 using System.Text;
+using OrkadWeb.Application.Charges.Commands;
 using OrkadWeb.Application.MonthlyTransactions.Commands;
 
 namespace OrkadWeb.Tests.Steps

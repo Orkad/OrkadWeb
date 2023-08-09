@@ -1,4 +1,4 @@
-﻿namespace OrkadWeb.Application.MonthlyTransactions.Commands;
+﻿namespace OrkadWeb.Application.Charges.Commands;
 
 public class AddChargeCommand : ICommand<int>
 {
