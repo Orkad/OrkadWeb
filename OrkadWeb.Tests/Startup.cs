@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Cfg;
@@ -25,7 +26,11 @@ namespace OrkadWeb.Tests
         {
             var builder = WebApplication.CreateBuilder();
             var services = builder.Services;
-            services.AddTestInfrastructureServices();
+            services.AddNHibernate(builder.Configuration);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionCatchPipeline<,>));
+            services.AddTestMigrations(builder.Configuration.GetConnectionString("OrkadWeb"));
+            services.AddSingleton<JwtConfig>();
+            services.AddScoped<IIdentityTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IEmailService, EmailTestService>();
 
             services.AddApplicationServices();
@@ -35,34 +40,6 @@ namespace OrkadWeb.Tests
             services.AddScoped<AuthController>();
             services.AddScoped<IAppUser>(sp => sp.GetRequiredService<UserContext>().AuthenticatedUser);
             services.AddHttpContextAccessor();
-            return services;
-        }
-
-        public static IServiceCollection AddTestInfrastructureServices(this IServiceCollection services)
-        {
-            var connectionString = "FullUri=file:memorydb.db?mode=memory&cache=shared";
-
-            services.AddTestMigrations(connectionString);
-
-            services.AddSingleton(Fluently.Configure()
-                    .Database(SQLiteConfiguration.Standard.ConnectionString(connectionString).FormatSql())
-                    .Mappings(m => m
-                    .FluentMappings.AddFromAssembly(OrkadWebInfrastructure.Assembly)
-                    .Conventions.Add<EnumConvention>())
-                    .ExposeConfiguration(c =>
-                    {
-                        c.SessionFactory().Integrate.AutoQuoteKeywords();
-                    })
-                    .BuildConfiguration())
-                .AddSingleton(sp => sp.GetRequiredService<Configuration>().BuildSessionFactory())
-                .AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenSession())
-                .AddScoped<IDataService, NHibernateDataService>()
-                .AddScoped<IDataContext, DataContext>();
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionCatchPipeline<,>));
-
-            services.AddSingleton<JwtConfig>();
-            services.AddScoped<IIdentityTokenGenerator, JwtTokenGenerator>();
-
             return services;
         }
     }

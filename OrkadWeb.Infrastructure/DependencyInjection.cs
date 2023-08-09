@@ -52,6 +52,7 @@ namespace OrkadWeb.Infrastructure
 
             services.AddSmtpEmailService(configuration);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddSingleton<ITimeProvider, RealTimeProvider>();
 
             return services;
         }
@@ -63,9 +64,9 @@ namespace OrkadWeb.Infrastructure
             return services.AddSingleton<IEmailService, SmtpEmailService>();
         }
 
-        private static IServiceCollection AddNHibernate(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddNHibernate(this IServiceCollection services, IConfiguration configuration)
         {
-            NHibernate.Cfg.Environment.ObjectsFactory = new DependencyInjectionObjectFactory(services.BuildServiceProvider());
+            //NHibernate.Cfg.Environment.ObjectsFactory = new DependencyInjectionObjectFactory(services.BuildServiceProvider());
             var connectionString = configuration.GetRequiredValue("ConnectionStrings:OrkadWeb");
             var databaseType = configuration.GetRequiredValue("OrkadWeb:DatabaseType");
             var fluentConfig = Fluently.Configure();
@@ -81,17 +82,17 @@ namespace OrkadWeb.Infrastructure
                     .Conventions.Add<EnumConvention>())
                 .ExposeConfiguration(c =>
                 {
-                    c.AppendListeners(NHibernate.Event.ListenerType.PreUpdate, new[] { new OwnableListener() });
+                    c.SessionFactory().Integrate.AutoQuoteKeywords();
+                    //c.AppendListeners(NHibernate.Event.ListenerType.PreUpdate, new[] { new OwnableListener() });
                 })
                 .BuildConfiguration();
-            services.AddScoped<OwnableListener>();
+            //services.AddScoped<OwnableListener>();
             services.AddSingleton(nhConfig);
             var sessionFactory = nhConfig.BuildSessionFactory();
             services.AddSingleton(sessionFactory);
             services.AddScoped(sp => sessionFactory.OpenSession());
             services.AddScoped(sp => sessionFactory.OpenStatelessSession());
             services.AddScoped<IDataService, NHibernateDataService>();
-            services.AddSingleton<ITimeProvider, RealTimeProvider>();
             return services;
         }
     }
