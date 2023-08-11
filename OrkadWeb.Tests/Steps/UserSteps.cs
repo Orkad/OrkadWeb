@@ -80,7 +80,7 @@ namespace OrkadWeb.Tests.Steps
         {
             var user = service.Find<User>(u => u.Username == name);
             lastContext.Mention(user);
-            userContext.AuthenticatedUser = new TestUser(user);
+            userContext.SetAuthenticatedUser(user);
         }
 
         [Given(@"l'email de confirmation a déjà été envoyé")]

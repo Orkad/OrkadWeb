@@ -2,24 +2,25 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using NHibernate.Mapping;
 
 namespace OrkadWeb.Tests.Models
 {
     class TestUser : IAppUser
     {
-        private readonly User user;
+        private User? _user;
 
-        public TestUser(User user)
+        public void Set(User? user)
         {
-            this.user = user;
+            this._user = user;
         }
 
-        public int Id => user.Id;
+        public int Id => _user.Id;
 
-        public string Name => user.Username;
+        public string Name => _user.Username;
 
-        public string Email => user.Email;
+        public string Email => _user.Email;
 
-        public string Role => user.Role;
+        public string Role => _user.Role;
     }
 }

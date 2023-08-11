@@ -12,11 +12,11 @@ using OrkadWeb.Infrastructure.Behaviors;
 using OrkadWeb.Infrastructure.Extensions;
 using OrkadWeb.Infrastructure.Persistence;
 using OrkadWeb.Infrastructure.Persistence.Conventions;
-using OrkadWeb.Infrastructure.Persistence.Listeners;
 using OrkadWeb.Infrastructure.Services;
 using System;
 using System.Net;
 using System.Reflection;
+using OrkadWeb.Infrastructure.Persistence.Interceptors;
 
 namespace OrkadWeb.Infrastructure
 {
@@ -86,14 +86,26 @@ namespace OrkadWeb.Infrastructure
                     //c.AppendListeners(NHibernate.Event.ListenerType.PreUpdate, new[] { new OwnableListener() });
                 })
                 .BuildConfiguration();
-            //services.AddScoped<OwnableListener>();
             services.AddSingleton(nhConfig);
             var sessionFactory = nhConfig.BuildSessionFactory();
             services.AddSingleton(sessionFactory);
-            services.AddScoped(sp => sessionFactory.OpenSession());
-            services.AddScoped(sp => sessionFactory.OpenStatelessSession());
+            services.AddScoped<OwnableInterceptor>();
+            // SESSION REGISTRATION
+            services.AddScoped(ResolveSession);
             services.AddScoped<IDataService, NHibernateDataService>();
             return services;
+        }
+
+        /// <summary>
+        /// Defines how sessions should be resolved
+        /// </summary>
+        private static ISession ResolveSession(IServiceProvider serviceProvider)
+        {
+            var sessionFactory = serviceProvider.GetRequiredService<ISessionFactory>();
+            var ownableInterceptor = serviceProvider.GetRequiredService<OwnableInterceptor>();
+            var session = sessionFactory.WithOptions().Interceptor(ownableInterceptor)
+                .OpenSession();
+            return session;
         }
     }
 }
