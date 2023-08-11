@@ -28,7 +28,7 @@
 		<PackageReference Include="SpecFlow.MsTest" Version="3.9.74" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
 		<PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
-		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -39,6 +39,10 @@
 	  <None Update="specflow.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="UnitTests\" />
 	</ItemGroup>
 
 </Project>

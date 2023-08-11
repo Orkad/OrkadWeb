@@ -1,13 +1,12 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NFluent;
 using NHibernate.Tool.hbm2ddl;
-using OrkadWeb.Domain.Exceptions;
+using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Infrastructure.Persistence;
-using System.Threading;
 
-namespace OrkadWeb.Specs.UnitTests.Persistence
+namespace OrkadWeb.Tests.Persistence
 {
     [TestClass]
     public class NHibernateDataServiceTest

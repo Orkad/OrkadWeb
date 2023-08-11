@@ -1,12 +1,10 @@
-﻿using FluentMigrator.Runner;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
+﻿using System.Data;
+using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
+using NFluent;
 using OrkadWeb.Infrastructure;
-using System;
-using System.Data;
-using System.Data.SQLite;
 
-namespace OrkadWeb.Specs.UnitTests.Persistence
+namespace OrkadWeb.Tests.Persistence
 {
     [TestClass]
     public class MigrationTest

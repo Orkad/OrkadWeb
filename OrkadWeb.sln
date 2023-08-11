@@ -28,6 +28,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Infrastructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrkadWeb.Application", "OrkadWeb.Application\OrkadWeb.Application.csproj", "{EF42A1A4-83E4-49E5-BEF0-24822C024E46}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5E75526F-C285-48AC-9CF7-58546343AE51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrkadWeb.Tests", "tests\OrkadWeb.Tests\OrkadWeb.Tests.csproj", "{1C41EEB5-A7CD-45AB-AA39-032B2D1ED477}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,12 +58,18 @@ Global
 		{EF42A1A4-83E4-49E5-BEF0-24822C024E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF42A1A4-83E4-49E5-BEF0-24822C024E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF42A1A4-83E4-49E5-BEF0-24822C024E46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C41EEB5-A7CD-45AB-AA39-032B2D1ED477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C41EEB5-A7CD-45AB-AA39-032B2D1ED477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C41EEB5-A7CD-45AB-AA39-032B2D1ED477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C41EEB5-A7CD-45AB-AA39-032B2D1ED477}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{49820CFA-691B-409E-A5A0-CADF55BE8B7A} = {DFD1CC1B-3C65-4804-BC2B-5BDB4E55FA23}
+		{1C41EEB5-A7CD-45AB-AA39-032B2D1ED477} = {5E75526F-C285-48AC-9CF7-58546343AE51}
+		{237FA01B-1FDB-4224-B44A-A50F8E391617} = {5E75526F-C285-48AC-9CF7-58546343AE51}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04FCF83F-1112-429A-86C7-AE66C8412EA4}

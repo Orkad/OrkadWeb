@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("OrkadWeb.Specs")]
+[assembly: InternalsVisibleTo("OrkadWeb.Tests")]
 
 namespace OrkadWeb.Infrastructure
 {
