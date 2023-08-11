@@ -1,5 +1,4 @@
-﻿using NFluent;
-using OrkadWeb.Application.Security;
+﻿using OrkadWeb.Application.Security;
 
 namespace OrkadWeb.Tests.Common
 {

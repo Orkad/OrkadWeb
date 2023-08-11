@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
-using NFluent;
 using OrkadWeb.Infrastructure;
 
 namespace OrkadWeb.Tests.Persistence

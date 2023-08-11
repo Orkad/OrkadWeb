@@ -1,7 +1,6 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
-using NFluent;
 using NHibernate.Tool.hbm2ddl;
 using OrkadWeb.Application.Common.Interfaces;
 using OrkadWeb.Infrastructure.Persistence;
