@@ -26,6 +26,11 @@ public class OwnableInterceptor : EmptyInterceptor
     public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, IType[] types)
     {
         if (entity is not IOwnable) return false;
+        var actualOwner = GetValue(state, propertyNames, nameof(IOwnable.Owner));
+        if (actualOwner is not null)
+        {
+            return false;
+        }
         SetValue(state, propertyNames, nameof(IOwnable.Owner), new User { Id = user.Id });
         return true;
     }
@@ -40,7 +45,12 @@ public class OwnableInterceptor : EmptyInterceptor
     private void SetValue(object[] state, string[] propertyNames, string propertyName, object value)
     {
         var index = Array.IndexOf(propertyNames, propertyName);
-        ;
         state[index] = value;
+    }
+
+    private object GetValue(object[] state, string[] propertyNames, string propertyName)
+    {
+        var index = Array.IndexOf(propertyNames, propertyName);
+        return state[index];
     }
 }
