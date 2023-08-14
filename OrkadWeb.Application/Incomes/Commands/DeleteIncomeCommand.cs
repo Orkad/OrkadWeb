@@ -8,20 +8,17 @@ public class DeleteIncomeCommand : ICommand
 
     public class Handler : ICommandHandler<DeleteIncomeCommand>
     {
-        private readonly IAppUser authenticatedUser;
         private readonly IDataService dataService;
 
-        public Handler(IDataService dataService, IAppUser authenticatedUser)
+        public Handler(IDataService dataService)
         {
             this.dataService = dataService;
-            this.authenticatedUser = authenticatedUser;
         }
 
         public async Task Handle(DeleteIncomeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
             var income = await dataService.GetAsync<Income>(command.Id, cancellationToken);
-            authenticatedUser.MustOwns(income);
             await dataService.DeleteAsync(income, cancellationToken);
             await context.SaveChanges(cancellationToken);
         }

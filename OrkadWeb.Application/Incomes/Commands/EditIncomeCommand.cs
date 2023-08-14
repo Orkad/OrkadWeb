@@ -20,20 +20,17 @@ public class EditIncomeCommand : ICommand
 
     public class Handler : ICommandHandler<EditIncomeCommand>
     {
-        private readonly IAppUser authenticatedUser;
         private readonly IDataService dataService;
 
-        public Handler(IDataService dataService, IAppUser authenticatedUser)
+        public Handler(IDataService dataService)
         {
             this.dataService = dataService;
-            this.authenticatedUser = authenticatedUser;
         }
 
         public async Task Handle(EditIncomeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
             var income = await dataService.GetAsync<Income>(command.Id, cancellationToken);
-            authenticatedUser.MustOwns(income);
             income.Name = command.Name;
             income.Amount = command.Amount;
             await context.SaveChanges(cancellationToken);

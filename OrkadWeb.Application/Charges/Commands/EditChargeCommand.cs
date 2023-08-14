@@ -20,20 +20,17 @@ public class EditChargeCommand : ICommand
 
     public class Handler : ICommandHandler<EditChargeCommand>
     {
-        private readonly IAppUser authenticatedUser;
         private readonly IDataService dataService;
 
-        public Handler(IDataService dataService, IAppUser authenticatedUser)
+        public Handler(IDataService dataService)
         {
             this.dataService = dataService;
-            this.authenticatedUser = authenticatedUser;
         }
 
         public async Task Handle(EditChargeCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
             var monthlyTransaction = await dataService.GetAsync<Charge>(command.Id, cancellationToken);
-            authenticatedUser.MustOwns(monthlyTransaction);
             monthlyTransaction.Name = command.Name;
             monthlyTransaction.Amount = command.Amount;
             await context.SaveChanges(cancellationToken);

@@ -20,19 +20,16 @@ namespace OrkadWeb.Application.Expenses.Commands
         public class Handler : ICommandHandler<UpdateExpenseCommand>
         {
             private readonly IDataService dataService;
-            private readonly IAppUser authenticatedUser;
 
-            public Handler(IDataService dataService, IAppUser authenticatedUser)
+            public Handler(IDataService dataService)
             {
                 this.dataService = dataService;
-                this.authenticatedUser = authenticatedUser;
             }
 
             public async Task Handle(UpdateExpenseCommand request, CancellationToken cancellationToken)
             {
                 using var context = dataService.Context();
                 var transaction = await dataService.GetAsync<Transaction>(request.Id, cancellationToken);
-                authenticatedUser.MustOwns(transaction);
                 transaction.Date = request.Date;
                 transaction.Name = request.Name;
                 transaction.Amount = request.Amount;

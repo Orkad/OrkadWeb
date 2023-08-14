@@ -19,7 +19,6 @@ public class DeleteChargeCommand : ICommand
         {
             using var context = dataService.Context();
             var transaction = await dataService.GetAsync<Charge>(command.Id, cancellationToken);
-            authenticatedUser.MustOwns(transaction);
             await dataService.DeleteAsync(transaction, cancellationToken);
             await context.SaveChanges(cancellationToken);
         }

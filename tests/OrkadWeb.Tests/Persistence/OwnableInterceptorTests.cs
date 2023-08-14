@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using OrkadWeb.Application.Users;
+using OrkadWeb.Application.Users.Exceptions;
 using OrkadWeb.Domain.Consts;
 using OrkadWeb.Domain.Entities;
 using OrkadWeb.Domain.Primitives;
@@ -118,7 +119,7 @@ public class OwnableInterceptorTests
         selfSession.Flush();
         var notOwnedEntity = otherSession.Get<OwnableEntity>(1);
         notOwnedEntity.Name = "NamedChanged";
-        Check.ThatCode(() => otherSession.Flush()).Throws<SecurityException>();
+        Check.ThatCode(() => otherSession.Flush()).Throws<NotOwnedException>();
     }
 
     [TestMethod]
@@ -131,6 +132,6 @@ public class OwnableInterceptorTests
         selfSession.Save(ownedEntity);
         selfSession.Flush();
         var notOwnedEntity = otherSession.Get<OwnableEntity>(1);
-        Check.ThatCode(() => otherSession.Delete(notOwnedEntity)).Throws<SecurityException>();
+        Check.ThatCode(() => otherSession.Delete(notOwnedEntity)).Throws<NotOwnedException>();
     }
 }

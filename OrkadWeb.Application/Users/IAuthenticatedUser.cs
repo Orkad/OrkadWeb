@@ -29,28 +29,4 @@ namespace OrkadWeb.Application.Users
         /// </summary>
         string Role { get; }
     }
-
-    /// <summary>
-    /// Defines extension method for <see cref="IAppUser"/>
-    /// </summary>
-    public static class IAuthenticatedUserExtensions
-    {
-        /// <summary>
-        /// Check if the authenticated user owns the given entity.
-        /// </summary>
-        public static bool Owns(this IAppUser user, IOwnable ownable) => ownable.IsOwnedBy(user.Id);
-
-        /// <summary>
-        /// Check if the authenticated user owns this given entity.
-        /// Otherwise, throws <see cref="NotOwnedException"/>.
-        /// </summary>
-        /// <exception cref="NotOwnedException"></exception>
-        public static void MustOwns(this IAppUser user, IOwnable ownable)
-        {
-            if (!user.Owns(ownable))
-            {
-                throw new NotOwnedException();
-            }
-        }
-    }
 }
