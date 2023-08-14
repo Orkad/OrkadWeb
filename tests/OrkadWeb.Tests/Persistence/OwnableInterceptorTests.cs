@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Cfg;
+﻿using System.Security;
+using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,7 @@ public class OwnableInterceptorTests
     private class OwnableEntity : IOwnable
     {
         public virtual int Id { get; set; }
+        public virtual string Name { get; set; }
         public virtual User Owner { get; }
     }
 
@@ -32,6 +34,7 @@ public class OwnableInterceptorTests
         public OwnableEntityMap()
         {
             Id(x => x.Id).GeneratedBy.Assigned();
+            Map(x => x.Name);
             References(x => x.Owner);
         }
     }
@@ -112,7 +115,22 @@ public class OwnableInterceptorTests
             Id = 1,
         };
         selfSession.Save(ownedEntity);
+        selfSession.Flush();
         var notOwnedEntity = otherSession.Get<OwnableEntity>(1);
-        Check.ThatCode(() => otherSession);
+        notOwnedEntity.Name = "NamedChanged";
+        Check.ThatCode(() => otherSession.Flush()).Throws<SecurityException>();
+    }
+
+    [TestMethod]
+    public void ShouldDenyDeleteFromOthersTest()
+    {
+        var ownedEntity = new OwnableEntity
+        {
+            Id = 1,
+        };
+        selfSession.Save(ownedEntity);
+        selfSession.Flush();
+        var notOwnedEntity = otherSession.Get<OwnableEntity>(1);
+        Check.ThatCode(() => otherSession.Delete(notOwnedEntity)).Throws<SecurityException>();
     }
 }

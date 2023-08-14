@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security;
 using NHibernate;
 using NHibernate.Persister.Entity;
 using NHibernate.Type;
@@ -35,11 +37,40 @@ public class OwnableInterceptor : EmptyInterceptor
         return true;
     }
 
-    public override bool OnFlushDirty(object entity, object id, object[] currentState, object[] previousState,
-        string[] propertyNames,
+    public override void OnDelete(object entity, object id, object[] state, string[] propertyNames, IType[] types)
+    {
+        if (entity is not IOwnable { Owner: not null } ownable) return;
+        if (ownable.Owner.Id != user.Id)
+        {
+            throw new SecurityException("The actual user is trying to delete a not owned ownable entity");
+        }
+    }
+
+    public override void PostFlush(ICollection entities)
+    {
+        base.PostFlush(entities);
+    }
+
+    public override void PreFlush(ICollection entitites)
+    {
+        base.PreFlush(entitites);
+    }
+
+    public override bool OnFlushDirty(object entity, object id, object[] currentState, object[] previousState, string[] propertyNames,
         IType[] types)
     {
-        return base.OnFlushDirty(entity, id, currentState, previousState, propertyNames, types);
+        if (entity is not IOwnable { Owner: not null } ownable) return false;
+        if (ownable.Owner.Id != user.Id)
+        {
+            throw new SecurityException("The actual user is trying to update a not owned ownable entity");
+        }
+
+        return false;
+    }
+
+    public override void OnCollectionUpdate(object collection, object key)
+    {
+        base.OnCollectionUpdate(collection, key);
     }
 
     private void SetValue(object[] state, string[] propertyNames, string propertyName, object value)
