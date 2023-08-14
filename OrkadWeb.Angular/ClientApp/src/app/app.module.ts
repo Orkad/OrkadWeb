@@ -30,41 +30,9 @@ import { ExpenseFormDialogComponent } from './transaction/expense-form-dialog/ex
 import { TransactionComponent } from './transaction/transaction.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { MonthNavigatorComponent } from './shared/month-navigator/month-navigator.component';
+import { AppRoutingModule } from './app-routing.module';
 
 registerLocaleData(fr);
-
-const routes = [
-  {
-    path: '',
-    component: TransactionComponent,
-    canActivate: [authenticationGuard],
-  },
-  {
-    path: 'budget',
-    component: MonthlyBudgetComponent,
-    canActivate: [authenticationGuard],
-  },
-  {
-    path: 'auth',
-    component: AuthenticationComponent,
-  },
-  {
-    path: 'auth/register',
-    component: RegistrationComponent,
-    resolve: {
-      config: ConfigurationResolver,
-    },
-  },
-  {
-    path: 'auth/confirm',
-    component: EmailConfirmationComponent,
-  },
-  {
-    path: 'users',
-    component: UserListComponent,
-    canActivate: [authenticationGuard],
-  },
-] as Routes;
 
 @NgModule({
   declarations: [
@@ -90,15 +58,15 @@ const routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes),
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => localStorage.getItem('jwt')
+        tokenGetter: () => localStorage.getItem('jwt'),
       },
     }),
     MaterialModule,
     MatMomentDateModule,
     NgChartsModule,
+    AppRoutingModule,
   ],
   providers: [
     {
