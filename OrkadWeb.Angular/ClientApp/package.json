@@ -31,7 +31,7 @@
     "chart.js": "^3.8.0",
     "linq": "^4.0.1",
     "moment": "^2.29.3",
-    "ng2-charts": "^3.1.0",
+    "ng2-charts": "^4.1.1",
     "run-script-os": "^1.1.6",
     "rxjs": "~7.5.0",
     "ts-array-extensions": "^2.0.1",
