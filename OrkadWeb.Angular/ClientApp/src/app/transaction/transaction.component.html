@@ -33,8 +33,10 @@
       >
         Montant
       </th>
-      <td mat-cell *matCellDef="let expense" ngClass="column-currency">
-        <span>{{ expense.amount | currency : "EUR" }}</span>
+      <td mat-cell *matCellDef="let transaction" ngClass="column-currency">
+        <span [style]="transaction.amount < 0 ? 'color: red' : ''">{{
+          transaction.amount | currency : "EUR"
+        }}</span>
       </td>
     </ng-container>
 

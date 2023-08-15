@@ -43,7 +43,7 @@ export class ExpenseFormDialogComponent {
     if (expense) {
       this.date.setValue(moment(expense.date));
       this.name.setValue(expense.name);
-      this.amount.setValue(expense.amount);
+      this.amount.setValue(-expense.amount);
     }
   }
 
@@ -56,7 +56,7 @@ export class ExpenseFormDialogComponent {
     }
     this.expense.date = this.date.value.toDate();
     this.expense.name = this.name.value;
-    this.expense.amount = this.amount.value;
+    this.expense.amount = -this.amount.value;
     this.dialogRef.close(this.expense);
   }
 }

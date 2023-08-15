@@ -34,7 +34,7 @@ public class GetExpensesQuery : IQuery<GetExpensesQuery.Result>
         public async Task<Result> Handle(GetExpensesQuery request, CancellationToken cancellationToken)
         {
             var query = dataService.Query<Transaction>()
-                .Where(t => t.Owner.Id == authenticatedUser.Id && t.Amount > 0)
+                .Where(t => t.Owner.Id == authenticatedUser.Id && t.Amount < 0)
                 .Select(t => new Result.Row
                 {
                     Id = t.Id,

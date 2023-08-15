@@ -38,7 +38,7 @@ public class GetMonthlyExpensesQuery : IQuery<GetMonthlyExpensesQuery.Result>
             var firstDay = new DateTime(query.Month.Year, query.Month.Month, 1);
             var lastDay = firstDay.AddMonths(1);
             var q = dataService.Query<Transaction>()
-                .Where(t => t.Owner.Id == authenticatedUser.Id && t.Amount > 0 && firstDay <= t.Date && t.Date < lastDay)
+                .Where(t => t.Owner.Id == authenticatedUser.Id && t.Amount < 0 && firstDay <= t.Date && t.Date < lastDay)
                 .Select(t => new Result.Row
                 {
                     Id = t.Id,
