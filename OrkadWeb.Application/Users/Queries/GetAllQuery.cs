@@ -1,58 +1,50 @@
 ﻿using NHibernate.Linq;
-using OrkadWeb.Application.Common.Interfaces;
-using OrkadWeb.Domain.Common;
 using OrkadWeb.Domain.Consts;
-using OrkadWeb.Domain.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace OrkadWeb.Application.Users.Queries
+namespace OrkadWeb.Application.Users.Queries;
+
+/// <summary>
+/// Get all registered users
+/// </summary>
+public class GetAllUsersQuery : IQuery<List<GetAllUsersQuery.Result>>
 {
-    /// <summary>
-    /// Get all registered users
-    /// </summary>
-    public class GetAllUsersQuery : IQuery<List<GetAllUsersQuery.Result>>
+    public class Result
     {
-        public class Result
+        public int Id { get; set; }
+        public string Name { get; init; }
+        public string Email { get; set; }
+        public string Role { get; init; }
+    }
+
+    internal class Handler : IQueryHandler<GetAllUsersQuery, List<Result>>
+    {
+        private readonly IDataService dataService;
+        private readonly IAppUser authenticatedUser;
+
+
+        public Handler(IDataService dataService, IAppUser authenticatedUser)
         {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public string Email { get; set; }
-            public string Role { get; set; }
+            this.dataService = dataService;
+            this.authenticatedUser = authenticatedUser;
         }
-
-        internal class Handler : IQueryHandler<GetAllUsersQuery, List<Result>>
+        public async Task<List<Result>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            private readonly IDataService dataService;
-            private readonly IAppUser authenticatedUser;
-
-
-            public Handler(IDataService dataService, IAppUser authenticatedUser)
+            if (authenticatedUser.Role != UserRoles.Admin)
             {
-                this.dataService = dataService;
-                this.authenticatedUser = authenticatedUser;
+                throw new SecurityException();
             }
-            public async Task<List<Result>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
-            {
-                if (authenticatedUser.Role != UserRoles.Admin)
+            return await dataService.Query<User>()
+                .Select(u => new Result
                 {
-                    throw new SecurityException();
-                }
-                return await dataService.Query<User>()
-                    .Select(u => new Result
-                    {
-                        Id = u.Id,
-                        Name = u.Username,
-                        Email = u.Email,
-                        Role = u.Role,
-                    })
-                    .ToListAsync(cancellationToken);
-            }
+                    Id = u.Id,
+                    Name = u.Username,
+                    Email = u.Email,
+                    Role = u.Role,
+                })
+                .ToListAsync(cancellationToken);
         }
     }
 }

@@ -1,27 +1,26 @@
 ﻿using OrkadWeb.Application.Users.Commands;
 
-namespace OrkadWeb.Application.Users.Notifications
+namespace OrkadWeb.Application.Users.Notifications;
+
+public class UserRegisteredNotification : INotification
 {
-    public class UserRegisteredNotification : INotification
+    public string UserName { get; init; }
+
+    public class Handler : INotificationHandler<UserRegisteredNotification>
     {
-        public string UserName { get; set; }
+        private readonly ISender sender;
 
-        public class Handler : INotificationHandler<UserRegisteredNotification>
+        public Handler(ISender sender)
         {
-            private readonly ISender sender;
-
-            public Handler(ISender sender)
+            this.sender = sender;
+        }
+        public async Task Handle(UserRegisteredNotification notification, CancellationToken cancellationToken)
+        {
+            var command = new SendEmailConfirmCommand
             {
-                this.sender = sender;
-            }
-            public async Task Handle(UserRegisteredNotification notification, CancellationToken cancellationToken)
-            {
-                var command = new SendEmailConfirmCommand
-                {
-                    Username = notification.UserName
-                };
-                await sender.Send(command, cancellationToken);
-            }
+                Username = notification.UserName
+            };
+            await sender.Send(command, cancellationToken);
         }
     }
 }

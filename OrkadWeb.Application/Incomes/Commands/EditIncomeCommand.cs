@@ -1,12 +1,10 @@
-﻿using OrkadWeb.Application.Common.Exceptions;
-
-namespace OrkadWeb.Application.MonthlyTransactions.Commands;
+﻿namespace OrkadWeb.Application.MonthlyTransactions.Commands;
 
 public class EditIncomeCommand : ICommand
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public decimal Amount { get; set; }
+    public int Id { get; init; }
+    public string Name { get; init; }
+    public decimal Amount { get; init; }
 
     public class Validator : AbstractValidator<EditIncomeCommand>
     {

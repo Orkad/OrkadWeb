@@ -1,10 +1,8 @@
-﻿using OrkadWeb.Application.Common.Exceptions;
-
-namespace OrkadWeb.Application.MonthlyTransactions.Commands;
+﻿namespace OrkadWeb.Application.MonthlyTransactions.Commands;
 
 public class DeleteIncomeCommand : ICommand
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
     public class Handler : ICommandHandler<DeleteIncomeCommand>
     {

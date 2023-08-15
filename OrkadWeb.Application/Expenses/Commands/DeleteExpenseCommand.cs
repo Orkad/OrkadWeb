@@ -1,25 +1,24 @@
-﻿namespace OrkadWeb.Application.Expenses.Commands
+﻿namespace OrkadWeb.Application.Expenses.Commands;
+
+public class DeleteExpenseCommand : ICommand
 {
-    public class DeleteExpenseCommand : ICommand
+    public int Id { get; init; }
+
+    public class Handler : ICommandHandler<DeleteExpenseCommand>
     {
-        public int Id { get; set; }
+        private readonly IDataService dataService;
 
-        public class Handler : ICommandHandler<DeleteExpenseCommand>
+        public Handler(IDataService dataService)
         {
-            private readonly IDataService dataService;
+            this.dataService = dataService;
+        }
 
-            public Handler(IDataService dataService)
-            {
-                this.dataService = dataService;
-            }
-
-            public async Task Handle(DeleteExpenseCommand request, CancellationToken cancellationToken)
-            {
-                using var context = dataService.Context();
-                var transaction = await dataService.GetAsync<Transaction>(request.Id, cancellationToken);
-                await dataService.DeleteAsync(transaction, cancellationToken);
-                await context.SaveChanges(cancellationToken);
-            }
+        public async Task Handle(DeleteExpenseCommand request, CancellationToken cancellationToken)
+        {
+            using var context = dataService.Context();
+            var transaction = await dataService.GetAsync<Transaction>(request.Id, cancellationToken);
+            await dataService.DeleteAsync(transaction, cancellationToken);
+            await context.SaveChanges(cancellationToken);
         }
     }
 }

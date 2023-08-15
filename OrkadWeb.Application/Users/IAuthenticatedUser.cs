@@ -1,32 +1,27 @@
-﻿using OrkadWeb.Domain.Entities;
-using OrkadWeb.Application.Users.Exceptions;
-using OrkadWeb.Domain.Primitives;
+﻿namespace OrkadWeb.Application.Users;
 
-namespace OrkadWeb.Application.Users
+/// <summary>
+/// Représente un utilisateur connecté sur notre application
+/// </summary>
+public interface IAppUser
 {
     /// <summary>
-    /// Représente un utilisateur connecté sur notre application
+    /// L'identifiant unique de l'utilisateur
     /// </summary>
-    public interface IAppUser
-    {
-        /// <summary>
-        /// L'identifiant unique de l'utilisateur
-        /// </summary>
-        int Id { get; }
+    int Id { get; }
 
-        /// <summary>
-        /// Nom d'affichage de l'utilisateur
-        /// </summary>
-        string Name { get; }
+    /// <summary>
+    /// Nom d'affichage de l'utilisateur
+    /// </summary>
+    string Name { get; }
 
-        /// <summary>
-        /// Adresse email de contact associé à l'utilisateur
-        /// </summary>
-        string Email { get; }
+    /// <summary>
+    /// Adresse email de contact associé à l'utilisateur
+    /// </summary>
+    string Email { get; }
 
-        /// <summary>
-        /// Role de l'utilisateur connecté
-        /// </summary>
-        string Role { get; }
-    }
+    /// <summary>
+    /// Role de l'utilisateur connecté
+    /// </summary>
+    string Role { get; }
 }

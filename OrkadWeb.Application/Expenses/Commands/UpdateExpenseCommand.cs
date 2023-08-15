@@ -1,40 +1,31 @@
-﻿using MediatR;
-using OrkadWeb.Domain;
-using OrkadWeb.Domain.Entities;
-using OrkadWeb.Application.Users;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using OrkadWeb.Domain.Common;
-using OrkadWeb.Application.Common.Interfaces;
+﻿using System;
 
-namespace OrkadWeb.Application.Expenses.Commands
+namespace OrkadWeb.Application.Expenses.Commands;
+
+public class UpdateExpenseCommand : ICommand
 {
-    public class UpdateExpenseCommand : ICommand
+    public int Id { get; init; }
+    public DateTime Date { get; init; }
+    public string Name { get; init; }
+    public decimal Amount { get; init; }
+
+    public class Handler : ICommandHandler<UpdateExpenseCommand>
     {
-        public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public string Name { get; set; }
-        public decimal Amount { get; set; }
+        private readonly IDataService dataService;
 
-        public class Handler : ICommandHandler<UpdateExpenseCommand>
+        public Handler(IDataService dataService)
         {
-            private readonly IDataService dataService;
+            this.dataService = dataService;
+        }
 
-            public Handler(IDataService dataService)
-            {
-                this.dataService = dataService;
-            }
-
-            public async Task Handle(UpdateExpenseCommand request, CancellationToken cancellationToken)
-            {
-                using var context = dataService.Context();
-                var transaction = await dataService.GetAsync<Transaction>(request.Id, cancellationToken);
-                transaction.Date = request.Date;
-                transaction.Name = request.Name;
-                transaction.Amount = request.Amount;
-                await context.SaveChanges(cancellationToken);
-            }
+        public async Task Handle(UpdateExpenseCommand request, CancellationToken cancellationToken)
+        {
+            using var context = dataService.Context();
+            var transaction = await dataService.GetAsync<Transaction>(request.Id, cancellationToken);
+            transaction.Date = request.Date;
+            transaction.Name = request.Name;
+            transaction.Amount = request.Amount;
+            await context.SaveChanges(cancellationToken);
         }
     }
 }

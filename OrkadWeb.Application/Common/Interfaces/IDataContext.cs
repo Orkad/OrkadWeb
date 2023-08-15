@@ -1,12 +1,8 @@
-﻿using NHibernate;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace OrkadWeb.Application.Common.Interfaces
+namespace OrkadWeb.Application.Common.Interfaces;
+
+public interface IDataContext : IDisposable
 {
-    public interface IDataContext : IDisposable
-    {
-        public Task SaveChanges(CancellationToken cancellationToken);
-    }
+    public Task SaveChanges(CancellationToken cancellationToken);
 }

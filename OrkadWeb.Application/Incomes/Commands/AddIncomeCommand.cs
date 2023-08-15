@@ -2,8 +2,8 @@
 
 public class AddIncomeCommand : ICommand<int>
 {
-    public string Name { get; set; }
-    public decimal Amount { get; set; }
+    public string Name { get; init; }
+    public decimal Amount { get; init; }
 
     public class Validator : AbstractValidator<AddIncomeCommand>
     {

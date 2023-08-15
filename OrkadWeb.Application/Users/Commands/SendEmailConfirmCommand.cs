@@ -4,7 +4,7 @@ namespace OrkadWeb.Application.Users.Commands;
 
 public class SendEmailConfirmCommand : ICommand
 {
-    public string Username { get; set; }
+    public string Username { get; init; }
 
     public class Validator : AbstractValidator<SendEmailConfirmCommand>
     {

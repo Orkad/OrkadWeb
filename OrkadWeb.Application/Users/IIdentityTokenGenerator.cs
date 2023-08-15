@@ -1,16 +1,9 @@
-﻿using OrkadWeb.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
+﻿namespace OrkadWeb.Application.Users;
 
-namespace OrkadWeb.Application.Users
+public interface IIdentityTokenGenerator
 {
-    public interface IIdentityTokenGenerator
-    {
-        /// <summary>
-        /// Generate a identity token
-        /// </summary>
-        string GenerateToken(User user);
-    }
+    /// <summary>
+    /// Generate a identity token
+    /// </summary>
+    string GenerateToken(User user);
 }

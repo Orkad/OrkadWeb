@@ -1,89 +1,76 @@
-﻿using FluentValidation;
-using OrkadWeb.Application.Common.Interfaces;
-using OrkadWeb.Domain;
-using OrkadWeb.Domain.Entities;
-using OrkadWeb.Application.Users;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using OrkadWeb.Domain.Common;
-using NHibernate;
+﻿using System;
 
-namespace OrkadWeb.Application.Expenses.Commands
+namespace OrkadWeb.Application.Expenses.Commands;
+
+/// <summary>
+/// Permet d'ajouter une dépense
+/// </summary>
+public class AddExpenseCommand : ICommand<AddExpenseCommand.Result>
 {
     /// <summary>
-    /// Permet d'ajouter une dépense
+    /// Montant de la dépense
     /// </summary>
-    public class AddExpenseCommand : ICommand<AddExpenseCommand.Result>
+    public decimal Amount { get; init; }
+
+    /// <summary>
+    /// Nom d'affichage de la dépense
+    /// </summary>
+    public string Name { get; init; }
+
+    /// <summary>
+    /// Date de la dépense (optionnel)
+    /// </summary>
+    public DateTime? Date { get; init; }
+
+    /// <summary>
+    /// Résultat de l'ajout d'une dépense
+    /// </summary>
+    public class Result
     {
         /// <summary>
-        /// Montant de la dépense
+        /// Identifiant unique de la dépense créée
         /// </summary>
-        public decimal Amount { get; set; }
+        public int Id { get; set; }
+    }
 
-        /// <summary>
-        /// Nom d'affichage de la dépense
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Date de la dépense (optionnel)
-        /// </summary>
-        public DateTime? Date { get; set; }
-
-        /// <summary>
-        /// Résultat de l'ajout d'une dépense
-        /// </summary>
-        public class Result
+    public class AddExpenseValidator : AbstractValidator<AddExpenseCommand>
+    {
+        public AddExpenseValidator(ITimeProvider timeProvider)
         {
-            /// <summary>
-            /// Identifiant unique de la dépense créée
-            /// </summary>
-            public int Id { get; set; }
+            ClassLevelCascadeMode = CascadeMode.Stop;
+            RuleFor(command => command.Amount).GreaterThan(0)
+                .WithMessage("Le montant doit être suppérieur à 0€");
+            RuleFor(command => command.Name).NotEmpty()
+                .WithMessage("Le nom de la dépense doit être défini");
+            RuleFor(command => command.Date).LessThan(timeProvider.Now).When(command => command.Date.HasValue)
+                .WithMessage("La date doit être inférieure à la date du jour");
+        }
+    }
+
+    public class Handler : ICommandHandler<AddExpenseCommand, Result>
+    {
+        private readonly IDataService dataService;
+
+        public Handler(IDataService repository)
+        {
+            this.dataService = repository;
         }
 
-        public class AddExpenseValidator : AbstractValidator<AddExpenseCommand>
+        public async Task<Result> Handle(AddExpenseCommand command, CancellationToken cancellationToken)
         {
-            public AddExpenseValidator(ITimeProvider timeProvider)
+            using var context = dataService.Context();
+            var transaction = new Transaction
             {
-                ClassLevelCascadeMode = CascadeMode.Stop;
-                RuleFor(command => command.Amount).GreaterThan(0)
-                    .WithMessage("Le montant doit être suppérieur à 0€");
-                RuleFor(command => command.Name).NotEmpty()
-                    .WithMessage("Le nom de la dépense doit être défini");
-                RuleFor(command => command.Date).LessThan(timeProvider.Now).When(command => command.Date.HasValue)
-                    .WithMessage("La date doit être inférieure à la date du jour");
-            }
-        }
-
-        public class Handler : ICommandHandler<AddExpenseCommand, Result>
-        {
-            private readonly IDataService dataService;
-            private readonly IAppUser authenticatedUser;
-
-            public Handler(IDataService repository, IAppUser authenticatedUser)
+                Amount = command.Amount,
+                Date = command.Date ?? DateTime.Now,
+                Name = command.Name,
+            };
+            await dataService.InsertAsync(transaction, cancellationToken);
+            await context.SaveChanges(cancellationToken);
+            return new Result
             {
-                this.dataService = repository;
-                this.authenticatedUser = authenticatedUser;
-            }
-
-            public async Task<Result> Handle(AddExpenseCommand command, CancellationToken cancellationToken)
-            {
-                using var context = dataService.Context();
-                var transaction = new Transaction
-                {
-                    Amount = command.Amount,
-                    Date = command.Date ?? DateTime.Now,
-                    Name = command.Name,
-                    Owner = dataService.Load<User>(authenticatedUser.Id),
-                };
-                await dataService.InsertAsync(transaction, cancellationToken);
-                await context.SaveChanges(cancellationToken);
-                return new Result
-                {
-                    Id = transaction.Id,
-                };
-            }
+                Id = transaction.Id,
+            };
         }
     }
 }
