@@ -70,12 +70,12 @@ namespace OrkadWeb.Application.Users.Commands
         }
     }
 
-    public static partial class LoggerMessageDefinitions
+    internal static partial class LoggerMessageDefinitions
     {
         [LoggerMessage(Level = LogLevel.Information, Message = "email {email} of user {username} is validated")]
-        public static partial void LogEmailValidationSucess(this ILogger logger, string email, string username);
+        internal static partial void LogEmailValidationSucess(this ILogger logger, string email, string username);
 
         [LoggerMessage(Level = LogLevel.Warning, Message = "email {email} of user {username} failed: {reason}")]
-        public static partial void LogEmailValidationFail(this ILogger logger, string email, string username, string reason);
+        internal static partial void LogEmailValidationFail(this ILogger logger, string email, string username, string reason);
     }
 }

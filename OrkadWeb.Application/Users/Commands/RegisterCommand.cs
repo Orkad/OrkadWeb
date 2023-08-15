@@ -98,9 +98,9 @@ namespace OrkadWeb.Application.Users.Commands
         }
     }
 
-    public static partial class LoggerMessageDefinitions
+    internal static partial class LoggerMessageDefinitions
     {
         [LoggerMessage(Level = LogLevel.Information, Message = "user {username} successfully registered")]
-        public static partial void LogRegistration(this ILogger logger, string username);
+        internal static partial void LogRegistration(this ILogger logger, string username);
     }
 }

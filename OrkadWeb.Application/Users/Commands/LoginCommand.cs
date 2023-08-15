@@ -61,12 +61,12 @@ namespace OrkadWeb.Application.Users.Commands
         }
     }
 
-    public static partial class LoggerMessageDefinitions
+    internal static partial class LoggerMessageDefinitions
     {
         [LoggerMessage(Level = LogLevel.Information, Message = "user {username} successfully authenticated")]
-        public static partial void LogAuthenticationSuccess(this ILogger logger, string username);
+        internal static partial void LogAuthenticationSuccess(this ILogger logger, string username);
 
         [LoggerMessage(Level = LogLevel.Information, Message = "user {username} failed to authenticate")]
-        public static partial void LogAuthenticationFailed(this ILogger logger, string username);
+        internal static partial void LogAuthenticationFailed(this ILogger logger, string username);
     }
 }
