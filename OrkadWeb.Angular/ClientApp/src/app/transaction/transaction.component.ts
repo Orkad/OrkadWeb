@@ -4,7 +4,7 @@ import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/materia
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { map } from 'rxjs';
-import { ExpenseService } from 'src/services/expense.service';
+import { TransactionService } from 'src/services/expense.service';
 import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
 import { ConfirmDialogData } from '../shared/dialog/confirm-dialog/confirm-dialog.data';
 import { DialogService } from '../shared/dialog/dialog.service';
@@ -27,7 +27,7 @@ export class TransactionComponent implements OnInit {
   displayedColumns = ['date', 'name', 'amount', 'actions'];
 
   constructor(
-    private expenseService: ExpenseService,
+    private expenseService: TransactionService,
     private dialogService: DialogService
   ) {}
 
@@ -74,7 +74,7 @@ export class TransactionComponent implements OnInit {
     this.openExpenseDialog().subscribe((expense) => {
       if (expense) {
         this.expenseService
-          .add(expense)
+          .addExpense(expense)
           .pipe(map((r) => (expense.id = r.id)))
           .subscribe();
         this.dataSource.data.push(expense);
@@ -86,7 +86,7 @@ export class TransactionComponent implements OnInit {
   editExpense(expense: ExpenseRow) {
     this.openExpenseDialog(expense).subscribe((data) => {
       if (data) {
-        this.expenseService.update(expense).subscribe();
+        this.expenseService.updateExpense(expense).subscribe();
       }
     });
   }

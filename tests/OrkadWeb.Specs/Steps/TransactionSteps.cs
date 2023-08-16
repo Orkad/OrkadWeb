@@ -2,7 +2,6 @@
 using OrkadWeb.Application.Expenses.Commands;
 using System;
 using System.Collections.Generic;
-using OrkadWeb.Application.Expenses.Queries;
 using OrkadWeb.Application.Transactions.Commands;
 using OrkadWeb.Application.Transactions.Models;
 using OrkadWeb.Application.Transactions.Queries;

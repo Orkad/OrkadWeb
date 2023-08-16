@@ -8,33 +8,39 @@ import { UpdateExpenseCommand } from 'src/api/commands/UpdateExpenseCommand';
 import { Moment } from 'moment';
 
 @Injectable({ providedIn: 'root' })
-export class ExpenseService {
+export class TransactionService {
   constructor(private httpClient: HttpClient) {}
-
-  getAll(): Observable<ExpenseRows> {
-    return this.httpClient.get<ExpenseRows>('api/expense/getAll');
-  }
 
   getMonthly(month: Moment): Observable<ExpenseRows> {
     let params = new HttpParams();
     params = params.set('month', month.toISOString());
-    return this.httpClient.get<ExpenseRows>('api/expense/getMonthly', {
+    return this.httpClient.get<ExpenseRows>(this.getEndpoint('getMonthly'), {
       params: params,
     });
   }
 
-  add(command: AddExpenseCommand | null): Observable<AddExpenseResult> {
+  addExpense(command: AddExpenseCommand | null): Observable<AddExpenseResult> {
     if (!command) {
       throw new Error('command is null');
     }
-    return this.httpClient.post<AddExpenseResult>('api/expense/add', command);
+    return this.httpClient.post<AddExpenseResult>(
+      this.getEndpoint('addExpense'),
+      command
+    );
   }
 
-  update(command: UpdateExpenseCommand): Observable<void> {
-    return this.httpClient.post<void>('api/expense/update', command);
+  updateExpense(command: UpdateExpenseCommand): Observable<void> {
+    return this.httpClient.post<void>(
+      this.getEndpoint('updateExpense'),
+      command
+    );
   }
 
   delete(id: number): Observable<void> {
-    return this.httpClient.post<void>(`api/expense/delete`, id);
+    return this.httpClient.post<void>(this.getEndpoint('delete'), id);
+  }
+
+  private getEndpoint(action: string): string {
+    return 'api/transaction/' + action;
   }
 }
