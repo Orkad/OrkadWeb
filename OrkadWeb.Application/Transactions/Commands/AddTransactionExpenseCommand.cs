@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace OrkadWeb.Application.Expenses.Commands;
+namespace OrkadWeb.Application.Transactions.Commands;
 
 /// <summary>
 /// Permet d'ajouter une dépense
 /// </summary>
-public class AddExpenseCommand : ICommand<AddExpenseCommand.Result>
+public class AddTransactionExpenseCommand : ICommand<AddTransactionExpenseCommand.Result>
 {
     /// <summary>
     /// Montant de la dépense
@@ -33,9 +33,9 @@ public class AddExpenseCommand : ICommand<AddExpenseCommand.Result>
         public int Id { get; set; }
     }
 
-    public class AddExpenseValidator : AbstractValidator<AddExpenseCommand>
+    public class Validator : AbstractValidator<AddTransactionExpenseCommand>
     {
-        public AddExpenseValidator(ITimeProvider timeProvider)
+        public Validator(ITimeProvider timeProvider)
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleFor(command => command.Amount).GreaterThan(0)
@@ -47,7 +47,7 @@ public class AddExpenseCommand : ICommand<AddExpenseCommand.Result>
         }
     }
 
-    public class Handler : ICommandHandler<AddExpenseCommand, Result>
+    public class Handler : ICommandHandler<AddTransactionExpenseCommand, Result>
     {
         private readonly IDataService dataService;
 
@@ -56,12 +56,12 @@ public class AddExpenseCommand : ICommand<AddExpenseCommand.Result>
             this.dataService = repository;
         }
 
-        public async Task<Result> Handle(AddExpenseCommand command, CancellationToken cancellationToken)
+        public async Task<Result> Handle(AddTransactionExpenseCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
             var transaction = new Transaction
             {
-                Amount = command.Amount,
+                Amount = -command.Amount,
                 Date = command.Date ?? DateTime.Now,
                 Name = command.Name,
             };

@@ -1,19 +1,23 @@
 ﻿using NHibernate.Linq;
 using OrkadWeb.Application.Expenses.Commands;
 using System;
+using System.Collections.Generic;
 using OrkadWeb.Application.Expenses.Queries;
+using OrkadWeb.Application.Transactions.Commands;
+using OrkadWeb.Application.Transactions.Models;
+using OrkadWeb.Application.Transactions.Queries;
 using TechTalk.SpecFlow;
 
 namespace OrkadWeb.Specs.Steps
 {
     [Binding]
-    public class ExpenseSteps
+    public class TransactionSteps
     {
         private readonly ISender sender;
         private readonly IDataService dataService;
-        private GetMonthlyExpensesQuery.Result displayExpensesResult;
+        private List<TransactionVM> transactions;
 
-        public ExpenseSteps(ISender sender, IDataService dataService)
+        public TransactionSteps(ISender sender, IDataService dataService)
         {
             this.sender = sender;
             this.dataService = dataService;
@@ -22,7 +26,7 @@ namespace OrkadWeb.Specs.Steps
         [When(@"j'ajoute la dépense de (.*)€ à la date du (.*) que j'appelle (.*)")]
         public async Task WhenJAjouteLaDepenseDeALaDateDuQueJAppelle(decimal amount, DateTime date, string name)
         {
-            await sender.Send(new AddExpenseCommand
+            await sender.Send(new AddTransactionExpenseCommand
             {
                 Amount = amount,
                 Date = date,
@@ -30,34 +34,35 @@ namespace OrkadWeb.Specs.Steps
             });
         }
 
-        [Given(@"les dépenses suivantes")]
+        [Given(@"les transactions suivantes")]
         public void GivenLesDepensesSuivantes(Table table)
         {
-            var transactions = table.CreateSet<Transaction>(row => new Transaction
+            table.CreateSet<Transaction>(row =>
             {
-                Amount = row.GetDecimal("montant"),
-                Date = row.GetDateTime("date"),
-                Name = row.GetString("nom"),
-                Owner = dataService.Query<User>()
+                var tx = new Transaction
+                {
+                    Amount = row.GetDecimal("montant"),
+                    Date = row.GetDateTime("date"),
+                    Name = row.GetString("nom"),
+                    Owner = dataService.Query<User>()
                         .Single(u => u.Username == row.GetString("propriétaire"))
+                };
+                dataService.Insert(tx);
+                return tx;
             });
-            foreach (var transaction in transactions)
-            {
-                dataService.Insert(transaction);
-            }
         }
 
         [When(@"j'affiche la liste de mes dépenses sur le mois de (.*)")]
         public async Task WhenJafficheLaListeDeMesDepensesSurLeMoisDeJuillet(DateTime month)
         {
-            displayExpensesResult = await sender.Send(new GetMonthlyExpensesQuery
+            transactions = await sender.Send(new GetTransactionsQuery
             {
                 Month = month,
             });
         }
-
-        [Then(@"mes dépenses sont les suivantes")]
-        public void ThenMesDepensesSontLesSuivantes(Table table)
+        
+        [Then(@"mes transactions sont les suivantes")]
+        public void ThenMesTransactionsSontLesSuivantes(Table table)
         {
             var expecteds = table.CreateSet<Transaction>(row => new Transaction
             {
@@ -65,7 +70,7 @@ namespace OrkadWeb.Specs.Steps
                 Date = row.GetDateTime("date"),
                 Name = row.GetString("nom"),
             }).ToList();
-            var displayedRows = displayExpensesResult.Rows;
+            var displayedRows = transactions;
             Check.That(displayedRows).HasSize(expecteds.Count);
             foreach (var expected in expecteds)
             {
@@ -78,7 +83,7 @@ namespace OrkadWeb.Specs.Steps
         [Then(@"il n'y aucune dépense affichée")]
         public void ThenIlNyAucuneDepenseAffichee()
         {
-            Check.That(displayExpensesResult.Rows).IsEmpty();
+            Check.That(transactions).IsEmpty();
         }
 
         [When(@"je modifie la dépense ""(.*)"" par")]
@@ -91,7 +96,7 @@ namespace OrkadWeb.Specs.Steps
                 Name = row.GetString("nom"),
             }).Single();
             var id = dataService.Query<Transaction>().Single(t => t.Name == name).Id;
-            sender.Send(new UpdateExpenseCommand
+            sender.Send(new UpdateTransactionExpenseCommand
             {
                 Id = id,
                 Amount = dto.Amount,
@@ -104,7 +109,7 @@ namespace OrkadWeb.Specs.Steps
         public void WhenJeSupprimeLaDepense(string name)
         {
             var id = dataService.Query<Transaction>().Single(t => t.Name == name).Id;
-            sender.Send(new DeleteExpenseCommand()
+            sender.Send(new DeleteTransactionCommand()
             {
                 Id = id,
             });

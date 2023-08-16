@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrkadWeb.Application.Expenses.Commands;
 using OrkadWeb.Application.Expenses.Queries;
+using OrkadWeb.Application.Transactions.Commands;
 
 namespace OrkadWeb.Angular.Controllers;
 
@@ -35,13 +36,13 @@ public class ExpenseController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<AddExpenseCommand.Result> Add(AddExpenseCommand command, CancellationToken cancellationToken)
+    public async Task<AddTransactionExpenseCommand.Result> Add(AddTransactionExpenseCommand command, CancellationToken cancellationToken)
     {
         return await sender.Send(command, cancellationToken);
     }
 
     [HttpPost]
-    public async Task Update(UpdateExpenseCommand command, CancellationToken cancellationToken)
+    public async Task Update(UpdateTransactionExpenseCommand command, CancellationToken cancellationToken)
     {
         await sender.Send(command, cancellationToken);
     }
@@ -49,6 +50,6 @@ public class ExpenseController : ControllerBase
     [HttpPost]
     public async Task Delete([FromBody] int id, CancellationToken cancellationToken)
     {
-        await sender.Send(new DeleteExpenseCommand { Id = id }, cancellationToken);
+        await sender.Send(new DeleteTransactionCommand { Id = id }, cancellationToken);
     }
 }
