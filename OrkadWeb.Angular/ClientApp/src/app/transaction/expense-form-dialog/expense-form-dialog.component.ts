@@ -5,7 +5,8 @@ import {
   MatLegacyDialogRef as MatDialogRef,
 } from '@angular/material/legacy-dialog';
 import * as moment from 'moment';
-import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
+import { TransactionService } from 'src/services/transaction.service';
+import { TransactionRow } from 'src/shared/models/transactions/TransactionRow';
 
 @Component({
   selector: 'app-expense-form-dialog',
@@ -13,6 +14,7 @@ import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
   styleUrls: ['./expense-form-dialog.component.scss'],
 })
 export class ExpenseFormDialogComponent {
+  loading: boolean;
   formGroup = new FormGroup({
     date: new FormControl(moment(), {
       nonNullable: true,
@@ -38,7 +40,8 @@ export class ExpenseFormDialogComponent {
   }
   constructor(
     public dialogRef: MatDialogRef<ExpenseFormDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public expense: ExpenseRow | null
+    @Inject(MAT_DIALOG_DATA) protected expense: TransactionRow | null,
+    private transactionService: TransactionService
   ) {
     if (expense) {
       this.date.setValue(moment(expense.date));
@@ -51,12 +54,32 @@ export class ExpenseFormDialogComponent {
     if (this.formGroup.invalid) {
       return;
     }
+    this.loading = true;
+    const formData = {
+      id: this.expense?.id ?? 0,
+      amount: this.amount.value,
+      name: this.name.value,
+      date: this.date.value.toDate(),
+    };
     if (!this.expense) {
-      this.expense = <ExpenseRow>{};
+      this.expense = <TransactionRow>{};
+      this.transactionService
+        .addExpense(formData)
+        .subscribe((data) => this.applyAndClose(data.id));
+    } else {
+      this.transactionService
+        .updateExpense(formData)
+        .subscribe(() => this.applyAndClose());
     }
-    this.expense.date = this.date.value.toDate();
-    this.expense.name = this.name.value;
-    this.expense.amount = -this.amount.value;
+  }
+
+  applyAndClose(id: number | null = null) {
+    if (this.expense) {
+      if (id) this.expense.id = id;
+      this.expense.date = this.date.value.toDate();
+      this.expense.name = this.name.value;
+      this.expense.amount = -this.amount.value;
+    }
     this.dialogRef.close(this.expense);
   }
 }

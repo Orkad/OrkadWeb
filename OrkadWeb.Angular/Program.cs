@@ -52,8 +52,8 @@ ServiceLocator.Initialize(app.Services.GetService<IServiceProviderProxy>());
 if (prod)
 {
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 

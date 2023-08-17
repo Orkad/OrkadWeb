@@ -26,8 +26,11 @@ public class GetTransactionsQuery : IQuery<List<TransactionVM>>
         
         public async Task<List<TransactionVM>> Handle(GetTransactionsQuery query, CancellationToken cancellationToken)
         {
+            var min = new DateTime(query.Month.Year, query.Month.Month, 1);
+            var max = min.AddMonths(1);
             return await dataService.Query<Transaction>()
                 .Where(t => t.Owner.Id == appUser.Id)
+                //.Where(t => min <= t.Date && t.Date < max)
                 .Where(t => t.Date.Year == query.Month.Year && t.Date.Month == query.Month.Month)
                 .Select(t => new TransactionVM
                 {

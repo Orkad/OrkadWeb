@@ -32,7 +32,7 @@
     mat-flat-button
     (click)="save()"
     color="primary"
-    [disabled]="formGroup.invalid"
+    [disabled]="formGroup.invalid || loading"
   >
     Enregistrer
   </button>

@@ -4,11 +4,11 @@ import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/materia
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { map } from 'rxjs';
-import { TransactionService } from 'src/services/expense.service';
-import { ExpenseRow } from 'src/shared/models/expenses/ExpenseRow';
+import { TransactionService } from 'src/services/transaction.service';
 import { ConfirmDialogData } from '../shared/dialog/confirm-dialog/confirm-dialog.data';
 import { DialogService } from '../shared/dialog/dialog.service';
 import { ExpenseFormDialogComponent } from './expense-form-dialog/expense-form-dialog.component';
+import { TransactionRow } from 'src/shared/models/transactions/TransactionRow';
 
 @Component({
   selector: 'app-transaction',
@@ -22,7 +22,7 @@ export class TransactionComponent implements OnInit {
   currentMonth = moment();
   month = new FormControl<Moment>(moment());
 
-  dataSource = new MatTableDataSource<ExpenseRow>();
+  dataSource = new MatTableDataSource<TransactionRow>();
   loaded = false;
   displayedColumns = ['date', 'name', 'amount', 'actions'];
 
@@ -40,8 +40,8 @@ export class TransactionComponent implements OnInit {
     if (this.month.value == null) {
       return;
     }
-    this.expenseService.getMonthly(this.month.value).subscribe((data) => {
-      this.dataSource.data = data.rows;
+    this.expenseService.getMonthly(this.month.value).subscribe((rows) => {
+      this.dataSource.data = rows;
       this.loaded = true;
     });
   }
@@ -52,7 +52,7 @@ export class TransactionComponent implements OnInit {
     );
   }
 
-  deleteExpense(row: ExpenseRow) {
+  deleteExpense(row: TransactionRow) {
     this.dialogService
       .confirm({
         text: 'Supprimer la dépense ' + row.name + ' de ' + row.amount + '€ ?',
@@ -73,25 +73,17 @@ export class TransactionComponent implements OnInit {
   addExpense() {
     this.openExpenseDialog().subscribe((expense) => {
       if (expense) {
-        this.expenseService
-          .addExpense(expense)
-          .pipe(map((r) => (expense.id = r.id)))
-          .subscribe();
         this.dataSource.data.push(expense);
         this.dataSource._updateChangeSubscription();
       }
     });
   }
 
-  editExpense(expense: ExpenseRow) {
-    this.openExpenseDialog(expense).subscribe((data) => {
-      if (data) {
-        this.expenseService.updateExpense(expense).subscribe();
-      }
-    });
+  editExpense(expense: TransactionRow) {
+    this.openExpenseDialog(expense);
   }
 
-  private openExpenseDialog(expense: ExpenseRow | null = null) {
+  private openExpenseDialog(expense: TransactionRow | null = null) {
     return this.dialogService.dialog
       .open(ExpenseFormDialogComponent, {
         data: expense,

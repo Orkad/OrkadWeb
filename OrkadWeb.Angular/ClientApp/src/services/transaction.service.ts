@@ -3,20 +3,23 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AddExpenseCommand } from 'src/shared/models/expenses/AddExpenseCommand';
 import { AddExpenseResult } from 'src/shared/models/expenses/AddExpenseResult';
-import { ExpenseRows } from 'src/shared/models/expenses/ExpenseRow';
 import { UpdateExpenseCommand } from 'src/api/commands/UpdateExpenseCommand';
 import { Moment } from 'moment';
+import { TransactionRow } from 'src/shared/models/transactions/TransactionRow';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
   constructor(private httpClient: HttpClient) {}
 
-  getMonthly(month: Moment): Observable<ExpenseRows> {
+  getMonthly(month: Moment): Observable<TransactionRow[]> {
     let params = new HttpParams();
     params = params.set('month', month.toISOString());
-    return this.httpClient.get<ExpenseRows>(this.getEndpoint('getMonthly'), {
-      params: params,
-    });
+    return this.httpClient.get<TransactionRow[]>(
+      this.getEndpoint('getMonthly'),
+      {
+        params: params,
+      }
+    );
   }
 
   addExpense(command: AddExpenseCommand | null): Observable<AddExpenseResult> {
@@ -41,6 +44,6 @@ export class TransactionService {
   }
 
   private getEndpoint(action: string): string {
-    return 'api/transaction/' + action;
+    return 'api/transactions/' + action;
   }
 }
