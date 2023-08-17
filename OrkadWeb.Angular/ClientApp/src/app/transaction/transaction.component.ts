@@ -20,7 +20,7 @@ export class TransactionComponent implements OnInit {
   readonly maxAmount = 10000;
 
   currentMonth = moment();
-  month = new FormControl<Moment>(moment());
+  month = new FormControl<Moment>(moment(), { nonNullable: true });
 
   dataSource = new MatTableDataSource<TransactionRow>();
   loaded = false;

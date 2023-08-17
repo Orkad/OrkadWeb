@@ -67,4 +67,8 @@
       <mat-icon>add</mat-icon>
     </button>
   </div>
+  <app-transaction-chart
+    [month]="month.value.toDate()"
+    [transactions]="dataSource.data"
+  ></app-transaction-chart>
 </div>

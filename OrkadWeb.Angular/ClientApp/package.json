@@ -29,6 +29,7 @@
     "@auth0/angular-jwt": "^5.1.2",
     "@microsoft/signalr": "^6.0.13",
     "chart.js": "^3.8.0",
+    "chartjs-adapter-moment": "^1.0.1",
     "linq": "^4.0.1",
     "moment": "^2.29.3",
     "ng2-charts": "^4.1.1",
