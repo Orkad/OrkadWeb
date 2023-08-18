@@ -31,8 +31,9 @@ export class TransactionChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    this.refresh();
+    if (changes['transactions']) {
+      this.refresh();
+    }
   }
 
   refresh(): void {
