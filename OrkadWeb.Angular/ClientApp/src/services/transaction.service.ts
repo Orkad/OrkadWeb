@@ -6,6 +6,7 @@ import { AddExpenseResult } from 'src/shared/models/expenses/AddExpenseResult';
 import { UpdateExpenseCommand } from 'src/api/commands/UpdateExpenseCommand';
 import { Moment } from 'moment';
 import { TransactionRow } from 'src/shared/models/transactions/TransactionRow';
+import { TransactionChartPoint } from 'src/shared/models/transactions/TransactionChartPoint';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
@@ -16,6 +17,17 @@ export class TransactionService {
     params = params.set('month', month.toISOString());
     return this.httpClient.get<TransactionRow[]>(
       this.getEndpoint('getMonthly'),
+      {
+        params: params,
+      }
+    );
+  }
+
+  getChartData(month: Moment): Observable<TransactionChartPoint[]> {
+    let params = new HttpParams();
+    params = params.set('month', month.toISOString());
+    return this.httpClient.get<TransactionChartPoint[]>(
+      this.getEndpoint('getChartData'),
       {
         params: params,
       }

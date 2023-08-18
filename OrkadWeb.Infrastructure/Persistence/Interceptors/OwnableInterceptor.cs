@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security;
 using NHibernate;
 using NHibernate.Persister.Entity;
+using NHibernate.SqlCommand;
 using NHibernate.Type;
 using OrkadWeb.Application.Users;
 using OrkadWeb.Application.Users.Exceptions;

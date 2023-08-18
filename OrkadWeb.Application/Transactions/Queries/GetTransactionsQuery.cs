@@ -11,7 +11,7 @@ public class GetTransactionsQuery : IQuery<List<TransactionVM>>
     /// <summary>
     /// Month criteria
     /// </summary>
-    public DateTime Month { get; set; }
+    public DateTime Month { get; init; }
 
     class Handler : IQueryHandler<GetTransactionsQuery, List<TransactionVM>>
     {

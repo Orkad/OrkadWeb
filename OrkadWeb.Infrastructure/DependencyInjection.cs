@@ -16,6 +16,7 @@ using OrkadWeb.Infrastructure.Services;
 using System;
 using System.Net;
 using System.Reflection;
+using NHibernate.Dialect;
 using OrkadWeb.Infrastructure.Persistence.Interceptors;
 
 namespace OrkadWeb.Infrastructure
@@ -72,7 +73,7 @@ namespace OrkadWeb.Infrastructure
             var fluentConfig = Fluently.Configure();
             fluentConfig = databaseType switch
             {
-                "mysql" or "mariadb" => fluentConfig.Database(MySQLConfiguration.Standard.ConnectionString(connectionString)),
+                "mysql" or "mariadb" => fluentConfig.Database(MySQLConfiguration.Standard.ConnectionString(connectionString).Dialect<MySQL5Dialect>()),
                 "sqlite" => fluentConfig.Database(SQLiteConfiguration.Standard.ConnectionString(connectionString)),
                 _ => throw new NotImplementedException(),
             };

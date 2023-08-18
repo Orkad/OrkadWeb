@@ -30,8 +30,13 @@ public class TransactionController : ControllerBase
     {
         return await sender.Send(new GetTransactionsQuery { Month = month }, cancellationToken);
     }
-    
-    
+
+    [HttpGet]
+    public async Task<List<TransactionChartPoint>> GetChartData([FromQuery] DateTime month,
+        CancellationToken cancellationToken)
+    {
+        return await sender.Send(new GetTransactionChartDataQuery { Month = month }, cancellationToken);
+    }
 
     [HttpPost]
     public async Task<AddTransactionExpenseCommand.Result> AddExpense(AddTransactionExpenseCommand command, CancellationToken cancellationToken)
