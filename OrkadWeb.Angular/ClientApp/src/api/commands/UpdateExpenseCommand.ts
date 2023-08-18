@@ -1,9 +1,9 @@
 ﻿/** Auto generated file (do not modify) */
-export interface UpdateExpenseCommand { 
+export interface UpdateExpenseCommand {
   /**  */
   id: number;
   /**  */
-  date: Date;
+  date: string;
   /**  */
   name: string;
   /**  */

@@ -1,5 +1,5 @@
 export interface AddExpenseCommand {
-  date: Date;
+  date: string;
   amount: number;
   name: string;
 }

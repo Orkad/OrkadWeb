@@ -59,7 +59,7 @@ export class ExpenseFormDialogComponent {
       id: this.expense?.id ?? 0,
       amount: this.amount.value,
       name: this.name.value,
-      date: this.date.value.toDate(),
+      date: this.date.value.format('YYYY-MM-DD'),
     };
     if (!this.expense) {
       this.expense = <TransactionRow>{};
