@@ -20,7 +20,6 @@ import { TransactionChartPoint } from 'src/shared/models/transactions/Transactio
 })
 export class TransactionChartComponent implements OnInit, OnChanges {
   @Input() month: Date;
-  @Input() transactions: TransactionRow[];
 
   constructor(private transactionService: TransactionService) {}
 
@@ -33,9 +32,7 @@ export class TransactionChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['transactions']) {
-      this.refresh();
-    }
+    console.log(changes);
   }
 
   refresh(): void {
@@ -43,29 +40,20 @@ export class TransactionChartComponent implements OnInit, OnChanges {
     this.transactionService
       .getChartData(mMonth)
       .subscribe((points) => this.setChartData(points));
-    // const group = this.transactions
-    //   .sort((t1, t2) => moment(t1.date).valueOf() - moment(t2.date).valueOf())
-    //   .groupBy(
-    //     (t) => moment(t.date),
-    //     (a, b) => a.isSame(b)
-    //   );
-    // const sumByDay = group.map((g) => ({
-    //   day: g.key,
-    //   amount: g.values.map((t) => t.amount).sum(),
-    // }));
-    // const tx = sumByDay.reduce((acc, cur) => {
-    //   acc.push({
-    //     x: cur.day,
-    //     y: (acc.length > 0 ? acc[acc.length - 1].y : 0) + cur.amount,
-    //   });
-    //   return acc;
-    // }, new Array<{ x: moment.Moment; y: number }>());
   }
 
   setChartData(points: TransactionChartPoint[]) {
     this.lineChartOptions = {
       locale: 'fr-FR',
       responsive: false,
+      datasets: {
+        line: {
+          borderColor: '#000',
+          pointBorderColor: '#000',
+          pointBackgroundColor: '#fff',
+          backgroundColor: 'rgba(63, 81, 181, 200)',
+        },
+      },
       scales: {
         x: {
           min: moment(this.month).startOf('month').toString(),
