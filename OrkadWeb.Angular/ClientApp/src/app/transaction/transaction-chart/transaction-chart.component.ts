@@ -43,6 +43,7 @@ export class TransactionChartComponent implements OnInit, OnChanges {
   }
 
   refresh(): void {
+    this.setChartData([]);
     const mMonth = moment(this.month);
     this.transactionService
       .getChartData(mMonth)
@@ -51,6 +52,9 @@ export class TransactionChartComponent implements OnInit, OnChanges {
 
   setChartData(points: TransactionChartPoint[]) {
     this.lineChartOptions = {
+      animation: {
+        duration: 300,
+      },
       locale: 'fr-FR',
       responsive: false,
       datasets: {
