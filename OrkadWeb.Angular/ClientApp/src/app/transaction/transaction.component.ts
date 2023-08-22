@@ -71,16 +71,23 @@ export class TransactionComponent implements OnInit {
   }
 
   addExpense() {
-    this.openExpenseDialog().subscribe((expense) => {
+    this.openExpenseDialog().subscribe((expense: TransactionRow) => {
       if (expense) {
-        this.dataSource.data.push(expense);
-        this.dataSource._updateChangeSubscription();
+        if (moment(expense.date).isSame(this.month.value, 'month')) {
+          this.dataSource.data.push(expense);
+          this.dataSource._updateChangeSubscription();
+        }
       }
     });
   }
 
   editExpense(expense: TransactionRow) {
-    this.openExpenseDialog(expense);
+    this.openExpenseDialog(expense).subscribe((expense) => {
+      if (!moment(expense.date).isSame(this.month.value, 'month')) {
+        this.dataSource.data.remove(expense);
+        this.dataSource._updateChangeSubscription();
+      }
+    });
   }
 
   private openExpenseDialog(expense: TransactionRow | null = null) {
