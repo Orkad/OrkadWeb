@@ -32,7 +32,14 @@ export class TransactionChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+    const monthChanges = changes['month'];
+    if (monthChanges) {
+      if (
+        !moment(monthChanges.currentValue).isSame(monthChanges.previousValue)
+      ) {
+        this.refresh();
+      }
+    }
   }
 
   refresh(): void {

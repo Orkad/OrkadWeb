@@ -6,6 +6,14 @@
     ></app-month-navigator>
   </div>
 
+  <app-transaction-chart [month]="month.value.toDate()"></app-transaction-chart>
+
+  <div class="bottom-table-button">
+    <button mat-mini-fab (click)="addExpense()" color="primary">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
   <table id="expense-table" mat-table [dataSource]="dataSource">
     <!-- Date Column -->
     <ng-container matColumnDef="date">
@@ -62,10 +70,4 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-  <div class="bottom-table-button">
-    <button mat-mini-fab (click)="addExpense()" color="primary">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
-  <app-transaction-chart [month]="month.value.toDate()"></app-transaction-chart>
 </div>
