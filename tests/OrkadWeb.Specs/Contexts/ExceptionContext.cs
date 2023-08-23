@@ -1,23 +1,22 @@
 ﻿using System;
-using TechTalk.SpecFlow;
 
 namespace OrkadWeb.Specs.Contexts
 {
     [Binding]
     public class ExceptionContext
     {
-        private Exception? exception;
+        private Exception pendingException;
 
-        public Exception? HandleException()
+        public Exception HandleException()
         {
-            var exception = this.exception;
-            this.exception = null;
+            var exception = pendingException;
+            pendingException = null;
             return exception;
         }
 
         public void SetException(Exception exception)
         {
-            this.exception = exception;
+            pendingException = exception;
         }
     }
 }

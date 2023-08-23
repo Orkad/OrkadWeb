@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using Microsoft.Extensions.Logging;
 using OrkadWeb.Application.Security;
 using static OrkadWeb.Application.Users.Commands.LoginCommand;
 
@@ -58,13 +59,4 @@ public class LoginCommand : ICommand<Result>
             return result;
         }
     }
-}
-
-internal static partial class LoggerMessageDefinitions
-{
-    [LoggerMessage(Level = LogLevel.Information, Message = "user {Username} successfully authenticated")]
-    internal static partial void LogAuthenticationSuccess(this ILogger logger, string username);
-
-    [LoggerMessage(Level = LogLevel.Information, Message = "user {Username} failed to authenticate")]
-    internal static partial void LogAuthenticationFailed(this ILogger logger, string username);
 }

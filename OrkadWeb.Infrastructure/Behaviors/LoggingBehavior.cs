@@ -49,18 +49,3 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         }
     }
 }
-
-public static partial class LoggerMessageDefinitions
-{
-    [LoggerMessage(Level = LogLevel.Debug, Message = "[QUERY] [{query} {data}] Done")]
-    public static partial void LogQueryDone(this ILogger logger, string query, string data);
-
-    [LoggerMessage(Level = LogLevel.Error, Message = "[QUERY] [{query} {data}] Failed: {exception}")]
-    public static partial void LogQueryFailed(this ILogger logger, string query, string data, Exception exception);
-
-    [LoggerMessage(Level = LogLevel.Information, Message = "[COMMAND] [{command} {data}] Done")]
-    public static partial void LogCommandDone(this ILogger logger, string command, string data);
-
-    [LoggerMessage(Level = LogLevel.Error, Message = "[COMMAND] [{command} {data}] Failed\r\n{exception}")]
-    public static partial void LogCommandFailed(this ILogger logger, string command, string data, Exception exception);
-}
