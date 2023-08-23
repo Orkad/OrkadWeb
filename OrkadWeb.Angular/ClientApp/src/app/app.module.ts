@@ -32,6 +32,7 @@ import { UserListComponent } from './user-list/user-list.component';
 import { MonthNavigatorComponent } from './shared/month-navigator/month-navigator.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TransactionChartComponent } from './transaction/transaction-chart/transaction-chart.component';
+import { TransactionTableComponent } from './transaction/transaction-table/transaction-table.component';
 
 registerLocaleData(fr);
 
@@ -53,6 +54,7 @@ registerLocaleData(fr);
     DisplayComponent,
     MonthNavigatorComponent,
     TransactionChartComponent,
+    TransactionTableComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

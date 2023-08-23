@@ -1,21 +1,5 @@
 @use "@angular/material" as mat;
 
-#expense-table {
-  .mat-column-date {
-    width: 120px;
-  }
-  .mat-column-name {
-    width: 250px;
-  }
-  .mat-column-amount {
-    width: 120px;
-  }
-
-  .mat-column-actions {
-    width: 80px;
-  }
-}
-
 #add-expense-form {
   padding-top: 8px;
   padding-left: 24px;
