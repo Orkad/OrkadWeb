@@ -7,6 +7,7 @@
   </div>
   <div class="hflex">
     <app-transaction-chart
+      #transactionChart
       [month]="month.value.toDate()"
     ></app-transaction-chart>
     <div class="bottom-table-button">
@@ -17,6 +18,7 @@
     <app-transaction-table
       #transactionTable
       [month]="month.value.toDate()"
+      (transactionChange)="transactionChart.refresh()"
     ></app-transaction-table>
   </div>
 </div>

@@ -1,9 +1,11 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -25,7 +27,10 @@ export class TransactionTableComponent
   implements OnInit, AfterViewInit, OnChanges
 {
   // ### Binding properties ###
+  /** the date representing the targeted month for displaying data */
   @Input() month = new Date();
+  /** triggered when a transaction is added/updated/deleted */
+  @Output() transactionChange = new EventEmitter<TransactionRow>();
 
   // ### UI properties ###
   dataSource = new MatTableDataSource<TransactionRow>();
@@ -75,6 +80,7 @@ export class TransactionTableComponent
           this.transactionService.delete(row.id).subscribe(() => {
             this.dataSource.data.remove(row);
             this.dataSource._updateChangeSubscription();
+            this.transactionChange.emit(row);
           });
         }
       });
@@ -87,9 +93,12 @@ export class TransactionTableComponent
       })
       .afterClosed()
       .subscribe((expense) => {
-        if (!moment(expense.date).isSame(moment(this.month), 'month')) {
-          this.dataSource.data.remove(expense);
-          this.dataSource._updateChangeSubscription();
+        if (expense) {
+          if (!moment(expense.date).isSame(moment(this.month), 'month')) {
+            this.dataSource.data.remove(expense);
+            this.dataSource._updateChangeSubscription();
+          }
+          this.transactionChange.emit(expense);
         }
       });
   }
@@ -105,6 +114,7 @@ export class TransactionTableComponent
           if (moment(expense.date).isSame(moment(this.month), 'month')) {
             this.dataSource.data.push(expense);
             this.dataSource._updateChangeSubscription();
+            this.transactionChange.emit(expense);
           }
         }
       });
