@@ -11,15 +11,15 @@ namespace OrkadWeb.Infrastructure
     {
         [LoggerMessage(
             EventId = 2000,
-            Level = LogLevel.Debug, 
+            Level = LogLevel.Debug,
             Message = "[QUERY] [{query} {data}] Done")]
         public static partial void LogQueryDone(this ILogger logger, string query, string data);
 
         [LoggerMessage(
             EventId = 2001,
-            Level = LogLevel.Error, 
-            Message = "[QUERY] [{query} {data}] Failed: {exception}")]
-        public static partial void LogQueryFailed(this ILogger logger, string query, string data, Exception exception);
+            Level = LogLevel.Error,
+            Message = "[QUERY] [{query} {data}] Failed")]
+        public static partial void LogQueryFailed(this ILogger logger, string query, string data);
 
         [LoggerMessage(
             EventId = 2002,
@@ -29,8 +29,8 @@ namespace OrkadWeb.Infrastructure
 
         [LoggerMessage(
             EventId = 2003,
-            Level = LogLevel.Error, 
-            Message = "[COMMAND] [{command} {data}] Failed\r\n{exception}")]
-        public static partial void LogCommandFailed(this ILogger logger, string command, string data, Exception exception);
+            Level = LogLevel.Error,
+            Message = "[COMMAND] [{command} {data}] Failed")]
+        public static partial void LogCommandFailed(this ILogger logger, string command, string data);
     }
 }

@@ -68,12 +68,3 @@ public class EmailConfirmCommand : ICommand
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }
-
-internal static partial class LoggerMessageDefinitions
-{
-    [LoggerMessage(Level = LogLevel.Information, Message = "email {Email} of user {Username} is validated")]
-    internal static partial void LogEmailValidationSucess(this ILogger logger, string email, string username);
-
-    [LoggerMessage(Level = LogLevel.Warning, Message = "email {Email} of user {Username} failed: {Reason}")]
-    internal static partial void LogEmailValidationFail(this ILogger logger, string email, string username, string reason);
-}

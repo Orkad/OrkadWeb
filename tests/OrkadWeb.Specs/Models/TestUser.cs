@@ -8,9 +8,9 @@ namespace OrkadWeb.Specs.Models
 {
     class TestUser : IAppUser
     {
-        private User? _user;
+        private User _user;
 
-        public void Set(User? user)
+        public void Set(User user)
         {
             this._user = user;
         }

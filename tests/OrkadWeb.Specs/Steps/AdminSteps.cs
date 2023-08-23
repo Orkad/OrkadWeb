@@ -8,7 +8,7 @@ namespace OrkadWeb.Specs.Steps
     public class AdminSteps
     {
         private readonly IMediator mediator;
-        private List<GetAllUsersQuery.Result>? results;
+        private List<GetAllUsersQuery.Result> results;
 
         public AdminSteps(IMediator mediator)
         {

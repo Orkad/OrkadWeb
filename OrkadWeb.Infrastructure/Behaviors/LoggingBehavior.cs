@@ -35,15 +35,15 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
             }
             return response;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             if (isQuery)
             {
-                logger.LogQueryFailed(requestName, json, ex);
+                logger.LogQueryFailed(requestName, json);
             }
             else // isCommand
             {
-                logger.LogCommandFailed(requestName, json, ex);
+                logger.LogCommandFailed(requestName, json);
             }
             throw;
         }

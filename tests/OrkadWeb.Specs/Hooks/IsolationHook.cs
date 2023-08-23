@@ -8,7 +8,7 @@ namespace OrkadWeb.Specs.Hooks
     [Binding]
     public class IsolationHook
     {
-        private ITransaction? transaction;
+        private ITransaction transaction;
 
         [BeforeScenario]
         public void BeforeScenario(ISession session)
