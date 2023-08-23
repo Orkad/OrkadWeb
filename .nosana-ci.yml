@@ -11,7 +11,7 @@ global:
 jobs:
   - name: build
     commands:
-      - dotnet build
+      - dotnet build -c Release
     artifacts:
       - name: dotnet
         path: ./dotnet/
