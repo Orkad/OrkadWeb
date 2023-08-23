@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { map } from 'rxjs';
@@ -9,13 +8,15 @@ import { ConfirmDialogData } from '../shared/dialog/confirm-dialog/confirm-dialo
 import { DialogService } from '../shared/dialog/dialog.service';
 import { ExpenseFormDialogComponent } from './expense-form-dialog/expense-form-dialog.component';
 import { TransactionRow } from 'src/shared/models/transactions/TransactionRow';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
   styleUrls: ['./transaction.component.scss'],
 })
-export class TransactionComponent implements OnInit {
+export class TransactionComponent implements OnInit, AfterViewInit {
   readonly minAmount = 0.01;
   readonly maxAmount = 10000;
 
@@ -25,6 +26,7 @@ export class TransactionComponent implements OnInit {
   dataSource = new MatTableDataSource<TransactionRow>();
   loaded = false;
   displayedColumns = ['date', 'name', 'amount', 'actions'];
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private expenseService: TransactionService,
@@ -34,6 +36,11 @@ export class TransactionComponent implements OnInit {
   ngOnInit(): void {
     this.refreshExpenses();
     this.month.valueChanges.subscribe(() => this.refreshExpenses());
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    console.log(this.sort);
   }
 
   private refreshExpenses() {
@@ -60,11 +67,8 @@ export class TransactionComponent implements OnInit {
       .subscribe((ok) => {
         if (ok) {
           this.expenseService.delete(row.id).subscribe(() => {
-            const index = this.dataSource.data.indexOf(row, 0);
-            if (index > -1) {
-              this.dataSource.data.splice(index, 1);
-              this.dataSource._updateChangeSubscription();
-            }
+            this.dataSource.data.remove(row);
+            this.dataSource._updateChangeSubscription();
           });
         }
       });
