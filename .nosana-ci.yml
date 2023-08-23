@@ -2,7 +2,7 @@ nosana:
   description: dotnet build
 
 global:
-  image: mcr.microsoft.com/dotnet/nightly/sdk:7.0
+  image: mcr.microsoft.com/dotnet/nightly/sdk:6.0
 
   trigger:
     branch:
