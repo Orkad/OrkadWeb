@@ -9,16 +9,6 @@ global:
       - master
 
 jobs:
-  - name: build
+  - name: build & test
     commands:
-      - dotnet build -c Release
-    artifacts:
-      - name: dotnet
-        path: ./dotnet/
-
-  - name: test
-    commands:
-      - dotnet test
-    resources:
-      - name: dotnet
-        path: ./dotnet/
+      - dotnet test -c Release
