@@ -14,13 +14,15 @@ public class GetTransactionChartDataQuery : IQuery<List<TransactionChartPoint>>
     {
         private readonly IDataService dataService;
         private readonly IAppUser appUser;
+        private readonly ITimeProvider timeProvider;
 
-        public Handler(IDataService dataService, IAppUser appUser)
+        public Handler(IDataService dataService, IAppUser appUser, ITimeProvider timeProvider)
         {
             this.dataService = dataService;
             this.appUser = appUser;
+            this.timeProvider = timeProvider;
         }
-        
+
         public async Task<List<TransactionChartPoint>> Handle(GetTransactionChartDataQuery query, CancellationToken cancellationToken)
         {
             var year = query.Month.Year;
@@ -56,6 +58,18 @@ public class GetTransactionChartDataQuery : IQuery<List<TransactionChartPoint>>
                 points.Add(new TransactionChartPoint
                 {
                     X = dailyTransactions.Date,
+                    Y = amount,
+                });
+            }
+
+            var isCurrentMonth = year == timeProvider.Now.Year && month == timeProvider.Now.Month;
+            if (!isCurrentMonth)
+            {
+                var lastDay = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+                var lastY = points.Last().Y;
+                points.Add(new TransactionChartPoint
+                {
+                    X = lastDay,
                     Y = amount,
                 });
             }
