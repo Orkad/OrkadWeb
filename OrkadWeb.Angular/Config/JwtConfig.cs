@@ -13,7 +13,7 @@ namespace OrkadWeb.Angular.Config
     public class JwtConfig : IConfigureNamedOptions<JwtBearerOptions>
     {
         public const string CONFIG_KEY = "Jwt:Key";
-        public const int CONFIG_KEY_MIN_LENGTH = 16;
+        public const int CONFIG_KEY_MIN_LENGTH = 32;
         public const string CONFIG_ISSUER = "Jwt:Issuer";
         public const string CONFIG_AUDIENCE = "Jwt:Audience";
         public const int DEFAULT_EXPIRATION = 720; //12h
