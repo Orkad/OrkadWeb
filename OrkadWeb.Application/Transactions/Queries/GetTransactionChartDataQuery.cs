@@ -31,10 +31,10 @@ public class GetTransactionChartDataQuery : IQuery<List<TransactionChartPoint>>
                 .ToListAsync(cancellationToken);
             var totalCharges = await dataService.Query<Charge>()
                 .Where(c => c.Owner.Id == appUser.Id)
-                .SumAsync(c => c.Amount, cancellationToken);
+                .SumAsync(c => (decimal?)c.Amount, cancellationToken) ?? 0m;
             var totalIncomes = await dataService.Query<Income>()
                 .Where(c => c.Owner.Id == appUser.Id)
-                .SumAsync(c => c.Amount, cancellationToken);
+                .SumAsync(c => (decimal?)c.Amount, cancellationToken) ?? 0m;
             var transactionPerDays = await dataService.Query<Transaction>()
                 .Where(t => t.Owner.Id == appUser.Id)
                 .Where(t => t.Date.Year == year && t.Date.Month == month)

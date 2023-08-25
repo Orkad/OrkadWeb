@@ -6,6 +6,7 @@ using OrkadWeb.Application.Transactions.Commands;
 using OrkadWeb.Application.Transactions.Models;
 using OrkadWeb.Application.Transactions.Queries;
 using TechTalk.SpecFlow;
+using OrkadWeb.Application.Users;
 
 namespace OrkadWeb.Specs.Steps
 {
@@ -38,14 +39,18 @@ namespace OrkadWeb.Specs.Steps
         {
             table.CreateSet<Transaction>(row =>
             {
+                var proprietaire = row.GetString("propriétaire");
                 var tx = new Transaction
                 {
                     Amount = row.GetDecimal("montant"),
                     Date = row.GetDateTime("date"),
                     Name = row.GetString("nom"),
-                    Owner = dataService.Query<User>()
-                        .Single(u => u.Username == row.GetString("propriétaire"))
                 };
+                if (!string.IsNullOrEmpty(proprietaire))
+                {
+                    tx.Owner = dataService.Query<User>()
+                        .Single(u => u.Username == proprietaire);
+                }
                 dataService.Insert(tx);
                 return tx;
             });
@@ -59,7 +64,7 @@ namespace OrkadWeb.Specs.Steps
                 Month = month,
             });
         }
-        
+
         [Then(@"mes transactions sont les suivantes")]
         public void ThenMesTransactionsSontLesSuivantes(Table table)
         {
