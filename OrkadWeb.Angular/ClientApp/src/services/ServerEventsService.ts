@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HubConnectionBuilder } from '@microsoft/signalr';
+import { HttpTransportType, HubConnectionBuilder } from '@microsoft/signalr';
 import { HubConnection } from '@microsoft/signalr/dist/esm/HubConnection';
 import { Observable, Subject } from 'rxjs';
 
@@ -13,7 +13,10 @@ export class ServerEventsService implements OnDestroy {
 
   constructor() {
     this.connection = new HubConnectionBuilder()
-      .withUrl('/hub/notification')
+      .withUrl('/hub/notification', {
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets,
+      })
       .build();
     this.userLoggedIn$ = this.signalRObservable<string>('userLoggedIn');
 
