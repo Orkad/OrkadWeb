@@ -23,8 +23,60 @@ export class TransactionChartComponent implements OnInit, OnChanges {
 
   constructor(private transactionService: TransactionService) {}
 
-  lineChartData: ChartConfiguration<'line', TransactionChartPoint[]>['data'];
-  lineChartOptions: ChartConfiguration['options'];
+  lineChartData: ChartConfiguration<'line', TransactionChartPoint[]>['data'] = {
+    datasets: [
+      {
+        data: [],
+        fill: true,
+      },
+    ],
+  };
+  lineChartOptions: ChartConfiguration['options'] = {
+    animation: {
+      duration: 300,
+    },
+    locale: 'fr-FR',
+    responsive: false,
+    datasets: {
+      line: {
+        borderColor: '#000',
+        pointBorderColor: '#000',
+        pointBackgroundColor: '#fff',
+        backgroundColor: 'rgba(63, 81, 181, 200)',
+      },
+    },
+    scales: {
+      x: {
+        min: moment().startOf('month').toString(),
+        max: moment().endOf('month').toString(),
+        type: 'time',
+        time: {
+          unit: 'day',
+          displayFormats: {
+            day: 'D MMM',
+            hour: '',
+          },
+          tooltipFormat: 'DD/MM/YYYY',
+        },
+      },
+      y: {
+        suggestedMin: 0,
+        type: 'linear',
+        ticks: {
+          callback: this.euroSuffix,
+        },
+      },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            return context.parsed.y + ' \u20AC';
+          },
+        },
+      },
+    },
+  };
 
   ngOnInit(): void {
     moment.locale('fr-FR');
@@ -37,6 +89,7 @@ export class TransactionChartComponent implements OnInit, OnChanges {
       if (
         !moment(monthChanges.currentValue).isSame(monthChanges.previousValue)
       ) {
+        this.month = monthChanges.currentValue;
         this.refresh();
       }
     }
@@ -51,52 +104,15 @@ export class TransactionChartComponent implements OnInit, OnChanges {
   }
 
   setChartData(points: TransactionChartPoint[]) {
-    this.lineChartOptions = {
-      animation: {
-        duration: 300,
-      },
-      locale: 'fr-FR',
-      responsive: false,
-      datasets: {
-        line: {
-          borderColor: '#000',
-          pointBorderColor: '#000',
-          pointBackgroundColor: '#fff',
-          backgroundColor: 'rgba(63, 81, 181, 200)',
-        },
-      },
-      scales: {
-        x: {
-          min: moment(this.month).startOf('month').toString(),
-          max: moment(this.month).endOf('month').toString(),
-          type: 'time',
-          time: {
-            unit: 'day',
-            displayFormats: {
-              day: 'D MMM',
-              hour: '',
-            },
-            tooltipFormat: 'DD/MM/YYYY',
-          },
-        },
-        y: {
-          suggestedMin: 0,
-          type: 'linear',
-          ticks: {
-            callback: this.euroSuffix,
-          },
-        },
-      },
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: function (context) {
-              return context.parsed.y + ' \u20AC';
-            },
-          },
-        },
-      },
-    };
+    const scales = this.lineChartOptions?.scales;
+    if (scales) {
+      const scalex = scales['x'];
+      if (scalex) {
+        scalex.min = moment(this.month).startOf('month').toString();
+        scalex.max = moment(this.month).endOf('month').toString();
+      }
+    }
+
     this.lineChartData = {
       datasets: [
         {
