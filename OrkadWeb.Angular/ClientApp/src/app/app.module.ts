@@ -33,6 +33,7 @@ import { MonthNavigatorComponent } from './shared/month-navigator/month-navigato
 import { AppRoutingModule } from './app-routing.module';
 import { TransactionChartComponent } from './transaction/transaction-chart/transaction-chart.component';
 import { TransactionTableComponent } from './transaction/transaction-table/transaction-table.component';
+import { GainFormDialogComponent } from './transaction/gain-form-dialog/gain-form-dialog.component';
 
 registerLocaleData(fr);
 
@@ -55,6 +56,7 @@ registerLocaleData(fr);
     MonthNavigatorComponent,
     TransactionChartComponent,
     TransactionTableComponent,
+    GainFormDialogComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -17,6 +17,8 @@ import { DialogService } from 'src/app/shared/dialog/dialog.service';
 import { TransactionService } from 'src/services/transaction.service';
 import { TransactionRow } from 'src/shared/models/transactions/TransactionRow';
 import { ExpenseFormDialogComponent } from '../expense-form-dialog/expense-form-dialog.component';
+import { GainFormDialogComponent } from '../gain-form-dialog/gain-form-dialog.component';
+import { Gain } from 'src/shared/models/transactions/Gain';
 
 @Component({
   selector: 'app-transaction-table',
@@ -116,6 +118,27 @@ export class TransactionTableComponent
             this.dataSource._updateChangeSubscription();
             this.transactionChange.emit(expense);
           }
+        }
+      });
+  }
+
+  addGain() {
+    this.dialogService.dialog
+      .open(GainFormDialogComponent, {
+        data: null,
+      })
+      .afterClosed()
+      .subscribe((gain: Gain) => {
+        if (gain && moment(gain.date).isSame(moment(this.month), 'month')) {
+          const row = <TransactionRow>{
+            id: gain.id,
+            amount: gain.amount,
+            date: gain.date,
+            name: gain.name,
+          };
+          this.dataSource.data.push(row);
+          this.dataSource._updateChangeSubscription();
+          this.transactionChange.emit(row);
         }
       });
   }

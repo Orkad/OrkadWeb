@@ -1,0 +1,35 @@
+<h1 mat-dialog-title *ngIf="transactionId">Modifier un gain</h1>
+<h1 mat-dialog-title *ngIf="!transactionId">Ajouter un gain</h1>
+<div mat-dialog-content>
+  <form (submit)="save()">
+    <mat-form-field *ngIf="formGroup.controls.date as date">
+      <input matInput [matDatepicker]="picker" [formControl]="date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="date.hasError('required')">Requis</mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="formGroup.controls.name as name">
+      <mat-label>Libellé</mat-label>
+      <input matInput [formControl]="name" name="gain-name" />
+      <mat-error *ngIf="name.hasError('required')">Requis</mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="formGroup.controls.amount as amount">
+      <mat-label>Montant</mat-label>
+      <input matInput type="number" [formControl]="amount" name="gain-amount" />
+      <mat-error *ngIf="amount.hasError('required')">Requis</mat-error>
+      <mat-error *ngIf="amount.hasError('min')">Au moins 1 centime</mat-error>
+    </mat-form-field>
+    <button type="submit"></button>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button
+    mat-flat-button
+    (click)="save()"
+    color="primary"
+    [disabled]="formGroup.invalid || loading"
+  >
+    Enregistrer
+  </button>
+  <button mat-flat-button mat-dialog-close>Annuler</button>
+</div>

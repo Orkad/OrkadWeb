@@ -51,6 +51,10 @@ public class TransactionController : ControllerBase
     }
 
     [HttpPost]
+    public async Task<int> AddGain(AddTransactionGainCommand command, CancellationToken cancellationToken)
+        => await sender.Send(command, cancellationToken);
+
+    [HttpPost]
     public async Task Delete([FromBody] int id, CancellationToken cancellationToken)
     {
         await sender.Send(new DeleteTransactionCommand { Id = id }, cancellationToken);

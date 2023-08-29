@@ -14,6 +14,9 @@
       <button mat-mini-fab (click)="transactionTable.addExpense()" color="warn">
         <mat-icon>remove</mat-icon>
       </button>
+      <button mat-mini-fab (click)="transactionTable.addGain()" color="primary">
+        <mat-icon>add</mat-icon>
+      </button>
     </div>
     <app-transaction-table
       #transactionTable
