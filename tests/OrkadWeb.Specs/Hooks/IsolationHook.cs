@@ -19,10 +19,6 @@ namespace OrkadWeb.Specs.Hooks
         [AfterScenario]
         public async Task AfterScenario()
         {
-            if (transaction == null)
-            {
-                return;
-            }
             await transaction.RollbackAsync();
         }
     }
