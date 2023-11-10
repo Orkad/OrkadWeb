@@ -7,11 +7,11 @@ public class SetTransactionToNegativesMigration : Migration
 {
     public override void Up()
     {
-        Execute.Sql(@"update ""transaction"" set amount = -amount");
+        Execute.Sql(@"update `transaction` set amount = -amount");
     }
 
     public override void Down()
     {
-        Execute.Sql(@"update ""transaction"" set amount = -amount");
+        Execute.Sql(@"update `transaction` set amount = -amount");
     }
 }
