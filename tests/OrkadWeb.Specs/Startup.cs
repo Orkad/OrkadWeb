@@ -1,6 +1,8 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
@@ -16,6 +18,8 @@ using OrkadWeb.Specs.Contexts;
 using OrkadWeb.Specs.Drivers;
 using OrkadWeb.Specs.Hooks;
 using SolidToken.SpecFlow.DependencyInjection;
+using System.Net.Http;
+using System.Reflection;
 
 namespace OrkadWeb.Specs
 {
@@ -38,8 +42,10 @@ namespace OrkadWeb.Specs
             services.AddSingleton(timeContext);
             services.AddSingleton<ITimeProvider>(timeContext);
             services.AddScoped<AuthController>();
+            services.AddScoped<TransactionController>();
             services.AddScoped<IAppUser>(sp => sp.GetRequiredService<UserContext>().AuthenticatedUser);
             services.AddHttpContextAccessor();
+
             return services;
         }
     }

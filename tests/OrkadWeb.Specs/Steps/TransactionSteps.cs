@@ -7,6 +7,9 @@ using OrkadWeb.Application.Transactions.Models;
 using OrkadWeb.Application.Transactions.Queries;
 using TechTalk.SpecFlow;
 using OrkadWeb.Application.Users;
+using OrkadWeb.Angular.Controllers;
+using System.Threading;
+using System.Net.Http;
 
 namespace OrkadWeb.Specs.Steps
 {
@@ -15,12 +18,14 @@ namespace OrkadWeb.Specs.Steps
     {
         private readonly ISender sender;
         private readonly IDataService dataService;
+        private readonly TransactionController transactionController;
         private List<TransactionVM> transactions;
 
-        public TransactionSteps(ISender sender, IDataService dataService)
+        public TransactionSteps(ISender sender, IDataService dataService, TransactionController transactionController)
         {
             this.sender = sender;
             this.dataService = dataService;
+            this.transactionController = transactionController;
         }
 
         [When(@"j'ajoute la dépense de (.*)€ à la date du (.*) que j'appelle (.*)")]
@@ -59,10 +64,7 @@ namespace OrkadWeb.Specs.Steps
         [When(@"j'affiche la liste de mes dépenses sur le mois de (.*)")]
         public async Task WhenJafficheLaListeDeMesDepensesSurLeMoisDeJuillet(DateTime month)
         {
-            transactions = await sender.Send(new GetTransactionsQuery
-            {
-                Month = month,
-            });
+            transactions = await transactionController.GetMonthly(month, CancellationToken.None);
         }
 
         [Then(@"mes transactions sont les suivantes")]

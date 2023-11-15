@@ -20,6 +20,12 @@ namespace OrkadWeb.Specs.Hooks
         {
             migrationRunner.MigrateUp();
         }
+
+        [AfterTestRun]
+        public static void AfterTestRun(IMigrationRunner migrationRunner)
+        {
+            migrationRunner.MigrateDown(0);
+        }
     }
 
     [Migration(long.MaxValue, "test initialize")]
@@ -30,10 +36,7 @@ namespace OrkadWeb.Specs.Hooks
             Delete.FromTable("user").AllRows();
         }
 
-        public override void Down()
-        {
-            
-        }
+        public override void Down() { }
     }
 
     public static class IMigrationHookExtensions

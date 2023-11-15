@@ -64,4 +64,12 @@ Scénario: utilisateur supprimé
 	Quand j'utilise le lien de confirmation dans l'email envoyé
 	Alors il y a une erreur avec le message suivant : user was not found
 
+Scénario: email modifié
+	Etant donné que l'utilisateur Orkad existe
+	Et que son adresse email est orkad@orkad.fr
+	Et que l'email de confirmation a déjà été envoyé
+	Et que son adresse email est orkad2@orkad.fr
+	Quand j'utilise le lien de confirmation dans l'email envoyé
+	Alors il y a une erreur avec le message suivant : user was not found
+
 

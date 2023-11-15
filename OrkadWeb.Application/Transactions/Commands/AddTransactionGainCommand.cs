@@ -25,7 +25,7 @@ public class AddTransactionGainCommand : ICommand<int>
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleFor(command => command.Amount).GreaterThan(0)
-                .WithMessage("Le montant doit être suppérieur à 0€");
+                .WithMessage("Le montant doit être supérieur à 0€");
             RuleFor(command => command.Name).NotEmpty()
                 .WithMessage("Le nom du gain doit être défini");
             RuleFor(command => command.Date).LessThan(timeProvider.Now).When(command => command.Date.HasValue)
@@ -43,7 +43,7 @@ public class AddTransactionGainCommand : ICommand<int>
             this.dataService = dataService;
             this.timeProvider = timeProvider;
         }
-        
+
         public async Task<int> Handle(AddTransactionGainCommand command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();

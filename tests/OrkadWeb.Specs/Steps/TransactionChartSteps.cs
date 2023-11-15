@@ -1,9 +1,11 @@
-﻿using OrkadWeb.Application.Transactions.Models;
+﻿using OrkadWeb.Angular.Controllers;
+using OrkadWeb.Application.Transactions.Models;
 using OrkadWeb.Application.Transactions.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrkadWeb.Specs.Steps
@@ -12,22 +14,21 @@ namespace OrkadWeb.Specs.Steps
     public class TransactionChartSteps
     {
         private readonly ISender sender;
+        private readonly TransactionController transactionController;
         private DateTime monthParam;
         private List<TransactionChartPoint> result;
 
-        public TransactionChartSteps(ISender sender)
+        public TransactionChartSteps(ISender sender, TransactionController transactionController)
         {
             this.sender = sender;
+            this.transactionController = transactionController;
         }
 
         [When(@"je récupère les données du tableau pour (.*)")]
         public async Task WhenJeRecupereLesDonneesDuTableauPour(DateTime date)
         {
             monthParam = date;
-            result = await sender.Send(new GetTransactionChartDataQuery
-            {
-                Month = date,
-            });
+            result = await transactionController.GetChartData(date, CancellationToken.None);
         }
 
         [Then(@"le tableau n'a aucune donnée")]

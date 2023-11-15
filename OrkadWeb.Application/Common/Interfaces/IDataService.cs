@@ -77,10 +77,4 @@ public static class IDataServiceExtensions
     /// </summary>
     public static bool NotExists<T>(this IDataService dataService, Expression<Func<T, bool>> condition)
         => !dataService.Exists(condition);
-
-    /// <summary>
-    /// Delete an entity without retrieving it before
-    /// </summary>
-    public static void DeleteById<T>(this IDataService dataService, object id)
-        => dataService.Delete(dataService.Load<T>(id));
 }
