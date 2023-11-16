@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System;
 
 namespace OrkadWeb.Application.Users.Commands;
 
@@ -56,15 +57,7 @@ public class EmailConfirmCommand : ICommand
         }
     }
 
-
-    [System.Serializable]
-    public class EmailConfirmationException : System.Exception
+    internal sealed class EmailConfirmationException(string message) : Exception(message)
     {
-        public EmailConfirmationException() { }
-        public EmailConfirmationException(string message) : base(message) { }
-        public EmailConfirmationException(string message, System.Exception inner) : base(message, inner) { }
-        protected EmailConfirmationException(
-            System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }
