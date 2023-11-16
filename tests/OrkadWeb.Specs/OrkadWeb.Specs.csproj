@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<IsTestProject>true</IsTestProject>
 		<ExcludeFromPublish>true</ExcludeFromPublish>
 	</PropertyGroup>
@@ -20,8 +20,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="coverlet.collector" Version="6.0.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
@@ -39,13 +39,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="specflow.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+		<None Update="specflow.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="UnitTests\" />
+		<Folder Include="UnitTests\" />
 	</ItemGroup>
 
 </Project>
