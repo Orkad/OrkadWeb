@@ -1,25 +1,14 @@
-﻿using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NHibernate;
-using NHibernate.Cfg;
 using OrkadWeb.Angular.Config;
 using OrkadWeb.Angular.Controllers;
 using OrkadWeb.Application;
 using OrkadWeb.Application.Users;
 using OrkadWeb.Infrastructure;
-using OrkadWeb.Infrastructure.Persistence;
-using OrkadWeb.Infrastructure.Persistence.Conventions;
-using OrkadWeb.Specs.Contexts;
 using OrkadWeb.Specs.Drivers;
 using OrkadWeb.Specs.Hooks;
 using SolidToken.SpecFlow.DependencyInjection;
-using System.Net.Http;
-using System.Reflection;
 
 namespace OrkadWeb.Specs
 {
