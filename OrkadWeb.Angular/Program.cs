@@ -65,15 +65,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller}/{action=Index}/{id?}");
-    // signalr
-    endpoints.MapHub<NotificationHub>("/hub/notification");
-    endpoints.MapFallbackToFile("index.html");
-});
+app.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
+app.MapHub<NotificationHub>("/hub/notification");
+app.MapFallbackToFile("index.html");
 
 // DATABASE MIGRATION
 using (var scope = app.Services.CreateScope())
