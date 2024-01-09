@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
     private healthService: HealthService
   ) {}
   isApiOnline = false;
+  offlineDate = new Date();
   connected = false;
   username: string | undefined;
   isAdmin: boolean;
@@ -25,7 +26,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.user$.subscribe((user) => this.setUser(user));
     this.serverEventsService.userLoggedIn$.subscribe((str) => console.log(str));
-    this.healthService.healthStatus$.subscribe((ok) => (this.isApiOnline = ok));
+    this.healthService.healthStatus$.subscribe((ok) => {
+      if (ok === false && this.isApiOnline === true) {
+        this.offlineDate = new Date();
+      }
+      this.isApiOnline = ok;
+    });
   }
 
   setUser(user: User | null) {

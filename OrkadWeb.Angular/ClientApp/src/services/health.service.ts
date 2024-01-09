@@ -8,6 +8,7 @@ import {
   of,
   startWith,
   switchMap,
+  tap,
 } from 'rxjs';
 
 @Injectable({
@@ -15,6 +16,8 @@ import {
 })
 export class HealthService {
   private healthStatusSubject = new BehaviorSubject<boolean>(false);
+  isHealthy: boolean;
+  public unhealthyDate: Date | null = null;
 
   constructor(private httpClient: HttpClient) {
     this.checkPeriodically();
@@ -36,7 +39,14 @@ export class HealthService {
             }),
             map(
               (response: string) => response.trim().toLowerCase() === 'healthy'
-            )
+            ),
+            tap((ok: boolean) => {
+              if (ok === false && this.isHealthy === true) {
+                // turns of
+                this.unhealthyDate = new Date();
+              }
+              this.isHealthy = ok;
+            })
           )
         )
       )

@@ -1,2 +1,4 @@
 <mat-icon>cloud_off</mat-icon>
-<p>Hors ligne</p>
+<p>
+  Hors ligne <span *ngIf="offlineDate">depuis {{ getOfflineTimeSpan() }}</span>
+</p>
