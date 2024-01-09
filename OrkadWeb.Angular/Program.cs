@@ -46,6 +46,7 @@ services.AddInfrastructureServices(configuration);
 
 // SIGNALR
 services.AddSignalR();
+services.AddHealthChecks();
 
 var app = builder.Build();
 ServiceLocator.Initialize(app.Services.GetService<IServiceProviderProxy>());
@@ -67,6 +68,7 @@ app.UseAuthorization();
 app.UseSession();
 app.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
 app.MapHub<NotificationHub>("/hub/notification");
+app.MapHealthChecks("/health");
 app.MapFallbackToFile("index.html");
 
 // DATABASE MIGRATION

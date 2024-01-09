@@ -34,6 +34,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { TransactionChartComponent } from './transaction/transaction-chart/transaction-chart.component';
 import { TransactionTableComponent } from './transaction/transaction-table/transaction-table.component';
 import { GainFormDialogComponent } from './transaction/gain-form-dialog/gain-form-dialog.component';
+import { LoadingComponent } from './loading/loading.component';
 
 registerLocaleData(fr);
 
@@ -57,6 +58,7 @@ registerLocaleData(fr);
     TransactionChartComponent,
     TransactionTableComponent,
     GainFormDialogComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
