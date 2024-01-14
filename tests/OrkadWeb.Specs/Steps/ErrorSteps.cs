@@ -57,21 +57,6 @@ namespace OrkadWeb.Specs.Steps
             }
         }
 
-        [Then(@"il y a les erreurs de validation suivantes")]
-        public void ThenIlYalesErreursDeValidationSuivantes(Table table)
-        {
-            var exception = executionDriver.HandleException();
-            Check.WithCustomMessage("Aucune erreur n'a été déclenchée alors qu'il devrait y en avoir une")
-                .That(exception).IsNotNull();
-            Check.WithCustomMessage("Il n'a pas d'erreur de validation")
-                .That(exception).IsInstanceOf<ValidationException>();
-            var validationException = (ValidationException)exception;
-            Check.WithCustomMessage("Il n'y a pas le même nombre d'erreurs de validation attendues")
-                .That(validationException.Errors).HasSize(table.RowCount);
-            var expectedFalidationFailure = table.Rows.Select(r => r[0]);
-            Check.That(validationException.Errors.Select(e => e.ErrorMessage)).Contains(expectedFalidationFailure);
-        }
-
         [AfterScenario]
         public void CheckForUnexpectedExceptionsAfterEachScenario()
         {
