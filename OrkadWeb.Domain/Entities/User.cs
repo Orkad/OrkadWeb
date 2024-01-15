@@ -3,27 +3,27 @@
 namespace OrkadWeb.Domain.Entities
 {
     /// <summary>
-    /// Représente un utilisateur de "OrkadWeb"
+    /// User of the OrkadWeb application
     /// </summary>
     public class User
     {
         /// <summary>
-        /// Identifiant unique de l'utilisateur
+        /// User unique identifier
         /// </summary>
         public virtual int Id { get; set; }
 
         /// <summary>
-        /// Nom d'utilisateur
+        /// Name of the user
         /// </summary>
         public virtual string Username { get; set; }
 
         /// <summary>
-        /// Mot de passe de l'utilisateur (crypté)
+        /// Encrypted user password
         /// </summary>
         public virtual string Password { get; set; }
 
         /// <summary>
-        /// Adresse email de contact de l'utilisateur
+        /// Email address of the user
         /// </summary>
         public virtual string Email { get; set; }
 

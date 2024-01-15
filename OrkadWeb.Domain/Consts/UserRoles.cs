@@ -1,17 +1,17 @@
 ﻿namespace OrkadWeb.Domain.Consts
 {
     /// <summary>
-    /// Roles des utilisateurs de l'application
+    /// User roles of the application
     /// </summary>
     public static class UserRoles
     {
         /// <summary>
-        /// Rôle d'un utilisateur
+        /// Default user role
         /// </summary>
         public const string User = "User";
 
         /// <summary>
-        /// Rôle d'un administrateur
+        /// Administrator role
         /// </summary>
         public const string Admin = "Admin";
     }
