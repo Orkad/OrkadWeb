@@ -1,10 +1,11 @@
-﻿using OrkadWeb.Application.MonthlyTransactions.Models;
+﻿using OrkadWeb.Application.Charges.Commands;
+using OrkadWeb.Application.Charges.Queries;
+using OrkadWeb.Application.Incomes.Commands;
+using OrkadWeb.Application.MonthlyTransactions.Models;
 using OrkadWeb.Application.MonthlyTransactions.Queries;
 using OrkadWeb.Application.Users;
 using System.Collections.Generic;
 using System.Text;
-using OrkadWeb.Application.Charges.Commands;
-using OrkadWeb.Application.MonthlyTransactions.Commands;
 
 namespace OrkadWeb.Specs.Steps
 {
@@ -107,7 +108,7 @@ namespace OrkadWeb.Specs.Steps
         {
             Check.That(charges).IsEmpty();
         }
-        
+
         [Then(@"il n'y a aucun revenu")]
         public void ThenIlNyAAucunRevenu()
         {
@@ -117,13 +118,13 @@ namespace OrkadWeb.Specs.Steps
         [When(@"j'ajoute un revenu ""(.*)"" d'un montant de (.*)€")]
         public async Task WhenJAjouteUnRevenuDUnMontantDe(string name, int amount)
         {
-            await sender.Send(new AddIncomeCommand
+            await sender.Send(new CreateIncome
             {
                 Name = name,
                 Amount = amount,
             });
         }
-        
+
         [When(@"je modifie le revenu ""(.*)"" par")]
         public async Task WhenJeModifieLeRevenuPar(string name, Table table)
         {
@@ -131,7 +132,7 @@ namespace OrkadWeb.Specs.Steps
             var newName = row.GetString("Libellé");
             var newAmount = row.GetDecimal("Montant");
             var charge = dataService.Query<Income>().Single(c => c.Name == name);
-            await sender.Send(new EditIncomeCommand()
+            await sender.Send(new UpdateIncome()
             {
                 Id = charge.Id,
                 Name = newName,
@@ -143,7 +144,7 @@ namespace OrkadWeb.Specs.Steps
         public async Task WhenJeSupprimeLeRevenu(string name)
         {
             var income = dataService.Query<Income>().Single(i => i.Name == name);
-            await sender.Send(new DeleteIncomeCommand
+            await sender.Send(new DeleteIncome
             {
                 Id = income.Id,
             });

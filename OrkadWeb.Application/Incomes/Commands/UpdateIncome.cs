@@ -1,12 +1,10 @@
-﻿namespace OrkadWeb.Application.MonthlyTransactions.Commands;
-
-public class EditIncomeCommand : ICommand
+﻿public class UpdateIncome : ICommand
 {
     public int Id { get; init; }
     public string Name { get; init; }
     public decimal Amount { get; init; }
 
-    public class Validator : AbstractValidator<EditIncomeCommand>
+    public class Validator : AbstractValidator<UpdateIncome>
     {
         public Validator()
         {
@@ -16,16 +14,9 @@ public class EditIncomeCommand : ICommand
         }
     }
 
-    public class Handler : ICommandHandler<EditIncomeCommand>
+    public class Handler(IDataService dataService) : ICommandHandler<UpdateIncome>
     {
-        private readonly IDataService dataService;
-
-        public Handler(IDataService dataService)
-        {
-            this.dataService = dataService;
-        }
-
-        public async Task Handle(EditIncomeCommand command, CancellationToken cancellationToken)
+        public async Task Handle(UpdateIncome command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
             var income = await dataService.GetAsync<Income>(command.Id, cancellationToken);

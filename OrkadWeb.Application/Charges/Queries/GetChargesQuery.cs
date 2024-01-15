@@ -3,7 +3,7 @@ using OrkadWeb.Application.MonthlyTransactions.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OrkadWeb.Application.MonthlyTransactions.Queries;
+namespace OrkadWeb.Application.Charges.Queries;
 
 /// <summary>
 /// Get all monthly charges defined by the authenticated user

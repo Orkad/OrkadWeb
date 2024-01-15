@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OrkadWeb.Application.MonthlyTransactions.Commands;
+using OrkadWeb.Application.Incomes.Commands;
 using OrkadWeb.Application.MonthlyTransactions.Models;
 using OrkadWeb.Application.MonthlyTransactions.Queries;
 
@@ -34,7 +34,7 @@ public class MonthlyIncomeController : ControllerBase
     [Route("")]
     public async Task<int> AddIncome([FromBody] MonthlyIncomeVM vm, CancellationToken cancellationToken)
     {
-        return await sender.Send(new AddIncomeCommand
+        return await sender.Send(new CreateIncome
         {
             Amount = vm.Amount,
             Name = vm.Name
@@ -46,7 +46,7 @@ public class MonthlyIncomeController : ControllerBase
     public async Task EditIncome(int id, [FromBody] MonthlyIncomeVM vm, CancellationToken cancellationToken)
     {
         if (id <= 0 || vm?.Id != id) throw new BadHttpRequestException("identifiant incorrect");
-        await sender.Send(new EditIncomeCommand
+        await sender.Send(new UpdateIncome
         {
             Id = id,
             Amount = vm.Amount,
@@ -58,6 +58,6 @@ public class MonthlyIncomeController : ControllerBase
     [Route("{id:int}")]
     public async Task DeleteIncome(int id, CancellationToken cancellationToken)
     {
-        await sender.Send(new DeleteIncomeCommand { Id = id }, cancellationToken);
+        await sender.Send(new DeleteIncome { Id = id }, cancellationToken);
     }
 }

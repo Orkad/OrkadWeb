@@ -1,11 +1,11 @@
-﻿namespace OrkadWeb.Application.MonthlyTransactions.Commands;
+﻿namespace OrkadWeb.Application.Incomes.Commands;
 
-public class AddIncomeCommand : ICommand<int>
+public class CreateIncome : ICommand<int>
 {
     public string Name { get; init; }
     public decimal Amount { get; init; }
 
-    public class Validator : AbstractValidator<AddIncomeCommand>
+    public class Validator : AbstractValidator<CreateIncome>
     {
         public Validator()
         {
@@ -14,18 +14,9 @@ public class AddIncomeCommand : ICommand<int>
         }
     }
 
-    public class Handler : ICommandHandler<AddIncomeCommand, int>
+    public class Handler(IDataService dataService, IAppUser authenticatedUser) : ICommandHandler<CreateIncome, int>
     {
-        private readonly IAppUser authenticatedUser;
-        private readonly IDataService dataService;
-
-        public Handler(IDataService dataService, IAppUser authenticatedUser)
-        {
-            this.dataService = dataService;
-            this.authenticatedUser = authenticatedUser;
-        }
-
-        public async Task<int> Handle(AddIncomeCommand command, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateIncome command, CancellationToken cancellationToken)
         {
             using var context = dataService.Context();
             var income = new Income
