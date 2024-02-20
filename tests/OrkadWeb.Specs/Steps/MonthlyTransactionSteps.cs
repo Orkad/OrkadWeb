@@ -16,7 +16,7 @@ namespace OrkadWeb.Specs.Steps
         private readonly IAppUser user;
         private readonly ISender sender;
         private IEnumerable<MonthlyChargeVM> charges;
-        private IEnumerable<MonthlyIncomeVM> incomes;
+        private IEnumerable<IncomeVM> incomes;
 
         public MonthlyTransactionSteps(IDataService dataService, IAppUser user, ISender sender)
         {
@@ -53,7 +53,7 @@ namespace OrkadWeb.Specs.Steps
         public async Task WhenJafficheLeBudgetMensuel()
         {
             charges = await sender.Send(new GetChargesQuery());
-            incomes = await sender.Send(new GetIncomesQuery());
+            incomes = await sender.Send(new GetIncomes());
         }
 
         [Then(@"il y a les charges mensuelles suivantes")]

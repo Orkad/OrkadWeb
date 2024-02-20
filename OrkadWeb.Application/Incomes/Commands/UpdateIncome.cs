@@ -1,4 +1,6 @@
-﻿public class UpdateIncome : ICommand
+﻿namespace OrkadWeb.Application.Incomes.Commands;
+
+public class UpdateIncome : ICommand
 {
     public int Id { get; init; }
     public string Name { get; init; }
