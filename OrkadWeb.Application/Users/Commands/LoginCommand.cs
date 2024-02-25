@@ -1,27 +1,30 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 using OrkadWeb.Application.Security;
-using static OrkadWeb.Application.Users.Commands.LoginCommand;
 
 namespace OrkadWeb.Application.Users.Commands;
 
-public class LoginCommand : ICommand<Result>
+public class LoginResult
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string Role { get; set; }
+    public bool Success { get; init; }
+    public string Error { get; set; }
+    /// <summary>
+    /// JWT
+    /// </summary>
+    public string Token { get; set; }
+}
+
+public class LoginCommand : ICommand<LoginResult>
 {
     public string Username { get; init; }
     public string Password { internal get; init; } // internal for not exposing password
 
-    public class Result
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
-        public bool Success { get; init; }
-        public string Error { get; set; }
-        public string Token { get; set; }
-    }
 
-    public class Handler : ICommandHandler<LoginCommand, Result>
+    public class Handler : ICommandHandler<LoginCommand, LoginResult>
     {
         private readonly IDataService dataService;
         private readonly IIdentityTokenGenerator identityTokenGenerator;
@@ -34,19 +37,19 @@ public class LoginCommand : ICommand<Result>
             this.logger = logger;
         }
 
-        public async Task<Result> Handle(LoginCommand command, CancellationToken cancellationToken)
+        public async Task<LoginResult> Handle(LoginCommand command, CancellationToken cancellationToken)
         {
             var user = await dataService.FindAsync<User>(u => u.Username == command.Username || u.Email == command.Username, cancellationToken);
             if (user == null || !Hash.Validate(command.Password, user.Password))
             {
                 logger.LogAuthenticationFailed(command.Username);
-                return new Result
+                return new LoginResult
                 {
                     Success = false,
                     Error = "Nom d'utilisateur ou mot de passe incorrect",
                 };
             }
-            var result = new Result
+            var result = new LoginResult
             {
                 Success = true,
                 Id = user.Id.ToString(),

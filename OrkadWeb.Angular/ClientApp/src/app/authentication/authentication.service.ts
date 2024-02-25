@@ -7,6 +7,7 @@ import { User } from '../../shared/models/User';
 import { LoginResponse } from '../../shared/models/LoginResponse';
 import { RegisterCommand } from 'src/api/commands/RegisterCommand';
 import { Router } from '@angular/router';
+import { AuthClient, LoginCommand, LoginResult } from '../web-api-client';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -31,6 +32,7 @@ export class AuthenticationService {
 
   constructor(
     private httpClient: HttpClient,
+    private authClient: AuthClient,
     private jwtHelper: JwtHelperService,
     private router: Router
   ) {
@@ -38,16 +40,18 @@ export class AuthenticationService {
     this.user$ = this.userSubject.asObservable().pipe(shareReplay());
   }
 
-  login(username: string, password: string): Observable<LoginResponse> {
-    return this.httpClient
-      .post<LoginResponse>('api/auth/login', {
+  login(username: string, password: string): Observable<LoginResult> {
+    return this.authClient
+      .auth_Login(<LoginCommand>{
         username: username,
         password: password,
       })
       .pipe(
         map((data) => {
           if (data && data.success && !data.error) {
-            localStorage.setItem('jwt', data.token);
+            if (data.token) {
+              localStorage.setItem('jwt', data.token);
+            }
             this.userSubject.next(this.connectedUser);
           }
           return data;

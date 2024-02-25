@@ -16,7 +16,7 @@ namespace OrkadWeb.Specs.Steps
     public class LoginSteps
     {
         private readonly AuthController authController;
-        private LoginCommand.Result response;
+        private LoginResult response;
 
         public LoginSteps(AuthController authController)
         {

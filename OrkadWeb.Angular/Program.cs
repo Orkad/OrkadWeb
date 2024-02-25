@@ -48,6 +48,9 @@ services.AddInfrastructureServices(configuration);
 services.AddSignalR();
 services.AddHealthChecks();
 
+// DOCUMENTATION
+services.AddOpenApiDocument();
+
 var app = builder.Build();
 ServiceLocator.Initialize(app.Services.GetService<IServiceProviderProxy>());
 if (prod)
@@ -64,6 +67,11 @@ if (dev)
 }
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSwaggerUi(settings =>
+{
+    settings.Path = "/api";
+    settings.DocumentPath = "/api/specification.json";
+});
 
 app.UseSession();
 app.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");

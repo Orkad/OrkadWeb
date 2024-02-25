@@ -13,7 +13,7 @@ export class AuthenticationComponent implements OnInit {
   loggedIn: boolean;
   user: User | null;
   loginForm: UntypedFormGroup;
-  error: string;
+  error?: string;
 
   constructor(
     private authenticationService: AuthenticationService,

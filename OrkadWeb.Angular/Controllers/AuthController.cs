@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<LoginCommand.Result> Login(LoginCommand command, CancellationToken cancellationToken)
+    public async Task<LoginResult> Login(LoginCommand command, CancellationToken cancellationToken)
     {
         var result = await sender.Send(command, cancellationToken);
         await publisher.Publish(new UserLoggedInNotification
