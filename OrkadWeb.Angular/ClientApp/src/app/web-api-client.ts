@@ -229,6 +229,9 @@ export class AuthClient implements IAuthClient {
 }
 
 export interface IConfigClient {
+    /**
+     * Access to the global configuration
+     */
     config_Global(): Observable<Result>;
 }
 
@@ -245,6 +248,9 @@ export class ConfigClient implements IConfigClient {
         this.baseUrl = baseUrl ?? "";
     }
 
+    /**
+     * Access to the global configuration
+     */
     config_Global(): Observable<Result> {
         let url_ = this.baseUrl + "/api/config/Global";
         url_ = url_.replace(/[?&]$/, "");

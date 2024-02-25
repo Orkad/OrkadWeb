@@ -5,9 +5,13 @@ import { map, shareReplay } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../../shared/models/User';
 import { LoginResponse } from '../../shared/models/LoginResponse';
-import { RegisterCommand } from 'src/api/commands/RegisterCommand';
 import { Router } from '@angular/router';
-import { AuthClient, LoginCommand, LoginResult } from '../web-api-client';
+import {
+  AuthClient,
+  LoginCommand,
+  LoginResult,
+  RegisterCommand,
+} from '../web-api-client';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -63,17 +67,5 @@ export class AuthenticationService {
     localStorage.removeItem('jwt');
     this.userSubject.next(null);
     this.router.navigate(['auth']);
-  }
-
-  register(
-    username: string,
-    email: string,
-    password: string
-  ): Observable<void> {
-    return this.httpClient.post<void>('api/auth/register', <RegisterCommand>{
-      userName: username,
-      email: email,
-      password: password,
-    });
   }
 }

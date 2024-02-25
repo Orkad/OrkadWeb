@@ -13,6 +13,7 @@ import { GlobalConfigurationResult } from 'src/api/results/GlobalConfigurationRe
 import { NotificationService } from 'src/services/notification.service';
 import { AuthenticationService } from '../authentication.service';
 import { RegistrationForm } from './registration.form';
+import { AuthClient, RegisterCommand } from 'src/app/web-api-client';
 
 @Component({
   selector: 'app-registration',
@@ -22,6 +23,7 @@ import { RegistrationForm } from './registration.form';
 export class RegistrationComponent implements OnInit {
   formGroup: FormGroup<RegistrationForm>;
   constructor(
+    private authClient: AuthClient,
     private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
     private activatedRoute: ActivatedRoute,
@@ -112,8 +114,12 @@ export class RegistrationComponent implements OnInit {
   };
 
   register() {
-    this.authenticationService
-      .register(this.username.value, this.email.value, this.password.value)
+    this.authClient
+      .auth_Register(<RegisterCommand>{
+        userName: this.username.value,
+        email: this.email.value,
+        password: this.password.value,
+      })
       .subscribe({
         next: () => {
           this.router.navigate(['/auth']);

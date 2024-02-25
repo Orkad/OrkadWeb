@@ -9,6 +9,8 @@
 		<SpaProxyServerUrl>https://localhost:44465</SpaProxyServerUrl>
 		<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 		<UserSecretsId>6067186d-c510-4d2f-9e1d-59dd4d6e0211</UserSecretsId>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
