@@ -1,4 +1,5 @@
 ﻿using OrkadWeb.Application.Charges.Commands;
+using OrkadWeb.Application.Charges.Models;
 using OrkadWeb.Application.Charges.Queries;
 using OrkadWeb.Application.Incomes.Commands;
 using OrkadWeb.Application.MonthlyTransactions.Models;
@@ -15,8 +16,8 @@ namespace OrkadWeb.Specs.Steps
         private readonly IDataService dataService;
         private readonly IAppUser user;
         private readonly ISender sender;
-        private IEnumerable<MonthlyChargeVM> charges;
-        private IEnumerable<IncomeVM> incomes;
+        private IEnumerable<ChargeDto> charges;
+        private IEnumerable<IncomeDto> incomes;
 
         public MonthlyTransactionSteps(IDataService dataService, IAppUser user, ISender sender)
         {

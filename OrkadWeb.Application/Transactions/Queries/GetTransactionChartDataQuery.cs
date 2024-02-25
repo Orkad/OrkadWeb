@@ -27,8 +27,6 @@ public class GetTransactionChartDataQuery : IQuery<List<TransactionChartPoint>>
         {
             var year = query.Month.Year;
             var month = query.Month.Month;
-            var test = await dataService.Query<Charge>().Where(c => c.Owner.Id == appUser.Id)
-                .ToListAsync(cancellationToken);
             var totalCharges = await dataService.Query<Charge>()
                 .Where(c => c.Owner.Id == appUser.Id)
                 .SumAsync(c => (decimal?)c.Amount, cancellationToken) ?? 0m;

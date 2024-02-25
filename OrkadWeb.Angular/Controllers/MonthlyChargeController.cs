@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrkadWeb.Application.Charges.Commands;
+using OrkadWeb.Application.Charges.Models;
 using OrkadWeb.Application.Charges.Queries;
-using OrkadWeb.Application.MonthlyTransactions.Models;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,14 +25,14 @@ public class MonthlyChargeController : ControllerBase
 
     [HttpGet]
     [Route("")]
-    public async Task<IEnumerable<MonthlyChargeVM>> GetCharges(CancellationToken cancellationToken)
+    public async Task<IEnumerable<ChargeDto>> GetCharges(CancellationToken cancellationToken)
     {
         return await sender.Send(new GetChargesQuery(), cancellationToken);
     }
 
     [HttpPost]
     [Route("")]
-    public async Task<int> AddCharge([FromBody] MonthlyChargeVM vm, CancellationToken cancellationToken)
+    public async Task<int> AddCharge([FromBody] ChargeDto vm, CancellationToken cancellationToken)
     {
         return await sender.Send(new AddChargeCommand
         {
@@ -43,7 +43,7 @@ public class MonthlyChargeController : ControllerBase
 
     [HttpPut]
     [Route("{id:int}")]
-    public async Task EditCharge(int id, [FromBody] MonthlyChargeVM vm, CancellationToken cancellationToken)
+    public async Task EditCharge(int id, [FromBody] ChargeDto vm, CancellationToken cancellationToken)
     {
         if (id <= 0 || vm?.Id != id) throw new BadHttpRequestException("identifiant incorrect");
         await sender.Send(new EditChargeCommand

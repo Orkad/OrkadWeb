@@ -25,14 +25,14 @@ public class MonthlyIncomeController : ControllerBase
 
     [HttpGet]
     [Route("")]
-    public async Task<IEnumerable<IncomeVM>> GetIncomes(CancellationToken cancellationToken)
+    public async Task<IEnumerable<IncomeDto>> GetIncomes(CancellationToken cancellationToken)
     {
         return await sender.Send(new GetIncomes(), cancellationToken);
     }
 
     [HttpPost]
     [Route("")]
-    public async Task<int> AddIncome([FromBody] IncomeVM vm, CancellationToken cancellationToken)
+    public async Task<int> AddIncome([FromBody] IncomeDto vm, CancellationToken cancellationToken)
     {
         return await sender.Send(new CreateIncome
         {
@@ -43,7 +43,7 @@ public class MonthlyIncomeController : ControllerBase
 
     [HttpPut]
     [Route("{id:int}")]
-    public async Task EditIncome(int id, [FromBody] IncomeVM vm, CancellationToken cancellationToken)
+    public async Task EditIncome(int id, [FromBody] IncomeDto vm, CancellationToken cancellationToken)
     {
         if (id <= 0 || vm?.Id != id) throw new BadHttpRequestException("identifiant incorrect");
         await sender.Send(new UpdateIncome
