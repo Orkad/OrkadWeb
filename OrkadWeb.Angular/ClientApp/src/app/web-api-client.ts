@@ -16,10 +16,10 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IAuthClient {
-    auth_Login(command: LoginCommand): Observable<LoginResult>;
-    auth_Register(command: RegisterCommand): Observable<void>;
-    auth_Confirm(command: EmailConfirmCommand): Observable<void>;
-    auth_ResendConfirm(): Observable<void>;
+    login(command: LoginCommand): Observable<LoginResult>;
+    register(command: RegisterCommand): Observable<void>;
+    confirm(command: EmailConfirmCommand): Observable<void>;
+    resendConfirm(): Observable<void>;
 }
 
 @Injectable({
@@ -35,7 +35,7 @@ export class AuthClient implements IAuthClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    auth_Login(command: LoginCommand): Observable<LoginResult> {
+    login(command: LoginCommand): Observable<LoginResult> {
         let url_ = this.baseUrl + "/api/auth/Login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -52,11 +52,11 @@ export class AuthClient implements IAuthClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAuth_Login(response_);
+            return this.processLogin(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAuth_Login(response_ as any);
+                    return this.processLogin(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<LoginResult>;
                 }
@@ -65,7 +65,7 @@ export class AuthClient implements IAuthClient {
         }));
     }
 
-    protected processAuth_Login(response: HttpResponseBase): Observable<LoginResult> {
+    protected processLogin(response: HttpResponseBase): Observable<LoginResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -87,7 +87,7 @@ export class AuthClient implements IAuthClient {
         return _observableOf(null as any);
     }
 
-    auth_Register(command: RegisterCommand): Observable<void> {
+    register(command: RegisterCommand): Observable<void> {
         let url_ = this.baseUrl + "/api/auth/Register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -103,11 +103,11 @@ export class AuthClient implements IAuthClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAuth_Register(response_);
+            return this.processRegister(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAuth_Register(response_ as any);
+                    return this.processRegister(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -116,7 +116,7 @@ export class AuthClient implements IAuthClient {
         }));
     }
 
-    protected processAuth_Register(response: HttpResponseBase): Observable<void> {
+    protected processRegister(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -135,7 +135,7 @@ export class AuthClient implements IAuthClient {
         return _observableOf(null as any);
     }
 
-    auth_Confirm(command: EmailConfirmCommand): Observable<void> {
+    confirm(command: EmailConfirmCommand): Observable<void> {
         let url_ = this.baseUrl + "/api/auth/Confirm";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -151,11 +151,11 @@ export class AuthClient implements IAuthClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAuth_Confirm(response_);
+            return this.processConfirm(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAuth_Confirm(response_ as any);
+                    return this.processConfirm(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -164,7 +164,7 @@ export class AuthClient implements IAuthClient {
         }));
     }
 
-    protected processAuth_Confirm(response: HttpResponseBase): Observable<void> {
+    protected processConfirm(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -183,7 +183,7 @@ export class AuthClient implements IAuthClient {
         return _observableOf(null as any);
     }
 
-    auth_ResendConfirm(): Observable<void> {
+    resendConfirm(): Observable<void> {
         let url_ = this.baseUrl + "/api/auth/ResendConfirm";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -195,11 +195,11 @@ export class AuthClient implements IAuthClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAuth_ResendConfirm(response_);
+            return this.processResendConfirm(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAuth_ResendConfirm(response_ as any);
+                    return this.processResendConfirm(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -208,7 +208,7 @@ export class AuthClient implements IAuthClient {
         }));
     }
 
-    protected processAuth_ResendConfirm(response: HttpResponseBase): Observable<void> {
+    protected processResendConfirm(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -232,7 +232,7 @@ export interface IConfigClient {
     /**
      * Access to the global configuration
      */
-    config_Global(): Observable<Result>;
+    global(): Observable<Result>;
 }
 
 @Injectable({
@@ -251,7 +251,7 @@ export class ConfigClient implements IConfigClient {
     /**
      * Access to the global configuration
      */
-    config_Global(): Observable<Result> {
+    global(): Observable<Result> {
         let url_ = this.baseUrl + "/api/config/Global";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -264,11 +264,11 @@ export class ConfigClient implements IConfigClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processConfig_Global(response_);
+            return this.processGlobal(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processConfig_Global(response_ as any);
+                    return this.processGlobal(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<Result>;
                 }
@@ -277,7 +277,7 @@ export class ConfigClient implements IConfigClient {
         }));
     }
 
-    protected processConfig_Global(response: HttpResponseBase): Observable<Result> {
+    protected processGlobal(response: HttpResponseBase): Observable<Result> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -301,10 +301,10 @@ export class ConfigClient implements IConfigClient {
 }
 
 export interface IMonthlyChargeClient {
-    monthlyCharge_GetCharges(): Observable<ChargeDto[]>;
-    monthlyCharge_AddCharge(vm: ChargeDto): Observable<number>;
-    monthlyCharge_EditCharge(id: number, vm: ChargeDto): Observable<void>;
-    monthlyCharge_DeleteCharge(id: number): Observable<void>;
+    getCharges(): Observable<ChargeDto[]>;
+    addCharge(vm: ChargeDto): Observable<number>;
+    editCharge(id: number, vm: ChargeDto): Observable<void>;
+    deleteCharge(id: number): Observable<void>;
 }
 
 @Injectable({
@@ -320,7 +320,7 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    monthlyCharge_GetCharges(): Observable<ChargeDto[]> {
+    getCharges(): Observable<ChargeDto[]> {
         let url_ = this.baseUrl + "/api/monthly/charges";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -333,11 +333,11 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMonthlyCharge_GetCharges(response_);
+            return this.processGetCharges(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMonthlyCharge_GetCharges(response_ as any);
+                    return this.processGetCharges(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<ChargeDto[]>;
                 }
@@ -346,7 +346,7 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         }));
     }
 
-    protected processMonthlyCharge_GetCharges(response: HttpResponseBase): Observable<ChargeDto[]> {
+    protected processGetCharges(response: HttpResponseBase): Observable<ChargeDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -375,7 +375,7 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         return _observableOf(null as any);
     }
 
-    monthlyCharge_AddCharge(vm: ChargeDto): Observable<number> {
+    addCharge(vm: ChargeDto): Observable<number> {
         let url_ = this.baseUrl + "/api/monthly/charges";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -392,11 +392,11 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMonthlyCharge_AddCharge(response_);
+            return this.processAddCharge(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMonthlyCharge_AddCharge(response_ as any);
+                    return this.processAddCharge(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<number>;
                 }
@@ -405,7 +405,7 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         }));
     }
 
-    protected processMonthlyCharge_AddCharge(response: HttpResponseBase): Observable<number> {
+    protected processAddCharge(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -428,7 +428,7 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         return _observableOf(null as any);
     }
 
-    monthlyCharge_EditCharge(id: number, vm: ChargeDto): Observable<void> {
+    editCharge(id: number, vm: ChargeDto): Observable<void> {
         let url_ = this.baseUrl + "/api/monthly/charges/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -447,11 +447,11 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         };
 
         return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMonthlyCharge_EditCharge(response_);
+            return this.processEditCharge(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMonthlyCharge_EditCharge(response_ as any);
+                    return this.processEditCharge(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -460,7 +460,7 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         }));
     }
 
-    protected processMonthlyCharge_EditCharge(response: HttpResponseBase): Observable<void> {
+    protected processEditCharge(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -479,7 +479,7 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         return _observableOf(null as any);
     }
 
-    monthlyCharge_DeleteCharge(id: number): Observable<void> {
+    deleteCharge(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/monthly/charges/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -494,11 +494,11 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMonthlyCharge_DeleteCharge(response_);
+            return this.processDeleteCharge(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMonthlyCharge_DeleteCharge(response_ as any);
+                    return this.processDeleteCharge(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -507,7 +507,7 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
         }));
     }
 
-    protected processMonthlyCharge_DeleteCharge(response: HttpResponseBase): Observable<void> {
+    protected processDeleteCharge(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -528,10 +528,10 @@ export class MonthlyChargeClient implements IMonthlyChargeClient {
 }
 
 export interface IMonthlyIncomeClient {
-    monthlyIncome_GetIncomes(): Observable<IncomeDto[]>;
-    monthlyIncome_AddIncome(vm: IncomeDto): Observable<number>;
-    monthlyIncome_EditIncome(id: number, vm: IncomeDto): Observable<void>;
-    monthlyIncome_DeleteIncome(id: number): Observable<void>;
+    getIncomes(): Observable<IncomeDto[]>;
+    addIncome(vm: IncomeDto): Observable<number>;
+    editIncome(id: number, vm: IncomeDto): Observable<void>;
+    deleteIncome(id: number): Observable<void>;
 }
 
 @Injectable({
@@ -547,7 +547,7 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    monthlyIncome_GetIncomes(): Observable<IncomeDto[]> {
+    getIncomes(): Observable<IncomeDto[]> {
         let url_ = this.baseUrl + "/api/monthly/incomes";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -560,11 +560,11 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMonthlyIncome_GetIncomes(response_);
+            return this.processGetIncomes(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMonthlyIncome_GetIncomes(response_ as any);
+                    return this.processGetIncomes(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<IncomeDto[]>;
                 }
@@ -573,7 +573,7 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         }));
     }
 
-    protected processMonthlyIncome_GetIncomes(response: HttpResponseBase): Observable<IncomeDto[]> {
+    protected processGetIncomes(response: HttpResponseBase): Observable<IncomeDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -602,7 +602,7 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         return _observableOf(null as any);
     }
 
-    monthlyIncome_AddIncome(vm: IncomeDto): Observable<number> {
+    addIncome(vm: IncomeDto): Observable<number> {
         let url_ = this.baseUrl + "/api/monthly/incomes";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -619,11 +619,11 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMonthlyIncome_AddIncome(response_);
+            return this.processAddIncome(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMonthlyIncome_AddIncome(response_ as any);
+                    return this.processAddIncome(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<number>;
                 }
@@ -632,7 +632,7 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         }));
     }
 
-    protected processMonthlyIncome_AddIncome(response: HttpResponseBase): Observable<number> {
+    protected processAddIncome(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -655,7 +655,7 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         return _observableOf(null as any);
     }
 
-    monthlyIncome_EditIncome(id: number, vm: IncomeDto): Observable<void> {
+    editIncome(id: number, vm: IncomeDto): Observable<void> {
         let url_ = this.baseUrl + "/api/monthly/incomes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -674,11 +674,11 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         };
 
         return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMonthlyIncome_EditIncome(response_);
+            return this.processEditIncome(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMonthlyIncome_EditIncome(response_ as any);
+                    return this.processEditIncome(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -687,7 +687,7 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         }));
     }
 
-    protected processMonthlyIncome_EditIncome(response: HttpResponseBase): Observable<void> {
+    protected processEditIncome(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -706,7 +706,7 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         return _observableOf(null as any);
     }
 
-    monthlyIncome_DeleteIncome(id: number): Observable<void> {
+    deleteIncome(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/monthly/incomes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -721,11 +721,11 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMonthlyIncome_DeleteIncome(response_);
+            return this.processDeleteIncome(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMonthlyIncome_DeleteIncome(response_ as any);
+                    return this.processDeleteIncome(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -734,7 +734,7 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
         }));
     }
 
-    protected processMonthlyIncome_DeleteIncome(response: HttpResponseBase): Observable<void> {
+    protected processDeleteIncome(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -755,12 +755,12 @@ export class MonthlyIncomeClient implements IMonthlyIncomeClient {
 }
 
 export interface ITransactionClient {
-    transaction_GetMonthly(month: Date | undefined): Observable<TransactionVM[]>;
-    transaction_GetChartData(month: Date | undefined): Observable<TransactionChartPoint[]>;
-    transaction_AddExpense(command: AddTransactionExpenseCommand): Observable<Result2>;
-    transaction_UpdateExpense(command: UpdateTransactionExpenseCommand): Observable<void>;
-    transaction_AddGain(command: AddTransactionGainCommand): Observable<number>;
-    transaction_Delete(id: number): Observable<void>;
+    getMonthly(month: Date | undefined): Observable<TransactionVM[]>;
+    getChartData(month: Date | undefined): Observable<TransactionChartPoint[]>;
+    addExpense(command: AddTransactionExpenseCommand): Observable<Result2>;
+    updateExpense(command: UpdateTransactionExpenseCommand): Observable<void>;
+    addGain(command: AddTransactionGainCommand): Observable<number>;
+    delete(id: number): Observable<void>;
 }
 
 @Injectable({
@@ -776,7 +776,7 @@ export class TransactionClient implements ITransactionClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    transaction_GetMonthly(month: Date | undefined): Observable<TransactionVM[]> {
+    getMonthly(month: Date | undefined): Observable<TransactionVM[]> {
         let url_ = this.baseUrl + "/api/transactions/GetMonthly?";
         if (month === null)
             throw new Error("The parameter 'month' cannot be null.");
@@ -793,11 +793,11 @@ export class TransactionClient implements ITransactionClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processTransaction_GetMonthly(response_);
+            return this.processGetMonthly(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processTransaction_GetMonthly(response_ as any);
+                    return this.processGetMonthly(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<TransactionVM[]>;
                 }
@@ -806,7 +806,7 @@ export class TransactionClient implements ITransactionClient {
         }));
     }
 
-    protected processTransaction_GetMonthly(response: HttpResponseBase): Observable<TransactionVM[]> {
+    protected processGetMonthly(response: HttpResponseBase): Observable<TransactionVM[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -835,7 +835,7 @@ export class TransactionClient implements ITransactionClient {
         return _observableOf(null as any);
     }
 
-    transaction_GetChartData(month: Date | undefined): Observable<TransactionChartPoint[]> {
+    getChartData(month: Date | undefined): Observable<TransactionChartPoint[]> {
         let url_ = this.baseUrl + "/api/transactions/GetChartData?";
         if (month === null)
             throw new Error("The parameter 'month' cannot be null.");
@@ -852,11 +852,11 @@ export class TransactionClient implements ITransactionClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processTransaction_GetChartData(response_);
+            return this.processGetChartData(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processTransaction_GetChartData(response_ as any);
+                    return this.processGetChartData(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<TransactionChartPoint[]>;
                 }
@@ -865,7 +865,7 @@ export class TransactionClient implements ITransactionClient {
         }));
     }
 
-    protected processTransaction_GetChartData(response: HttpResponseBase): Observable<TransactionChartPoint[]> {
+    protected processGetChartData(response: HttpResponseBase): Observable<TransactionChartPoint[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -894,7 +894,7 @@ export class TransactionClient implements ITransactionClient {
         return _observableOf(null as any);
     }
 
-    transaction_AddExpense(command: AddTransactionExpenseCommand): Observable<Result2> {
+    addExpense(command: AddTransactionExpenseCommand): Observable<Result2> {
         let url_ = this.baseUrl + "/api/transactions/AddExpense";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -911,11 +911,11 @@ export class TransactionClient implements ITransactionClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processTransaction_AddExpense(response_);
+            return this.processAddExpense(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processTransaction_AddExpense(response_ as any);
+                    return this.processAddExpense(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<Result2>;
                 }
@@ -924,7 +924,7 @@ export class TransactionClient implements ITransactionClient {
         }));
     }
 
-    protected processTransaction_AddExpense(response: HttpResponseBase): Observable<Result2> {
+    protected processAddExpense(response: HttpResponseBase): Observable<Result2> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -946,7 +946,7 @@ export class TransactionClient implements ITransactionClient {
         return _observableOf(null as any);
     }
 
-    transaction_UpdateExpense(command: UpdateTransactionExpenseCommand): Observable<void> {
+    updateExpense(command: UpdateTransactionExpenseCommand): Observable<void> {
         let url_ = this.baseUrl + "/api/transactions/UpdateExpense";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -962,11 +962,11 @@ export class TransactionClient implements ITransactionClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processTransaction_UpdateExpense(response_);
+            return this.processUpdateExpense(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processTransaction_UpdateExpense(response_ as any);
+                    return this.processUpdateExpense(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -975,7 +975,7 @@ export class TransactionClient implements ITransactionClient {
         }));
     }
 
-    protected processTransaction_UpdateExpense(response: HttpResponseBase): Observable<void> {
+    protected processUpdateExpense(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -994,7 +994,7 @@ export class TransactionClient implements ITransactionClient {
         return _observableOf(null as any);
     }
 
-    transaction_AddGain(command: AddTransactionGainCommand): Observable<number> {
+    addGain(command: AddTransactionGainCommand): Observable<number> {
         let url_ = this.baseUrl + "/api/transactions/AddGain";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1011,11 +1011,11 @@ export class TransactionClient implements ITransactionClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processTransaction_AddGain(response_);
+            return this.processAddGain(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processTransaction_AddGain(response_ as any);
+                    return this.processAddGain(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<number>;
                 }
@@ -1024,7 +1024,7 @@ export class TransactionClient implements ITransactionClient {
         }));
     }
 
-    protected processTransaction_AddGain(response: HttpResponseBase): Observable<number> {
+    protected processAddGain(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1047,7 +1047,7 @@ export class TransactionClient implements ITransactionClient {
         return _observableOf(null as any);
     }
 
-    transaction_Delete(id: number): Observable<void> {
+    delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/transactions/Delete";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1063,11 +1063,11 @@ export class TransactionClient implements ITransactionClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processTransaction_Delete(response_);
+            return this.processDelete(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processTransaction_Delete(response_ as any);
+                    return this.processDelete(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -1076,7 +1076,7 @@ export class TransactionClient implements ITransactionClient {
         }));
     }
 
-    protected processTransaction_Delete(response: HttpResponseBase): Observable<void> {
+    protected processDelete(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1097,7 +1097,7 @@ export class TransactionClient implements ITransactionClient {
 }
 
 export interface IUserClient {
-    user_GetAll(): Observable<Result3[]>;
+    getAll(): Observable<Result3[]>;
 }
 
 @Injectable({
@@ -1113,7 +1113,7 @@ export class UserClient implements IUserClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    user_GetAll(): Observable<Result3[]> {
+    getAll(): Observable<Result3[]> {
         let url_ = this.baseUrl + "/api/users";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1126,11 +1126,11 @@ export class UserClient implements IUserClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUser_GetAll(response_);
+            return this.processGetAll(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUser_GetAll(response_ as any);
+                    return this.processGetAll(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<Result3[]>;
                 }
@@ -1139,7 +1139,7 @@ export class UserClient implements IUserClient {
         }));
     }
 
-    protected processUser_GetAll(response: HttpResponseBase): Observable<Result3[]> {
+    protected processGetAll(response: HttpResponseBase): Observable<Result3[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

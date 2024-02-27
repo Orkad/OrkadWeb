@@ -5,6 +5,10 @@ import {
   MatLegacyDialogRef as MatDialogRef,
 } from '@angular/material/legacy-dialog';
 import * as moment from 'moment';
+import {
+  AddTransactionGainCommand,
+  TransactionClient,
+} from 'src/app/web-api-client';
 import { TransactionService } from 'src/services/transaction.service';
 import { Gain } from 'src/shared/models/transactions/Gain';
 import { TransactionRow } from 'src/shared/models/transactions/TransactionRow';
@@ -35,7 +39,8 @@ export class GainFormDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<GainFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) gain: Gain | null,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private transactionClient: TransactionClient
   ) {
     if (gain) {
       this.formGroup.patchValue({
@@ -68,6 +73,15 @@ export class GainFormDialogComponent {
         .updateGain(gain)
         .subscribe(() => this.close(gain));
     } else {
+      const command = new AddTransactionGainCommand({
+        name: gain.name,
+        amount: gain.amount,
+        date: gain.date,
+      });
+      this.transactionClient.addGain(command).subscribe((id) => {
+        gain.id = id;
+        this.close(gain);
+      });
       this.transactionService.addGain(gain).subscribe((id) => {
         gain.id = id;
         this.close(gain);

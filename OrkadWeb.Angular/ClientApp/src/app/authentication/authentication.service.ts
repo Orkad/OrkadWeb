@@ -45,22 +45,21 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string): Observable<LoginResult> {
-    return this.authClient
-      .auth_Login(<LoginCommand>{
-        username: username,
-        password: password,
-      })
-      .pipe(
-        map((data) => {
-          if (data && data.success && !data.error) {
-            if (data.token) {
-              localStorage.setItem('jwt', data.token);
-            }
-            this.userSubject.next(this.connectedUser);
+    const command = new LoginCommand({
+      username: username,
+      password: password,
+    });
+    return this.authClient.login(command).pipe(
+      map((data) => {
+        if (data && data.success && !data.error) {
+          if (data.token) {
+            localStorage.setItem('jwt', data.token);
           }
-          return data;
-        })
-      );
+          this.userSubject.next(this.connectedUser);
+        }
+        return data;
+      })
+    );
   }
 
   logout(): void {

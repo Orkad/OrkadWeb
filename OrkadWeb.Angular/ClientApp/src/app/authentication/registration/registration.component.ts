@@ -115,7 +115,7 @@ export class RegistrationComponent implements OnInit {
 
   register() {
     this.authClient
-      .auth_Register(<RegisterCommand>{
+      .register(<RegisterCommand>{
         userName: this.username.value,
         email: this.email.value,
         password: this.password.value,

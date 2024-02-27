@@ -79,5 +79,7 @@
 		</ItemGroup>
 	</Target>
 
+	<ProjectExtensions><VisualStudio><UserProperties config_1nswag__JsonSchema="nswag" /></VisualStudio></ProjectExtensions>
+
 
 </Project>
