@@ -17,8 +17,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.10" />
-		<PackageReference Include="NSwag.AspNetCore" Version="14.0.3" />
-		<PackageReference Include="NSwag.MSBuild" Version="14.0.3">
+		<PackageReference Include="NSwag.AspNetCore" Version="14.1.0" />
+		<PackageReference Include="NSwag.MSBuild" Version="14.1.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
