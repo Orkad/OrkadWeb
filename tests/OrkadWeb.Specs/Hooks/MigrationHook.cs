@@ -38,7 +38,7 @@ namespace OrkadWeb.Specs.Hooks
         public static IServiceCollection AddTestMigrations(this IServiceCollection services, string connectionString)
             => services.AddFluentMigratorCore()
                 .ConfigureRunner(b => b
-                    .AddSQLite()
+                    .AddSQLite(compatibilityMode: CompatibilityMode.LOOSE)
                     .WithGlobalConnectionString(connectionString)
                     .ScanIn(OrkadWebInfrastructure.Assembly, Assembly.GetExecutingAssembly()));
     }

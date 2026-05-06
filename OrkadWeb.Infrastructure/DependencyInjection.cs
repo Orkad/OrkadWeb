@@ -39,7 +39,7 @@ namespace OrkadWeb.Infrastructure
                             builder.AddMySql5();
                             break;
                         case "sqlite":
-                            builder.AddSQLite();
+                            builder.AddSQLite(compatibilityMode: CompatibilityMode.LOOSE);
                             break;
                         default:
                             throw new NotImplementedException();

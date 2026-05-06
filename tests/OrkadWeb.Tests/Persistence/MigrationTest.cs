@@ -16,7 +16,7 @@ namespace OrkadWeb.Tests.Persistence
                 .AddFluentMigratorCore()
                 .ConfigureRunner(
                     builder => builder
-                        .AddSQLite()
+                        .AddSQLite(compatibilityMode: CompatibilityMode.LOOSE)
                         .WithGlobalConnectionString(@"Data Source=:memory:;Version=3;New=True;")
                         .WithMigrationsIn(OrkadWebInfrastructure.Assembly))
                 .BuildServiceProvider();
