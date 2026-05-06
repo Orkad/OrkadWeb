@@ -1,17 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../../shared/models/User';
-import { LoginResponse } from '../../shared/models/LoginResponse';
 import { Router } from '@angular/router';
-import {
-  AuthClient,
-  LoginCommand,
-  LoginResult,
-  RegisterCommand,
-} from '../web-api-client';
+import { AuthClient, LoginCommand, LoginResult } from '../web-api-client';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -35,7 +28,6 @@ export class AuthenticationService {
   }
 
   constructor(
-    private httpClient: HttpClient,
     private authClient: AuthClient,
     private jwtHelper: JwtHelperService,
     private router: Router
