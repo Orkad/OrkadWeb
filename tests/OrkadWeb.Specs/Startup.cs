@@ -8,7 +8,7 @@ using OrkadWeb.Application.Users;
 using OrkadWeb.Infrastructure;
 using OrkadWeb.Specs.Drivers;
 using OrkadWeb.Specs.Hooks;
-using SolidToken.SpecFlow.DependencyInjection;
+using Reqnroll.Microsoft.Extensions.DependencyInjection;
 
 namespace OrkadWeb.Specs
 {

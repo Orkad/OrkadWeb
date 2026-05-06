@@ -1,27 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NFluent;
-using OrkadWeb.Domain;
-using OrkadWeb.Domain.Entities;
-using OrkadWeb.Application.Users;
+﻿using OrkadWeb.Application.Security;
 using OrkadWeb.Application.Users.Commands;
-using OrkadWeb.Specs.Drivers;
+using OrkadWeb.Specs.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
-using OrkadWeb.Application.Common.Interfaces;
-using OrkadWeb.Application.Config;
 using System.Text.RegularExpressions;
 using System.Web;
-using OrkadWeb.Domain.Consts;
-using MediatR;
-using OrkadWeb.Angular.Controllers;
-using OrkadWeb.Application.Security;
-using OrkadWeb.Specs.Contexts;
-using OrkadWeb.Specs.Models;
 
 namespace OrkadWeb.Specs.Steps
 {

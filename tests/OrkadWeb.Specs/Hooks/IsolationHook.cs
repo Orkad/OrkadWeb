@@ -1,7 +1,4 @@
 ﻿using NHibernate;
-using OrkadWeb.Application.Common.Interfaces;
-using System.Threading.Tasks;
-using TechTalk.SpecFlow;
 
 namespace OrkadWeb.Specs.Hooks
 {

@@ -1,11 +1,5 @@
 ﻿using OrkadWeb.Application.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OrkadWeb.Specs.Models;
-using TechTalk.SpecFlow;
 
 namespace OrkadWeb.Specs.Contexts
 {

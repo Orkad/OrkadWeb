@@ -7,5 +7,5 @@ global using OrkadWeb.Domain.Entities;
 global using OrkadWeb.Specs.Contexts;
 global using System.Linq;
 global using System.Threading.Tasks;
-global using TechTalk.SpecFlow;
-global using TechTalk.SpecFlow.Assist;
+global using Reqnroll;
+global using Reqnroll.Assist;

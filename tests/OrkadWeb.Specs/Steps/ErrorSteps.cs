@@ -1,13 +1,5 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
-using NFluent;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OrkadWeb.Specs.Contexts;
-using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 
 namespace OrkadWeb.Specs.Steps
 {

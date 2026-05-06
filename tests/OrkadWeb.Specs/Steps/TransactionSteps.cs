@@ -1,15 +1,10 @@
-﻿using NHibernate.Linq;
+﻿using OrkadWeb.Angular.Controllers;
 using OrkadWeb.Application.Expenses.Commands;
-using System;
-using System.Collections.Generic;
 using OrkadWeb.Application.Transactions.Commands;
 using OrkadWeb.Application.Transactions.Models;
-using OrkadWeb.Application.Transactions.Queries;
-using TechTalk.SpecFlow;
-using OrkadWeb.Application.Users;
-using OrkadWeb.Angular.Controllers;
+using System;
+using System.Collections.Generic;
 using System.Threading;
-using System.Net.Http;
 
 namespace OrkadWeb.Specs.Steps
 {
