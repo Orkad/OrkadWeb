@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="docker-compose.yaml" />
+    <File Path="Dockerfile" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Solution Items/Github/">
+    <File Path=".github/workflows/dotnet.yml" />
+    <File Path=".github/workflows/node.js.yml" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OrkadWeb.Specs/OrkadWeb.Specs.csproj" />
+    <Project Path="tests/OrkadWeb.Tests/OrkadWeb.Tests.csproj" />
+  </Folder>
+  <Project Path="OrkadWeb.Angular/OrkadWeb.Angular.csproj" />
+  <Project Path="OrkadWeb.Application/OrkadWeb.Application.csproj" />
+  <Project Path="OrkadWeb.Domain/OrkadWeb.Domain.csproj" />
+  <Project Path="OrkadWeb.Infrastructure/OrkadWeb.Infrastructure.csproj" />
+</Solution>
