@@ -18,6 +18,5 @@ public static class DependencyInjection
             .AddOpenBehavior(typeof(ValidationBehavior<,>))
         );
         services.AddValidatorsFromAssembly(asm);
-        services.AddAutoMapper(asm);
     }
 }
